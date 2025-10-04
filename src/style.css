@@ -1,0 +1,26 @@
+@import 'tailwindcss';
+@import 'tailwindcss-primeui';
+
+@import 'primeicons/primeicons.css';
+
+.bg-secondary{
+  background-color: #F6E5E5;
+}
+.bg-surface-0{
+  background-color: #EDEBE9;
+}
+.bg-purple{
+  background-color: #774181;
+}
+.bg-purple-dark{
+  background-color: #54275C;
+}
+.text-black{
+  color: #222222;
+}
+.text-purple{
+  color: #774181;
+}
+.text-purple-dark{
+  color: #54275C;
+}
