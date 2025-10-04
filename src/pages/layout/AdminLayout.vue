@@ -6,7 +6,7 @@
 
     <main class="content">
       <div class="topbar">
-        <h2>Dashboard</h2>
+        <h2>Panel Admin - MSC</h2>
       </div>
       <div class="page-content">
         <RouterView />

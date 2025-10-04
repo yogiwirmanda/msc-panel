@@ -13,6 +13,12 @@ import MemberSession from '../pages/member/session/Session.vue'
 import DatatableView from '../pages/admin/base/Datatable.vue'
 import AdminLayout from '../pages/layout/AdminLayout.vue'
 
+import CreateRole from "../pages/admin/master/role/Create.vue"
+import ListRole from "../pages/admin/master/role/List.vue"
+
+import CreateUser from "../pages/admin/master/user/Create.vue"
+import ListUser from "../pages/admin/master/user/List.vue"
+
 const routes = [
   { path: '/', name: 'Home', component: Login, meta: { guest: true } },
   { path: '/login', name: 'Login', component: Login, meta: { guest: true } },
@@ -33,9 +39,13 @@ const routes = [
   {
     path: '/admin',
     component: AdminLayout,
-    meta: { requiresAuth: true },
+    // meta: { requiresAuth: true },
     children: [
-      { path: 'datatable', name: 'Datatable', component: DatatableView }
+      { path: 'datatable', name: 'Datatable', component: DatatableView },
+      { path: 'master/role', name: 'Role', component: ListRole },
+      { path: 'master/role/create', name: 'Role Create', component: CreateRole },
+      { path: 'master/user', name: 'User', component: ListUser },
+      { path: 'master/user/create', name: 'User Create', component: CreateUser }
     ]
   }
 ]
