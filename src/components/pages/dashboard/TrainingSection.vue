@@ -55,10 +55,11 @@
             <template #footer>
               <div class="flex justify-center mt-4">
                 <Button
-                  label="Lihat Detail"
+                  label="Masuk Sesi"
                   icon="pi pi-arrow-right"
                   class="px-4 py-2 rounded-lg bg-purple"
-                  :onclick="goToSession"
+                  type="button"
+                  @click="goToSession(item.code)"
                 />
               </div>
             </template>
@@ -76,13 +77,14 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 
-const goToSession = () => {
-  router.push("/member/session");
+const goToSession = (code: any) => {
+  router.push("/member/session/" + code);
 };
 
 const trainingList = [
   {
     section: 1,
+    code: "sesi-1",
     title: "Menemukan Rasa Welas Asih Dengan Penuh Kesadaran",
     image: "1.jpg",
     description:
@@ -90,6 +92,7 @@ const trainingList = [
   },
   {
     section: 2,
+    code: "sesi-2",
     title: "Mengelola Emosi yang Sulit",
     image: "2.jpg",
     description:
@@ -97,6 +100,7 @@ const trainingList = [
   },
   {
     section: 3,
+    code: "sesi-3",
     title: "Menemukan Diri dengan Welas Asih pada Diri Sendiri",
     image: "3.png",
     description:
@@ -104,6 +108,7 @@ const trainingList = [
   },
   {
     section: 4,
+    code: "sesi-4",
     title: "Mengubah Hubungan",
     image: "4.webp",
     description:
@@ -111,6 +116,7 @@ const trainingList = [
   },
   {
     section: 5,
+    code: "sesi-5",
     title: "Merangkul Hidup",
     image: "5.png",
     description:
@@ -118,6 +124,7 @@ const trainingList = [
   },
   {
     section: 6,
+    code: "sesi-6",
     title: "Mengintegrasikan Welas Asih ke dalam Kehidupan Sehari-hari",
     image: "6.png",
     description:

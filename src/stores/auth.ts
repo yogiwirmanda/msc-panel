@@ -1,74 +1,43 @@
 import { defineStore } from 'pinia'
-import axios, { AxiosError } from 'axios'
+import { ref } from 'vue'
+import { authService, type RegisterForm } from '../services/authService'
 
-export interface User {
-  id: number
-  name: string
-  email: string
-}
+export const useAuthStore = defineStore('auth', () => {
+  const members = ref<RegisterForm[]>([])
+  const loading = ref(false)
+  const error = ref<string | null>(null)
+  const data = ref<any>(null)
 
-interface LoginResponse {
-  token: string
-  user: User
-}
+  const registerMember = async (payload: any) => {
+    loading.value = true
+    try {
+      await authService.createMember(payload)
+    } catch (err: any) {
+      error.value = err.message || 'Failed to create role'
+    } finally {
+      loading.value = false
+    }
+  }
 
-interface RegisterResponse {
-  message: string
-}
+  const loginMember = async (payload: any) => {
+    loading.value = true
+    try {
+      const response = await authService.loginMember(payload)
+      data.value = response
+    } catch (err: any) {
+      error.value = err.message || 'Failed to create role'
+    } finally {
+      loading.value = false
+    }
+  }
 
-interface AuthState {
-  user: User | null
-  token: string | null
-}
 
-export const useAuthStore = defineStore('auth', {
-  state: (): AuthState => ({
-    user: null,
-    token: localStorage.getItem('token') || null,
-  }),
-
-  actions: {
-    async login(credentials: { email: string; password: string }): Promise<boolean> {
-      try {
-        const { data } = await axios.post<LoginResponse>('/api/login', credentials)
-        this.token = data.token
-        this.user = data.user
-
-        localStorage.setItem('token', data.token)
-        axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
-
-        return true
-      } catch (err) {
-        const error = err as AxiosError<{ message?: string }>
-        throw error.response?.data?.message || 'Login failed'
-      }
-    },
-
-    async register(form: { name: string; email: string; password: string }): Promise<string> {
-      try {
-        const { data } = await axios.post<RegisterResponse>('/api/register', form)
-        return data.message
-      } catch (err) {
-        const error = err as AxiosError<{ message?: string }>
-        throw error.response?.data?.message || 'Register failed'
-      }
-    },
-
-    async fetchUser(): Promise<void> {
-      if (!this.token) return
-      try {
-        const { data } = await axios.get<User>('/api/me')
-        this.user = data
-      } catch {
-        this.logout()
-      }
-    },
-
-    logout(): void {
-      this.token = null
-      this.user = null
-      localStorage.removeItem('token')
-      delete axios.defaults.headers.common['Authorization']
-    },
-  },
+  return {
+    members,
+    loading,
+    error,
+    data,
+    registerMember,
+    loginMember
+  }
 })

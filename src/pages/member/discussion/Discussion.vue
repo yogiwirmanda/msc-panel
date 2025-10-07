@@ -1,7 +1,13 @@
 <template>
   <div class="max-w-2xl mx-auto p-6">
     <Card class="mb-6">
+      <template #title><div class="mb-5">Diskusi Sesi 1</div></template>
       <template #content>
+        <div class="text-md mb-10">
+          Melalui forum diskusi, Anda dapat membagikan pengalaman dan dapat
+          berinteraksi dengan peserta lain serta memberikan dukungan satu sama
+          lain. Ruang diskusi ini aman dan privasi Anda akan terjaga.
+        </div>
         <div class="flex items-start gap-3">
           <Avatar icon="pi pi-user" size="large" class="bg-gray-300" />
           <Textarea

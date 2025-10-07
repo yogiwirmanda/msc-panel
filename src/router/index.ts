@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 
 import Login from '../pages/auth/Login.vue'
+import Register from '../pages/auth/Register.vue'
 
 import MemberLayout from '../pages/layout/MemberLayout.vue'
 import MemberDashboard from '../pages/member/Dashboard.vue'
@@ -9,6 +10,8 @@ import MemberProfile from '../pages/member/account/Profile.vue'
 import MemberJournal from '../pages/member/account/Journal.vue'
 import MemberForum from '../pages/member/discussion/Discussion.vue'
 import MemberSession from '../pages/member/session/Session.vue'
+import MemberPreTest from '../pages/member/test/PreTest.vue'
+import MemberPostTest from '../pages/member/test/PostTest.vue'
 
 import DatatableView from '../pages/admin/base/Datatable.vue'
 import AdminLayout from '../pages/layout/AdminLayout.vue'
@@ -22,6 +25,7 @@ import ListUser from "../pages/admin/master/user/List.vue"
 const routes = [
   { path: '/', name: 'Home', component: Login, meta: { guest: true } },
   { path: '/login', name: 'Login', component: Login, meta: { guest: true } },
+  { path: '/register', name: 'Register', component: Register, meta: { guest: true } },
 
   {
     path: '/member',
@@ -32,7 +36,9 @@ const routes = [
       { path: 'profile', name: 'Profile', component: MemberProfile },
       { path: 'journal', name: 'Journal', component: MemberJournal },
       { path: 'discussion', name: 'Forum Dikusi', component: MemberForum },
-      { path: 'session', name: 'Sesi', component: MemberSession },
+      { path: 'session/:code', name: 'Sesi', component: MemberSession },
+      { path: 'pre-test', name: 'Pre Test', component: MemberPreTest },
+      { path: 'post-test', name: 'Post Test', component: MemberPostTest },
     ]
   },
 

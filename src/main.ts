@@ -9,10 +9,14 @@ import ToastService from "primevue/toastservice";
 import ConfirmationService from "primevue/confirmationservice";
 import Toast from "primevue/toast";
 import ConfirmDialog from "primevue/confirmdialog";
+import { plugin, defaultConfig } from '@formkit/vue'
+import config from '../formkit.config'
+
 
 const pinia = createPinia()
 
 const app = createApp(App)
+app.use(plugin, defaultConfig(config))
 app.use(ToastService);
 app.use(ConfirmationService);
 app.component("Toast", Toast);

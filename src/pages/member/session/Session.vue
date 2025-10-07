@@ -5,32 +5,18 @@
         Materi Pembelajaran
       </h1>
       <p class="text-lg text-surface-600">
-        Selamat datang di sesi pertama perjalanan welas asih pada diri sendiri.
+        {{ detailPractice?.short_summary }}
       </p>
     </div>
 
     <Card class="mb-10 shadow-lg border border-surface-200">
       <template #title>
-        <h2 class="text-2xl font-bold">Fondasi Welas Asih</h2>
+        <h2 class="text-2xl font-bold">{{ detailPractice?.title }}</h2>
       </template>
       <template #content>
         <p class="text-surface-700 leading-relaxed mb-4">
-          Tujuan utama kita adalah memahami secara mendalam apa itu welas asih
-          pada diri sendiri dan mengapa hal itu penting. Welas asih bukanlah
-          memanjakan diri, melainkan membangun kekuatan batin untuk merespons
-          kesulitan, ketidaksempurnaan, dan kegagalan dengan kebaikan serta
-          pengertian, bukan kritik.
+          {{ detailPractice?.description_md }}
         </p>
-        <ul class="list-disc pl-6 space-y-2 text-surface-700">
-          <li>
-            <span class="font-semibold">Mindfulness:</span> keterampilan hadir
-            penuh di momen sekarang.
-          </li>
-          <li>
-            <span class="font-semibold">Self-Compassion:</span> memperlakukan
-            diri dengan kebaikan saat sulit.
-          </li>
-        </ul>
       </template>
     </Card>
 
@@ -79,11 +65,17 @@
 
         <div class="space-y-4">
           <div>
-            <label class="font-semibold">Sebelum Latihan</label>
+            <label class="font-semibold"
+              >Sebelum Latihan : Bagaimana perasaan Anda sebelum memulai sesi
+              ini?</label
+            >
             <Textarea v-model="journal.before" rows="2" class="w-full mt-2" />
           </div>
           <div>
-            <label class="font-semibold">Setelah Body Scan</label>
+            <div class="font-semibold w-1/2">
+              Apa yang Anda rasakan setelah melakukan praktik mindful body scan?
+              Adakah sensasi atau emosi baru yang Anda sadari?
+            </div>
             <Textarea
               v-model="journal.afterBody"
               rows="2"
@@ -91,7 +83,10 @@
             />
           </div>
           <div>
-            <label class="font-semibold">Setelah Self-Compassion Break</label>
+            <div class="font-semibold w-1/2">
+              Bagaimana perasaan Anda setelah melakukan latihan Self-Compassion
+              Break? Apakah ada perubahan pada emosi yang Anda rasakan di awal?
+            </div>
             <Textarea
               v-model="journal.afterCompassion"
               rows="2"
@@ -99,7 +94,10 @@
             />
           </div>
           <div>
-            <label class="font-semibold">Hal Baru yang Dipelajari</label>
+            <label class="font-semibold"
+              >Apa satu hal baru yang Anda pelajari tentang diri Anda di sesi
+              ini?
+            </label>
             <Textarea v-model="journal.learning" rows="2" class="w-full mt-2" />
           </div>
         </div>
@@ -115,24 +113,30 @@
       </template>
     </Card>
   </div>
-  <div class="bg-surface-0 min-h-screen py-12 px-6 md:px-16 lg:px-32">
-    <Card>
-      <template #content>
-        <h1 class="text-3xl md:text-4xl font-bold text-purple mb-2 text-center">
-          Forum Diskusi
-        </h1>
-        <Discussion />
-      </template>
-    </Card>
-  </div>
 </template>
 
 <script setup lang="ts">
 import Card from "primevue/card";
 import Button from "primevue/button";
 import Textarea from "primevue/textarea";
-import { ref } from "vue";
-import Discussion from "../discussion/Discussion.vue";
+import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
+import { usePracticeStore } from "../../../stores/practiceStore";
+
+const router = useRouter();
+const practiceStore = usePracticeStore();
+const detailPractice = ref(null);
+
+const loadPractice = async (code: any) => {
+  await practiceStore.detailPractice(code);
+  detailPractice.value = practiceStore.practice.data.practice;
+};
+
+onMounted(() => {
+  loadPractice(router.currentRoute.value.params.code);
+});
+
+console.log();
 
 const journal = ref({
   before: "",

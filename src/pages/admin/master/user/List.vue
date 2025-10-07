@@ -1,31 +1,53 @@
 <template>
   <Toast />
   <ConfirmDialog />
+
   <Card>
     <template #title>
       <div class="flex justify-between">
         <div>List User</div>
         <div>
           <Button asChild v-slot="slotProps">
-            <RouterLink to="/admin/master/user/create" :class="slotProps.class"
-              >Add User</RouterLink
-            >
+            <RouterLink to="/admin/master/user/create" :class="slotProps.class">
+              Add User
+            </RouterLink>
           </Button>
         </div>
       </div>
     </template>
+
     <template #content>
-      <div class="mt-5">
+      <div class="mt-5 relative">
         <DataTable
-          :value="users"
+          :value="userStore.users"
+          :lazy="true"
           paginator
-          :rows="5"
-          :rowsPerPageOptions="[5, 10, 20, 50]"
+          :rows="userStore.pageSize"
+          :totalRecords="userStore.total"
+          :first="(userStore.page - 1) * userStore.pageSize"
+          @page="onPage"
           tableStyle="min-width: 50rem"
         >
+          <Column header="No" style="width: 5%; text-align: center">
+            <template #body="slotProps">
+              {{
+                (userStore.page - 1) * userStore.pageSize + slotProps.index + 1
+              }}
+            </template>
+          </Column>
+
           <Column field="name" header="Name" style="width: 25%" />
-          <Column field="email" header="Email" style="width: 25%" />
-          <Column field="phone" header="Phone" style="width: 25%" />
+          <Column field="username" header="Username" style="width: 25%" />
+          <Column
+            field="phone_number"
+            header="Phone Number"
+            style="width: 25%"
+          />
+          <Column field="email" header="E-mail" style="width: 25%" />
+          <Column field="address" header="Address" style="width: 25%" />
+          <Column field="birthdate" header="Birthdate" style="width: 25%" />
+          <Column field="gender" header="Gender" style="width: 25%" />
+          <Column field="profession" header="Profession" style="width: 25%" />
 
           <Column header="Actions" style="width: 20%; text-align: center">
             <template #body="slotProps">
@@ -48,56 +70,84 @@
             </template>
           </Column>
         </DataTable>
+
+        <transition name="fade">
+          <div
+            v-if="userStore.loading"
+            class="absolute inset-0 flex items-center justify-center bg-white/70 z-10 rounded-lg"
+          >
+            <ProgressSpinner
+              style="width: 50px; height: 50px"
+              strokeWidth="4"
+            />
+          </div>
+        </transition>
       </div>
     </template>
   </Card>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
+import ProgressSpinner from "primevue/progressspinner";
 import { useToast } from "primevue/usetoast";
 import { useConfirm } from "primevue/useconfirm";
 import Card from "primevue/card";
-
-const users = ref([
-  {
-    id: 1,
-    name: "Helmi Yachya",
-    email: "helmi@yopmail.com",
-    phone: "6281217018168",
-  },
-  { id: 2, name: "igoy", email: "helmi@yopmail.com", phone: "6281217018168" },
-  { id: 3, name: "Pungky", email: "helmi@yopmail.com", phone: "6281217018168" },
-]);
+import { useUserStore } from "../../../../stores/userStore";
 
 const toast = useToast();
 const confirm = useConfirm();
 
-const editRow = (row: { id: number; name: string }) => {
+const userStore = useUserStore();
+
+const fetchData = async () => {
+  await userStore.fetchUsers(1);
+};
+
+const onPage = (event: any) => {
+  const newPage = event.page + 1;
+  userStore.fetchUsers(newPage);
+};
+
+onMounted(() => {
+  fetchData();
+});
+
+const editRow = (row: { id: number; role: string }) => {
   toast.add({
     severity: "info",
     summary: "Edit",
-    detail: `Editing ${row.name}`,
+    detail: `Editing ${row.role}`,
     life: 2000,
   });
 };
 
-const deleteRow = (row: { id: number; name: string }) => {
+const deleteRow = (row: { id: number; role: string }) => {
   confirm.require({
-    message: `Are you sure you want to delete ${row.name}?`,
+    message: `Are you sure you want to delete ${row.role}?`,
     header: "Confirm",
     icon: "pi pi-exclamation-triangle",
-    accept: () => {
-      users.value = users.value.filter((item) => item.id !== row.id);
-      toast.add({
-        severity: "success",
-        summary: "Deleted",
-        detail: `${row.name} removed`,
-        life: 2000,
-      });
+    accept: async () => {
+      try {
+        await userStore.deleteUser(row);
+        await userStore.fetchUsers(userStore.page);
+        toast.add({
+          severity: "success",
+          summary: "Deleted",
+          detail: `${row.role} removed`,
+          life: 2000,
+        });
+      } catch (error) {
+        toast.add({
+          severity: "error",
+          summary: "Error",
+          detail: "Failed to delete role",
+          life: 2000,
+        });
+      }
     },
   });
 };
@@ -106,5 +156,15 @@ const deleteRow = (row: { id: number; name: string }) => {
 <style scoped>
 .card {
   padding: 1rem;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.25s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

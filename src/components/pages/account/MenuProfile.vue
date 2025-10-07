@@ -5,7 +5,7 @@
         <nav class="flex flex-col gap-3 flex-1">
           <RouterLink
             to="/member/profile"
-            class="flex items-center gap-2 p-2 rounded-md hover:bg-surface-200 transition"
+            class="flex items-center gap-2 p-2 rounded-md hover:bg-surface-200 transition mb-3"
             active-class="active-link"
           >
             <i class="pi pi-user"></i>
@@ -14,7 +14,7 @@
 
           <RouterLink
             to="/member/journal"
-            class="flex items-center gap-2 p-2 rounded-md hover:bg-surface-200 transition"
+            class="flex items-center gap-2 p-2 rounded-md hover:bg-surface-200 transition mb-3"
             active-class="active-link"
           >
             <i class="pi pi-book"></i>
