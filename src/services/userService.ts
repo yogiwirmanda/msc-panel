@@ -41,7 +41,7 @@ export const userService = {
   },
 
   async getUserById(id: number): Promise<UserItem> {
-    const { data } = await api.get<UserItem>(`/user/detail/${id}`)
+    const { data } = await api.get<UserItem>(`/user/detail?id=${id}`)
     return data
   },
 
@@ -50,8 +50,8 @@ export const userService = {
     return data
   },
 
-  async updateUser(payload: Partial<UserItem>): Promise<UserItem> {
-    const { data } = await api.patch<UserItem>('/user/update', payload)
+  async updateUser(userId: any, payload: Partial<UserItem>): Promise<UserItem> {
+    const { data } = await api.patch<UserItem>(`/user/update?id=${userId}`, payload)
     return data
   },
 

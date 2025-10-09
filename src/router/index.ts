@@ -22,6 +22,13 @@ import ListRole from "../pages/admin/master/role/List.vue"
 import CreateUser from "../pages/admin/master/user/Create.vue"
 import ListUser from "../pages/admin/master/user/List.vue"
 
+import CreateTest from "../pages/admin/master/test/Create.vue"
+import ListTest from "../pages/admin/master/test/List.vue"
+import QuestionTest from "../pages/admin/master/test/Question.vue"
+
+import CreatePractice from "../pages/admin/master/practice/Create.vue"
+import ListPractice from "../pages/admin/master/practice/List.vue"
+
 const routes = [
   { path: '/', name: 'Home', component: Login, meta: { guest: true } },
   { path: '/login', name: 'Login', component: Login, meta: { guest: true } },
@@ -30,7 +37,7 @@ const routes = [
   {
     path: '/member',
     component: MemberLayout,
-    // meta: { requiresAuth: true },
+    meta: { requiresAuth: true },
     children: [
       { path: 'dashboard', name: 'Dashboard', component: MemberDashboard },
       { path: 'profile', name: 'Profile', component: MemberProfile },
@@ -51,7 +58,12 @@ const routes = [
       { path: 'master/role', name: 'Role', component: ListRole },
       { path: 'master/role/create', name: 'Role Create', component: CreateRole },
       { path: 'master/user', name: 'User', component: ListUser },
-      { path: 'master/user/create', name: 'User Create', component: CreateUser }
+      { path: 'master/user/create', name: 'User Create', component: CreateUser },
+      { path: 'master/test', name: 'Test', component: ListTest },
+      { path: 'master/test/create', name: 'Test Create', component: CreateTest },
+      { path: 'master/test/question', name: 'Question Test', component: QuestionTest },
+      { path: 'master/practice', name: 'Practice', component: ListPractice },
+      { path: 'master/practice/create', name: 'Practice Create', component: CreatePractice },
     ]
   }
 ]

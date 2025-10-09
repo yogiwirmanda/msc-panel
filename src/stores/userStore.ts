@@ -10,7 +10,7 @@ export const useUserStore = defineStore('user', () => {
   const page = ref(1)
   const pageSize = ref(10)
   const totalPages = ref(0)
-  const selectedRole = ref<UserItem | null>(null)
+  const detailUser = ref<UserItem | null>(null)
 
   const fetchUsers = async (newPage = 1) => {
     loading.value = true
@@ -35,7 +35,8 @@ export const useUserStore = defineStore('user', () => {
 
     try {
       const data = await userService.getUserById(id)
-      selectedRole.value = data
+      console.log(data);
+      detailUser.value = data
       return data
     } catch (err: any) {
       error.value = err.message || 'Failed to fetch role detail'
@@ -56,10 +57,10 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  const updateUser = async (role: Partial<UserItem>) => {
+  const updateUser = async (userId: any, payload: Partial<UserItem>) => {
     loading.value = true
     try {
-      await userService.updateUser(role)
+      await userService.updateUser(userId, payload)
       await fetchUsers(page.value)
     } catch (err: any) {
       error.value = err.message || 'Failed to update role'
@@ -88,7 +89,7 @@ export const useUserStore = defineStore('user', () => {
     totalPages,
     loading,
     error,
-    selectedRole,
+    detailUser,
     fetchUsers,
     getUserDetail,
     addUser,

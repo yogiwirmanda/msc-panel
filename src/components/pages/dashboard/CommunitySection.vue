@@ -25,7 +25,7 @@
         severity="secondary"
         rounded
         size="large"
-        class="bg-secondary hover:bg-secondary px-6 py-3 mt-4 shadow-lg"
+        class="bg-secondary hover:bg-secondary px-6 py-3 mt-4 shadow-lg btn-discussion"
       />
     </div>
 
@@ -41,3 +41,10 @@
 <script lang="ts" setup>
 import Button from "primevue/button";
 </script>
+
+<style scoped>
+.btn-discussion {
+  background-color: #f6e5e5 !important;
+  color: #54275c !important;
+}
+</style>

@@ -1,4 +1,5 @@
 <template>
+  <Toast />
   <div class="bg-surface-50 px-6 py-20 md:px-20 lg:px-80">
     <div
       class="bg-surface-0 p-8 md:p-12 shadow-sm rounded-2xl w-full max-w-sm mx-auto flex flex-col gap-8"
@@ -71,7 +72,10 @@ import Password from "primevue/password";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../../stores/auth";
+import { useToast } from "primevue/usetoast";
+import Toast from "primevue/toast";
 
+const toast = useToast();
 const router = useRouter();
 
 interface LoginForm {
@@ -89,7 +93,9 @@ const authStore = useAuthStore();
 const doLogin = async () => {
   await authStore.loginMember(form.value);
   if (authStore.data.success) {
-    router.push("/member/dashboard");
+    setTimeout(() => {
+      router.push("/member/dashboard");
+    }, 1000);
   }
 };
 </script>

@@ -5,7 +5,7 @@
         Materi Pembelajaran
       </h1>
       <p class="text-lg text-surface-600">
-        {{ detailPractice?.short_summary }}
+        <MarkdownRender :content="String(detailPractice?.short_summary)" />
       </p>
     </div>
 
@@ -15,7 +15,7 @@
       </template>
       <template #content>
         <p class="text-surface-700 leading-relaxed mb-4">
-          {{ detailPractice?.description_md }}
+          <MarkdownRender :content="String(detailPractice?.description_md)" />
         </p>
       </template>
     </Card>
@@ -122,7 +122,7 @@ import Textarea from "primevue/textarea";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { usePracticeStore } from "../../../stores/practiceStore";
-
+import MarkdownRender from "../../../components/MarkdownRender.vue";
 const router = useRouter();
 const practiceStore = usePracticeStore();
 const detailPractice = ref(null);

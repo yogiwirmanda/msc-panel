@@ -1,5 +1,6 @@
 import axios from 'axios'
 import type { AxiosInstance } from 'axios'
+import Cookie from 'js-cookie'
 
 const api: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL + 'api/v1/',
@@ -8,7 +9,7 @@ const api: AxiosInstance = axios.create({
 })
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token')
+  const token = Cookie.get('token')
   if (token) config.headers.Authorization = `Bearer ${token}`
   return config
 })

@@ -1,19 +1,21 @@
 <script setup lang="ts">
 import Image from "primevue/image";
 import { useAuthStore } from "../../stores/auth";
-import { useRouter } from "vue-router";
 import Menu from "../../components/pages/Menu.vue";
+import Toast from "primevue/toast";
+import { onMounted } from "vue";
 
 const auth = useAuthStore();
-const router = useRouter();
 
-const handleLogout = () => {
-  auth.logout();
-  router.push("/login");
-};
+onMounted(async () => {
+  await auth.initialize();
+});
+
+// await auth.initialize();
 </script>
 
 <template>
+  <Toast />
   <div class="auth-layout">
     <header
       class="bg-secondary text-black p-4 flex justify-between items-center"

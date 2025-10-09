@@ -8,26 +8,28 @@
         />
         <div class="flex flex-col gap-4">
           <div class="flex items-center">
-            <span class="text-surface-900 font-bold text-3xl"
-              >Eileithyia Putri Artemis</span
-            >
+            <span class="text-surface-900 font-bold text-3xl">{{
+              detailMember?.name
+            }}</span>
           </div>
           <div class="flex items-center flex-wrap gap-8">
             <div>
-              <span class="text-surface-500">Followers</span>
-              <div class="text-surface-700 mt-1 text-sm font-semibold">333</div>
+              <span class="text-surface-500">Username</span>
+              <div class="text-surface-700 mt-1 text-sm font-semibold">
+                {{ detailMember?.username }}
+              </div>
             </div>
             <div>
-              <span class="text-surface-500">Projects</span>
-              <div class="text-surface-700 mt-1 text-sm font-semibold">26</div>
+              <span class="text-surface-500">Phone Number</span>
+              <div class="text-surface-700 mt-1 text-sm font-semibold">
+                {{ detailMember?.phone_number }}
+              </div>
             </div>
             <div>
-              <span class="text-surface-500">Collections</span>
-              <div class="text-surface-700 mt-1 text-sm font-semibold">17</div>
-            </div>
-            <div>
-              <span class="text-surface-500">Shots</span>
-              <div class="text-surface-700 mt-1 text-sm font-semibold">130</div>
+              <span class="text-surface-500">E-mail</span>
+              <div class="text-surface-700 mt-1 text-sm font-semibold">
+                {{ detailMember?.email }}
+              </div>
             </div>
           </div>
         </div>
@@ -42,4 +44,15 @@
 </template>
 <script lang="ts" setup>
 import Button from "primevue/button";
+import { onMounted, ref } from "vue";
+import Cookie from "js-cookie";
+const detailMember = ref();
+
+const loadDetailMember = async () => {
+  detailMember.value = JSON.parse(String(Cookie.get("user")));
+};
+
+onMounted(async () => {
+  loadDetailMember();
+});
 </script>

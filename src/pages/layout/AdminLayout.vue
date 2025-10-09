@@ -1,5 +1,6 @@
 <template>
   <div class="layout">
+    <Toast />
     <aside class="sidebar">
       <Menu />
     </aside>
@@ -18,6 +19,7 @@
 <script setup>
 import Button from "primevue/button";
 import Menu from "../../components/pages/admin/Menu.vue";
+import Toast from "primevue/toast";
 </script>
 
 <style scoped>

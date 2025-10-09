@@ -38,4 +38,9 @@ export const authService = {
     const { data } = await api.post<RegisterForm>('/auth/login', payload)
     return data
   },
+
+  async initialize(): Promise<RegisterForm> {
+    const { data } = await api.get<RegisterForm>('/auth/initialize')
+    return data
+  },
 }
