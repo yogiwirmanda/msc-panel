@@ -1,4 +1,5 @@
 <template>
+  <LoadingPage :visible="loading" message="Memproses Data Forum....." />
   <div class="max-w-2xl mx-auto p-6">
     <Card class="mb-6">
       <template #title
@@ -92,6 +93,7 @@ import Textarea from "primevue/textarea";
 import Button from "primevue/button";
 import { useForumStore } from "../../../stores/forumStore";
 import Cookie from "js-cookie";
+import LoadingPage from "../../../components/LoadingPage.vue";
 
 interface Reply {
   id: number;
@@ -122,6 +124,9 @@ const loadForum = async () => {
     forum.value = forumStore.forumResponse;
     posts.value = forumStore.forumResponse.items;
   }
+  setTimeout(() => {
+    loading.value = false;
+  }, 1000);
 };
 
 onMounted(async () => {
@@ -153,7 +158,6 @@ const addReply = async (postId: number) => {
     parent_id: postId,
     body: replyText.value,
   };
-  console.log(payload);
   await forumStore.reply(1, payload);
   if (forumStore.submitReply) {
     console.log(forumStore.submitReply);
