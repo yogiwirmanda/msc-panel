@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 
+import AdminLogin from '../pages/auth/LoginAdmin.vue'
 import Login from '../pages/auth/Login.vue'
 import Register from '../pages/auth/Register.vue'
 
@@ -12,8 +13,8 @@ import MemberForum from '../pages/member/discussion/Discussion.vue'
 import MemberSession from '../pages/member/session/Session.vue'
 import MemberPreTest from '../pages/member/test/PreTest.vue'
 import MemberPostTest from '../pages/member/test/PostTest.vue'
+import MemberAttemptTest from '../pages/member/test/AttempTest.vue'
 
-import DatatableView from '../pages/admin/base/Datatable.vue'
 import AdminLayout from '../pages/layout/AdminLayout.vue'
 
 import CreateRole from "../pages/admin/master/role/Create.vue"
@@ -32,6 +33,7 @@ import ListPractice from "../pages/admin/master/practice/List.vue"
 const routes = [
   { path: '/', name: 'Home', component: Login, meta: { guest: true } },
   { path: '/login', name: 'Login', component: Login, meta: { guest: true } },
+  { path: '/admin/login', name: 'Admin Login', component: AdminLogin, meta: { guest: true } },
   { path: '/register', name: 'Register', component: Register, meta: { guest: true } },
 
   {
@@ -44,8 +46,9 @@ const routes = [
       { path: 'journal', name: 'Journal', component: MemberJournal },
       { path: 'discussion', name: 'Forum Dikusi', component: MemberForum },
       { path: 'session/:code', name: 'Sesi', component: MemberSession },
-      { path: 'pre-test', name: 'Pre Test', component: MemberPreTest },
+      { path: 'pre-test/:attempt', name: 'Pre Test', component: MemberPreTest },
       { path: 'post-test', name: 'Post Test', component: MemberPostTest },
+      { path: 'attempt-test/:type', name: 'Attempt Test', component: MemberAttemptTest },
     ]
   },
 
@@ -54,7 +57,6 @@ const routes = [
     component: AdminLayout,
     // meta: { requiresAuth: true },
     children: [
-      { path: 'datatable', name: 'Datatable', component: DatatableView },
       { path: 'master/role', name: 'Role', component: ListRole },
       { path: 'master/role/create', name: 'Role Create', component: CreateRole },
       { path: 'master/user', name: 'User', component: ListUser },
@@ -71,13 +73,15 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior() {
     return { top: 0 }
   },
 })
 
 router.beforeEach((to, from, next) => {
   const auth = useAuthStore()
+
+  console.log(from);
 
   if (to.meta.requiresAuth && !auth.token) {
     next('/login')

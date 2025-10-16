@@ -1,4 +1,5 @@
 <template>
+  <LoadingPage :visible="loading" message="Memproses Data...." />
   <div class="bg-surface-0 px-6 md:px-12 lg:px-20 py-20 text-center">
     <div class="flex flex-col gap-6">
       <div class="flex flex-col items-center gap-4 mb-[50px]">
@@ -17,7 +18,7 @@
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
         <div
-          v-for="item in trainingList"
+          v-for="item in practiceStep"
           :key="item.section"
           class="flex flex-col"
         >
@@ -26,7 +27,7 @@
           >
             <template #title>
               <div class="mb-1 text-2xl font-bold text-surface-900">
-                Sesi {{ item.section }}
+                {{ item.code }}
               </div>
               <div class="mb-3 text-lg text-surface-600 font-medium">
                 {{ item.title }}
@@ -36,8 +37,8 @@
             <template #content>
               <div class="relative w-full overflow-hidden rounded-xl">
                 <Image
-                  :src="`/images/${item.image}`"
-                  alt="Image"
+                  :src="`/images/${getImageFromCodeSession(item.code)}`"
+                  :alt="`Image-${item.code}`"
                   imageClass="w-full h-56 object-cover rounded-xl"
                   preview
                 />
@@ -47,7 +48,7 @@
                 <div
                   class="text-surface-900 text-md font-normal leading-relaxed"
                 >
-                  {{ item.description }}
+                  <MarkdownRender :content="String(item.description_md)" />
                 </div>
               </div>
             </template>
@@ -55,11 +56,12 @@
             <template #footer>
               <div class="flex justify-center mt-4">
                 <Button
-                  label="Masuk Sesi"
-                  icon="pi pi-arrow-right"
-                  class="px-4 py-2 rounded-lg bg-purple"
+                  :label="getLabel(item.code)"
+                  :icon="getIcon(item.code)"
+                  :class="`px-4 py-2 rounded-lg ${item.status}`"
                   type="button"
                   @click="goToSession(item.code)"
+                  :disabled="checkStatusCompleted(item.code)"
                 />
               </div>
             </template>
@@ -74,63 +76,146 @@ import Button from "primevue/button";
 import Card from "primevue/card";
 import Image from "primevue/image";
 import { useRouter } from "vue-router";
+import { usePracticeStore } from "../../../stores/practiceStore";
+import Cookie from "js-cookie";
+import { onMounted, ref } from "vue";
+import MarkdownRender from "../../MarkdownRender.vue";
+import LoadingPage from "../../LoadingPage.vue";
 
 const router = useRouter();
+const practiceStore = usePracticeStore();
+const practiceStep = ref<any>();
+const needStarted = ref("");
+const loading = ref(false);
 
 const goToSession = (code: any) => {
-  router.push("/member/session/" + code);
+  switch (code) {
+    case "PRE":
+      router.push("/member/attempt-test/pre-test");
+      break;
+    case "POST":
+      router.push("/member/attempt-test/post-test");
+      break;
+
+    default:
+      router.push("/member/session/" + code);
+      break;
+  }
 };
 
-const trainingList = [
-  {
-    section: 1,
-    code: "sesi-1",
-    title: "Menemukan Rasa Welas Asih Dengan Penuh Kesadaran",
-    image: "1.jpg",
-    description:
-      "Sesi ini akan menjadi pengenalan umum tentang konsep self-compassion dan mindfulness. Anda akan belajar arti welas asih pada diri sendiri, bagaimana ia berbeda dari harga diri, dan manfaat yang akan didapatkan. Sesi ini juga akan mencakup praktik mindfulness seperti body scanning dan self-compassion break untuk membantu Anda terhubung dengan tubuh dan emosi mereka tanpa menghakimi.",
-  },
-  {
-    section: 2,
-    code: "sesi-2",
-    title: "Mengelola Emosi yang Sulit",
-    image: "2.jpg",
-    description:
-      "Sesi ini berfokus pada pengembangan keterampilan untuk menghadapi emosi-emosi negatif seperti rasa malu atau emosi yang menyakitkan. Anda akan diajarkan strategi untuk menanggapi emosi dengan tenang, bukan langsung bereaksi terburu-buru. Latihan informal “Soften-Soothe-Allow” akan diajarkan untuk membantu Anda menenangkan diri ketika berada pada situasi yang menantang atau situasi yang sulit.",
-  },
-  {
-    section: 3,
-    code: "sesi-3",
-    title: "Menemukan Diri dengan Welas Asih pada Diri Sendiri",
-    image: "3.png",
-    description:
-      "Di sesi ini, Anda akan diajak untuk mempelajari diri lebih mendalam melalui lensa self-compassion. Anda akan dilatih untuk memperhatikan sensasi tubuh dengan kesadaran dan kelembutan, bukan dengan kritik. Tujuan utamanya adalah untuk menerima kondisi tubuh apa adanya dan meredakan ketegangan yang sering kali muncul akibat citra tubuh yang negatif.",
-  },
-  {
-    section: 4,
-    code: "sesi-4",
-    title: "Mengubah Hubungan",
-    image: "4.webp",
-    description:
-      "Sesi ini membahas bagaimana menghadapi hubungan yang penuh konflik dengan lebih welas asih. Anda akan belajar untuk memberikan kasih sayang kepada diri sendiri dan orang lain. Latihan yang relevan mencakup “Meditasi teman yang penuh kasih” dan “Menghadapi kebutuhan yang belum terpenuhi” dalam hubungan.",
-  },
-  {
-    section: 5,
-    code: "sesi-5",
-    title: "Merangkul Hidup",
-    image: "5.png",
-    description:
-      "Sesi ini akan mengajak Anda untuk menghargai aspek-aspek positif dalam diri dan kehidupan. Anda akan melakukan Latihan yang berfokus pada penghargaan diri dan rasa syukur, yang merupakan bagian penting dari mindful self-compassion. Tujuan sesi ini adalah untuk membangun kebiasaan positif dan perspektif yang lebih penuh kasih terhadap hidup.",
-  },
-  {
-    section: 6,
-    code: "sesi-6",
-    title: "Mengintegrasikan Welas Asih ke dalam Kehidupan Sehari-hari",
-    image: "6.png",
-    description:
-      "Sesi ini akan berfungsi sebagai penutup, di mana Anda akan menyatukan semua pembelajaran dari sesi-sesi sebelumnya. Diskusi akan berpusat pada bagaimana mengaplikasikan self-compassion dan mindfulness secara berkelanjutan dalam kehidupan sehari-hari, sehingga praktik ini menjadi bagian permanen dari kesejahteraan diri Anda.",
-  },
-];
+const getStepPractice = async () => {
+  loading.value = true;
+  let getUser = JSON.parse(String(Cookie.get("user")));
+  await practiceStore.getPracticeStep(getUser.id);
+  if (practiceStore.stepPractice?.success) {
+    practiceStep.value = practiceStore.stepPractice?.data.practice_steps ?? [];
+    getNotStarted();
+  }
+  setTimeout(() => {
+    loading.value = false;
+  }, 1000);
+};
+
+const getNotStarted = () => {
+  let result = practiceStep.value
+    .slice()
+    .find((item: { status: string }) => item.status === "not_started");
+  needStarted.value = result?.code ?? "";
+};
+
+const getImageFromCodeSession = (code: string) => {
+  switch (code.toLowerCase()) {
+    case "sesi-1":
+      return "sesi-1.jpg";
+      break;
+    case "sesi-2":
+      return "sesi-2.jpg";
+      break;
+    case "sesi-3":
+      return "sesi-3.png";
+      break;
+    case "sesi-4":
+      return "sesi-4.webp";
+      break;
+    case "sesi-5":
+      return "sesi-5.png";
+      break;
+    case "sesi-6":
+      return "sesi-6.png";
+      break;
+    case "pre":
+    case "post":
+      return "test.png";
+      break;
+
+    default:
+      return "logo.webp";
+      break;
+  }
+};
+
+const checkStatusCompleted = (code: any) => {
+  const item = practiceStep.value.find(
+    (step: { code: any }) => step.code === code
+  );
+  if (item) {
+    if (item.status === "not_started") {
+      if (item.code === needStarted.value) {
+        return false;
+      } else {
+        return true;
+      }
+    } else if (item.status === "in_progress" || item.status == "completed") {
+      return false;
+    } else {
+      return true;
+    }
+  }
+};
+
+const getLabel = (code: any) => {
+  const item = practiceStep.value.find(
+    (step: { code: any }) => step.code === code
+  );
+  switch (item?.status) {
+    case "completed":
+      return "Selesai";
+      break;
+    case "in_progress":
+      return "Proses";
+      break;
+    case "not_started":
+      return "Masuk ke " + item.code;
+      break;
+
+    default:
+      break;
+  }
+};
+
+const getIcon = (code: any) => {
+  const item = practiceStep.value.find(
+    (step: { code: any }) => step.code === code
+  );
+  switch (item?.status) {
+    case "completed":
+      return "pi pi-check";
+      break;
+    case "in_progress":
+      return "pi pi-circle";
+      break;
+    case "not_started":
+      return "pi pi-arrow-right";
+      break;
+
+    default:
+      break;
+  }
+};
+
+onMounted(() => {
+  getStepPractice();
+});
 </script>
 <style>
 .image-training-section {

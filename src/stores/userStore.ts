@@ -35,7 +35,6 @@ export const useUserStore = defineStore('user', () => {
 
     try {
       const data = await userService.getUserById(id)
-      console.log(data);
       detailUser.value = data
       return data
     } catch (err: any) {
@@ -57,7 +56,7 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  const updateUser = async (userId: any, payload: Partial<UserItem>) => {
+  const updateUser = async (userId: any, payload: any) => {
     loading.value = true
     try {
       await userService.updateUser(userId, payload)

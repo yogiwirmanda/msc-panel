@@ -1,12 +1,12 @@
 <template>
   <div class="max-w-2xl mx-auto p-6">
     <Card class="mb-6">
-      <template #title><div class="mb-5">Diskusi Sesi 1</div></template>
+      <template #title
+        ><div class="mb-5">{{ forum?.thread?.title }}</div></template
+      >
       <template #content>
         <div class="text-md mb-10">
-          Melalui forum diskusi, Anda dapat membagikan pengalaman dan dapat
-          berinteraksi dengan peserta lain serta memberikan dukungan satu sama
-          lain. Ruang diskusi ini aman dan privasi Anda akan terjaga.
+          {{ forum?.thread?.description }}
         </div>
         <div class="flex items-start gap-3">
           <Avatar icon="pi pi-user" size="large" class="bg-gray-300" />
@@ -31,7 +31,7 @@
             <div class="flex-1">
               <div class="font-bold">{{ post.user }}</div>
               <div class="text-black mb-2">
-                {{ post.text }}
+                {{ post.comment.body }}
               </div>
 
               <Button
@@ -44,7 +44,7 @@
 
               <div v-if="post.showReplyBox" class="mt-3">
                 <Textarea
-                  v-model="post.replyText"
+                  v-model="replyText"
                   rows="2"
                   placeholder="Tulis balasan..."
                   class="w-full"
@@ -53,7 +53,7 @@
                   <Button
                     label="Kirim Balasan"
                     size="small"
-                    @click="addReply(post)"
+                    @click="addReply(post.comment.id)"
                   />
                 </div>
               </div>
@@ -71,7 +71,7 @@
                   <div>
                     <div class="font-semibold">{{ reply.user }}</div>
                     <div class="text-black">
-                      {{ reply.text }}
+                      {{ reply.body }}
                     </div>
                   </div>
                 </div>
@@ -85,11 +85,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Card from "primevue/card";
 import Avatar from "primevue/avatar";
 import Textarea from "primevue/textarea";
 import Button from "primevue/button";
+import { useForumStore } from "../../../stores/forumStore";
+import Cookie from "js-cookie";
 
 interface Reply {
   id: number;
@@ -106,19 +108,38 @@ interface Post {
   replyText: string;
 }
 
+const forumStore = useForumStore();
 const newPost = ref("");
-const posts = ref<Post[]>([]);
+const replyText = ref("");
+const posts = ref<any>();
+const forum = ref<any>(null);
+const loading = ref(false);
 
-const addPost = () => {
+const loadForum = async () => {
+  loading.value = true;
+  await forumStore.getAllForum(1, 20, 0);
+  if (forumStore.forumResponse) {
+    forum.value = forumStore.forumResponse;
+    posts.value = forumStore.forumResponse.items;
+  }
+};
+
+onMounted(async () => {
+  loadForum();
+});
+
+let getUser = JSON.parse(String(Cookie.get("user")));
+
+const addPost = async () => {
   if (!newPost.value.trim()) return;
-  posts.value.unshift({
-    id: Date.now(),
-    user: "Member",
-    text: newPost.value,
-    replies: [],
-    showReplyBox: false,
-    replyText: "",
-  });
+  let payload = {
+    user_id: getUser.id,
+    body: newPost.value,
+  };
+  await forumStore.comment(1, payload);
+  if (forumStore.submitComment) {
+    console.log(forumStore.submitComment);
+  }
   newPost.value = "";
 };
 
@@ -126,15 +147,18 @@ const toggleReplyBox = (post: Post) => {
   post.showReplyBox = !post.showReplyBox;
 };
 
-const addReply = (post: Post) => {
-  if (!post.replyText.trim()) return;
-  post.replies.push({
-    id: Date.now(),
-    user: "Member",
-    text: post.replyText,
-  });
-  post.replyText = "";
-  post.showReplyBox = false;
+const addReply = async (postId: number) => {
+  let payload = {
+    user_id: getUser.id,
+    parent_id: postId,
+    body: replyText.value,
+  };
+  console.log(payload);
+  await forumStore.reply(1, payload);
+  if (forumStore.submitReply) {
+    console.log(forumStore.submitReply);
+  }
+  replyText.value = "";
 };
 </script>
 

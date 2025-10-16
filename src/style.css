@@ -29,3 +29,18 @@
   color: #edebe9;
   border-color: #774181;
 } */
+ [data-type="radio"] .formkit-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.p-button.p-component.in_progress, .p-button.p-component.completed {
+  background-color: #367b53 ;
+  border-color: #367b53;
+}
+
+.p-button.p-component.not_started {
+  background-color: #54275C ;
+  border-color: #54275C;
+}

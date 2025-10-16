@@ -3,12 +3,7 @@ import { ref } from "vue";
 import Card from "primevue/card";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
-
-interface ProfileForm {
-  name: string;
-  email: string;
-  phone_number: string;
-}
+import type { ProfileForm } from "../../../../types/profile";
 
 const form = ref<ProfileForm>({
   name: "Wiwe Artemis",

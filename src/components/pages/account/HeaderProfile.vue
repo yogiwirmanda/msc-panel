@@ -34,16 +34,10 @@
           </div>
         </div>
       </div>
-      <div class="mt-6 lg:mt-0 flex items-center gap-4">
-        <Button icon="pi pi-bookmark" rounded severity="secondary" />
-        <Button icon="pi pi-heart" rounded severity="secondary" />
-        <Button icon="pi pi-list" rounded severity="secondary" />
-      </div>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-import Button from "primevue/button";
 import { onMounted, ref } from "vue";
 import Cookie from "js-cookie";
 const detailMember = ref();

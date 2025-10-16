@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import Image from "primevue/image";
 import { useAuthStore } from "../../stores/auth";
-import Menu from "../../components/pages/Menu.vue";
 import Toast from "primevue/toast";
 import { onMounted } from "vue";
+import Menu from "../../components/pages/Menu.vue";
 
 const auth = useAuthStore();
 
 onMounted(async () => {
   await auth.initialize();
 });
-
-// await auth.initialize();
 </script>
 
 <template>

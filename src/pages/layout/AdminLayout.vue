@@ -2,7 +2,7 @@
   <div class="layout">
     <Toast />
     <aside class="sidebar">
-      <Menu />
+      <MenuPanel />
     </aside>
 
     <main class="content">
@@ -16,10 +16,9 @@
   </div>
 </template>
 
-<script setup>
-import Button from "primevue/button";
-import Menu from "../../components/pages/admin/Menu.vue";
+<script setup lang="ts">
 import Toast from "primevue/toast";
+import MenuPanel from "./MenuPanel.vue";
 </script>
 
 <style scoped>

@@ -77,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
@@ -121,7 +121,7 @@ const deleteRow = (row: { id: number; role: string }) => {
     icon: "pi pi-exclamation-triangle",
     accept: async () => {
       try {
-        await roleStore.deleteRole(row);
+        await roleStore.deleteRole(Number(row));
         await roleStore.fetchRoles(roleStore.page);
         toast.add({
           severity: "success",

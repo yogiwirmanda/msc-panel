@@ -53,7 +53,8 @@ const saveTest = () => {
 };
 
 const onPage = (event: any) => {
-  const newPage = event.page + 1;
+  // const newPage = event.page + 1;
+  console.log(event);
 };
 </script>
 

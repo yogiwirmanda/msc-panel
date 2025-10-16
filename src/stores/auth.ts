@@ -21,6 +21,7 @@ export const useAuthStore = defineStore('auth', () => {
   const clearToken = () => {
     token.value = null
     Cookies.remove('token')
+    Cookies.remove('user')
   }
 
   const initialize = async () => {
@@ -54,6 +55,7 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const response = await authService.loginMember(payload)
       data.value = response
+      initialize()
       setToken(data.value.data.tokenData.token)
       showToast('success', data.value.message)
     } catch (err: any) {

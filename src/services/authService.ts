@@ -14,6 +14,7 @@ export interface RegisterForm {
   profession: string;
   last_education: string;
   consent: string;
+  data: any
 }
 
 export interface PaginatedResponse<T> {

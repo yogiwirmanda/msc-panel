@@ -1,20 +1,18 @@
 <script lang="ts" setup>
 import Button from "primevue/button";
 import Card from "primevue/card";
-import Checkbox from "primevue/checkbox";
 import DatePicker from "primevue/datepicker";
 import InputText from "primevue/inputtext";
-import Password from "primevue/password";
 import RadioButton from "primevue/radiobutton";
 import RadioButtonGroup from "primevue/radiobuttongroup";
 import Select from "primevue/select";
 
 import { onMounted, ref } from "vue";
-import { useAuthStore } from "../../../stores/auth";
 import HeaderProfile from "../../../components/pages/account/HeaderProfile.vue";
 import MenuProfile from "../../../components/pages/account/MenuProfile.vue";
 import { useUserStore } from "../../../stores/userStore";
 import Cookie from "js-cookie";
+import type { RegisterForm } from "../../../types/auth";
 
 const listProfession = ref([
   { name: "Pegawai Negeri Sipil", code: "PNS" },
@@ -37,22 +35,6 @@ const listEducation = ref([
   { name: "S3", code: "S3" },
 ]);
 
-interface RegisterForm {
-  name: string;
-  nickname: string;
-  username: string;
-  phone_number: string;
-  email: string;
-  password?: string;
-  password_confirmation?: string;
-  address: string;
-  birthdate: any;
-  gender: string;
-  profession: string;
-  last_education: string;
-  consent: string;
-}
-
 const form = ref<RegisterForm>({
   name: "",
   nickname: "",
@@ -62,8 +44,8 @@ const form = ref<RegisterForm>({
   address: "",
   birthdate: "",
   gender: "",
-  profession: "",
-  last_education: "",
+  profession: null,
+  last_education: null,
   consent: "",
 });
 
@@ -99,8 +81,8 @@ const updateProfile = async () => {
   const payload = {
     ...form.value,
     birthdate: formatted,
-    last_education: form.value.last_education.name,
-    profession: form.value.profession.name,
+    last_education: form.value.last_education?.name,
+    profession: form.value.profession?.name,
   };
   await userStore.updateUser(detailMember.value.id, payload);
 };

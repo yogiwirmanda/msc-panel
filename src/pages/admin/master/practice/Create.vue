@@ -3,17 +3,7 @@ import { ref } from "vue";
 import Card from "primevue/card";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
-import { usePracticeStore } from "../../../../stores/practiceStore";
-
-interface PracticeForm {
-  code: string;
-  title: string;
-  short_summary: string;
-  description: string;
-  cover_image_url: string;
-  is_active: number;
-  sort_order: number;
-}
+import type { PracticeForm } from "../../../../types/practice";
 
 const form = ref<PracticeForm>({
   code: "",
@@ -24,8 +14,6 @@ const form = ref<PracticeForm>({
   is_active: 1,
   sort_order: 1,
 });
-
-const practiceStore = usePracticeStore();
 
 const savePractice = async () => {
   console.log(form.value);

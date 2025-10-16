@@ -37,12 +37,9 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import PanelMenu from "primevue/panelmenu";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
-
-const router = useRouter();
 
 const items = ref([
   {

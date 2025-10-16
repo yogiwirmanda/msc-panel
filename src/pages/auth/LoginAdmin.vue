@@ -12,7 +12,7 @@
           <div
             class="text-surface-900 text-2xl font-semibold leading-tight text-center w-full"
           >
-            Member Area
+            Admin Area
           </div>
         </div>
       </div>
@@ -75,9 +75,12 @@ import InputText from "primevue/inputtext";
 import Password from "primevue/password";
 
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import { useAuthStore } from "../../stores/auth";
 import Toast from "primevue/toast";
 import type { LoginForm } from "../../types/auth";
+
+const router = useRouter();
 
 const form = ref<LoginForm>({
   username: "",
@@ -93,7 +96,7 @@ const doLogin = async () => {
     await authStore.loginMember(form.value);
     if (authStore.data.success) {
       setTimeout(() => {
-        window.location.href = "/member/dashboard";
+        router.push("/member/dashboard");
       }, 1000);
     }
   } finally {

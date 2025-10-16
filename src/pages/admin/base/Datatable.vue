@@ -19,8 +19,8 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from "vue";
+<script setup lang="ts">
+import { ref } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 

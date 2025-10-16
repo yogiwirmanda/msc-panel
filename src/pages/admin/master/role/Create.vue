@@ -4,10 +4,7 @@ import Card from "primevue/card";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import { useRoleStore } from "../../../../stores/roleStore";
-
-interface RoleForm {
-  role: string;
-}
+import type { RoleForm } from "../../../../types/role";
 
 const roleStore = useRoleStore();
 const form = ref<RoleForm>({

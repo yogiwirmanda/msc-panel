@@ -113,7 +113,8 @@ onMounted(() => {
   fetchData();
 });
 
-const editRow = () => {
+const editRow = (item: any) => {
+  console.log(item);
   router.push("/admin/master/test/question");
 };
 
@@ -124,7 +125,7 @@ const deleteRow = (row: { id: number; role: string }) => {
     icon: "pi pi-exclamation-triangle",
     accept: async () => {
       try {
-        await userStore.deleteUser(row);
+        await userStore.deleteUser(Number(row));
         await userStore.fetchUsers(userStore.page);
         toast.add({
           severity: "success",

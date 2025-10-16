@@ -19,7 +19,7 @@ const products = ref([
       :numVisible="3"
       :numScroll="1"
       circular
-      autoplayInterval="3000"
+      :autoplayInterval="3000"
     >
       <template #item="slotProps">
         <div class="p-3 text-center border rounded-lg">

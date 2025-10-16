@@ -19,7 +19,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from "vue";
 import Button from "primevue/button";
 import { useRouter } from "vue-router";
@@ -39,9 +39,9 @@ function goToPretest() {
   router.push("/member/pre-test");
 }
 
-function dismissTemporarily() {
-  completed.value = true;
-}
+// function dismissTemporarily() {
+//   completed.value = true;
+// }
 </script>
 
 <style scoped>

@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="flex flex-col gap-6 w-full">
-        <form class="space-y-4" @submit.prevent="saveregister">
+        <form class="space-y-4" @submit.prevent="saveRegister">
           <div>
             <label for="name" class="block mb-2 font-medium"
               >Nama Lengkap</label
@@ -234,8 +234,9 @@ import RadioButtonGroup from "primevue/radiobuttongroup";
 import Select from "primevue/select";
 
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 import { useAuthStore } from "../../stores/auth";
+import type { RegisterForm } from "../../types/register";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 
@@ -260,22 +261,6 @@ const listEducation = ref([
   { name: "S3", code: "S3" },
 ]);
 
-interface RegisterForm {
-  name: string;
-  nickname: string;
-  username: string;
-  phone_number: string;
-  email: string;
-  password: string;
-  password_confirmation: string;
-  address: string;
-  birthdate: any;
-  gender: string;
-  profession: string;
-  last_education: string;
-  consent: string;
-}
-
 const form = ref<RegisterForm>({
   name: "",
   nickname: "",
@@ -287,29 +272,29 @@ const form = ref<RegisterForm>({
   address: "",
   birthdate: "",
   gender: "",
-  profession: "",
-  last_education: "",
+  profession: null,
+  last_education: null,
   consent: "",
 });
 
 const authStore = useAuthStore();
 
-const saveregister = async () => {
+const saveRegister = async () => {
   const birthdate = form.value.birthdate;
   const formatted = new Date(birthdate).toISOString().split("T")[0];
   const payload = {
     ...form.value,
     birthdate: formatted,
-    last_education: form.value.last_education.name,
-    profession: form.value.profession.name,
+    last_education: form.value.last_education?.name,
+    profession: form.value.profession?.name,
     consent: {
       msc_consent: {
         value: !!form.value.consent,
       },
     },
   };
-  console.log("Profile saved:", payload);
   await authStore.registerMember(payload);
+  router.push("/login");
 };
 </script>
 

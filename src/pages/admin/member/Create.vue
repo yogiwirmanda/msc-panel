@@ -3,7 +3,7 @@ import { ref } from "vue";
 import Card from "primevue/card";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
-import { useRoleStore } from "../../../../stores/roleStore";
+import { useRoleStore } from "../../../stores/roleStore";
 
 interface RoleForm {
   role: string;

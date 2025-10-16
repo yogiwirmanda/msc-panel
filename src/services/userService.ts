@@ -1,3 +1,4 @@
+import type { RegisterForm } from '../types/register'
 import api from './api'
 
 export interface UserItem {
@@ -19,6 +20,7 @@ export interface UserItem {
       value: any
     }
   }
+  data: any
 }
 
 export interface PaginatedResponse<T> {
@@ -50,7 +52,7 @@ export const userService = {
     return data
   },
 
-  async updateUser(userId: any, payload: Partial<UserItem>): Promise<UserItem> {
+  async updateUser(userId: any, payload: Partial<RegisterForm>): Promise<UserItem> {
     const { data } = await api.patch<UserItem>(`/user/update?id=${userId}`, payload)
     return data
   },
