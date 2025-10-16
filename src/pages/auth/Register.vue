@@ -11,7 +11,13 @@
           <div
             class="text-surface-900 text-2xl font-semibold leading-tight text-center w-full"
           >
-            Register Account
+            Registrasi Akun
+          </div>
+          <div class="text-center">
+            Sudah Punya Akun ?
+            <RouterLink to="/login" class="mt-5 text-blue-500"
+              >Login</RouterLink
+            >
           </div>
         </div>
       </div>
@@ -236,7 +242,7 @@ import Select from "primevue/select";
 import { ref } from "vue";
 import { useAuthStore } from "../../stores/auth";
 import type { RegisterForm } from "../../types/register";
-import { useRouter } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 
 const router = useRouter();
 

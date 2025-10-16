@@ -64,6 +64,12 @@
             />
           </template>
         </Button>
+        <div class="text-center">
+          Belum Punya Akun ?
+          <RouterLink to="/register" class="mt-5 text-blue-500"
+            >Daftar Akun</RouterLink
+          >
+        </div>
       </form>
     </div>
   </div>
@@ -78,6 +84,7 @@ import { ref } from "vue";
 import { useAuthStore } from "../../stores/auth";
 import Toast from "primevue/toast";
 import type { LoginForm } from "../../types/auth";
+import { RouterLink } from "vue-router";
 
 const form = ref<LoginForm>({
   username: "",

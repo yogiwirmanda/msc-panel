@@ -57,6 +57,18 @@ const loadDetailMember = async () => {
   await userStore.getUserDetail(getUser.id);
   detailMember.value = userStore?.detailUser?.data;
 
+  const professionOption = listProfession.value.find(
+    (p) =>
+      p.name === detailMember.value.profession ||
+      p.code === detailMember.value.profession
+  );
+
+  const educationOption = listEducation.value.find(
+    (e) =>
+      e.name === detailMember.value.last_education ||
+      e.code === detailMember.value.last_education
+  );
+
   if (detailMember.value) {
     form.value = {
       ...form.value,
@@ -68,8 +80,8 @@ const loadDetailMember = async () => {
       address: detailMember.value.address || "",
       birthdate: detailMember.value.birthdate || "",
       gender: detailMember.value.gender || "",
-      profession: detailMember.value.profession || "",
-      last_education: detailMember.value.last_education || "",
+      profession: professionOption || null,
+      last_education: educationOption || null,
       consent: detailMember.value.consent || "",
     };
   }
