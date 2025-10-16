@@ -6,7 +6,7 @@
     >
       <div class="flex flex-col items-center gap-4">
         <div class="flex items-center gap-4">
-          <Image src="../../../public/images/logo.webp" />
+          <Image src="/images/logo.webp" />
         </div>
         <div class="flex flex-col items-center gap-2 w-full">
           <div

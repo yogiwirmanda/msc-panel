@@ -7,7 +7,7 @@
           to="/member/dashboard"
           class="flex items-center text-black hover:text-primary transition"
         >
-          <Image src="../../../public/images/logo.webp" />
+          <Image src="/images/logo.webp" />
         </RouterLink>
       </template>
 

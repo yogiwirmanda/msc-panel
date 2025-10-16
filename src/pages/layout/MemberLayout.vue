@@ -28,7 +28,7 @@ onMounted(async () => {
     <footer
       class="bg-purple-dark text-white p-4 flex justify-center items-center"
     >
-      <Image src="../../../public/images/logo.webp" />
+      <Image src="/images/logo.webp" />
     </footer>
   </div>
 </template>
