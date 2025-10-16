@@ -45,7 +45,7 @@
 
               <div v-if="post.showReplyBox" class="mt-3">
                 <Textarea
-                  v-model="replyText"
+                  v-model="post.replyText"
                   rows="2"
                   placeholder="Tulis balasan..."
                   class="w-full"
@@ -54,7 +54,7 @@
                   <Button
                     label="Kirim Balasan"
                     size="small"
-                    @click="addReply(post.comment.id)"
+                    @click="addReply(post.comment.id, post)"
                   />
                 </div>
               </div>
@@ -95,74 +95,70 @@ import { useForumStore } from "../../../stores/forumStore";
 import Cookie from "js-cookie";
 import LoadingPage from "../../../components/LoadingPage.vue";
 
-interface Reply {
-  id: number;
-  user: string;
-  text: string;
-}
-
 interface Post {
   id: number;
   user: string;
-  text: string;
-  replies: Reply[];
-  showReplyBox: boolean;
-  replyText: string;
+  comment: { id: number; body: string };
+  replies: { id: number; user: string; body: string }[];
+  showReplyBox?: boolean;
+  replyText?: string;
 }
 
 const forumStore = useForumStore();
 const newPost = ref("");
-const replyText = ref("");
-const posts = ref<any>();
+const posts = ref<Post[]>([]);
 const forum = ref<any>(null);
 const loading = ref(false);
+
+const getUser = JSON.parse(String(Cookie.get("user")));
 
 const loadForum = async () => {
   loading.value = true;
   await forumStore.getAllForum(1, 20, 0);
   if (forumStore.forumResponse) {
     forum.value = forumStore.forumResponse;
-    posts.value = forumStore.forumResponse.items;
+    // Initialize reply-related props per post
+    posts.value = forumStore.forumResponse.items.map((p: any) => ({
+      ...p,
+      showReplyBox: false,
+      replyText: "",
+    }));
   }
-  setTimeout(() => {
-    loading.value = false;
-  }, 1000);
+  loading.value = false;
 };
 
-onMounted(async () => {
-  loadForum();
-});
-
-let getUser = JSON.parse(String(Cookie.get("user")));
+onMounted(loadForum);
 
 const addPost = async () => {
   if (!newPost.value.trim()) return;
-  let payload = {
+  const payload = {
     user_id: getUser.id,
     body: newPost.value,
   };
+  loading.value = true;
   await forumStore.comment(1, payload);
-  if (forumStore.submitComment) {
-    console.log(forumStore.submitComment);
-  }
   newPost.value = "";
+  await loadForum();
+  loading.value = false;
 };
 
 const toggleReplyBox = (post: Post) => {
   post.showReplyBox = !post.showReplyBox;
 };
 
-const addReply = async (postId: number) => {
-  let payload = {
+const addReply = async (postId: number, post: Post) => {
+  if (!post.replyText?.trim()) return;
+  const payload = {
     user_id: getUser.id,
     parent_id: postId,
-    body: replyText.value,
+    body: post.replyText,
   };
+  loading.value = true;
   await forumStore.reply(1, payload);
-  if (forumStore.submitReply) {
-    console.log(forumStore.submitReply);
-  }
-  replyText.value = "";
+  post.replyText = "";
+  post.showReplyBox = false;
+  await loadForum();
+  loading.value = false;
 };
 </script>
 
