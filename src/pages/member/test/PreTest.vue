@@ -21,6 +21,8 @@
       modal
       :style="{ width: '25rem' }"
       :draggable="false"
+      :closable="false"
+      :showHeader="false"
     >
       <div class="text-center space-y-4">
         <div class="text-lg font-medium text-gray-800">

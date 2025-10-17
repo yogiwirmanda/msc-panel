@@ -7,6 +7,7 @@ import Register from '../pages/auth/Register.vue'
 
 import MemberLayout from '../pages/layout/MemberLayout.vue'
 import MemberDashboard from '../pages/member/Dashboard.vue'
+import MemberSummary from '../pages/member/account/SummaryMember.vue'
 import MemberProfile from '../pages/member/account/Profile.vue'
 import MemberJournal from '../pages/member/account/Journal.vue'
 import MemberForum from '../pages/member/discussion/Discussion.vue'
@@ -42,6 +43,7 @@ const routes = [
     meta: { requiresAuth: true },
     children: [
       { path: 'dashboard', name: 'Dashboard', component: MemberDashboard },
+      { path: 'summary', name: 'Summary', component: MemberSummary },
       { path: 'profile', name: 'Profile', component: MemberProfile },
       { path: 'journal', name: 'Journal', component: MemberJournal },
       { path: 'forum/:code', name: 'Forum Dikusi', component: MemberForum },

@@ -4,11 +4,19 @@
       <div class="flex flex-col h-full">
         <nav class="flex flex-col gap-3 flex-1">
           <RouterLink
+            to="/member/summary"
+            class="flex items-center gap-2 p-2 rounded-md hover:bg-surface-200 transition mb-3"
+            active-class="active-link"
+          >
+            <PlayCircleIcon class="w-5 h-5" />
+            <span>Progress</span>
+          </RouterLink>
+          <RouterLink
             to="/member/profile"
             class="flex items-center gap-2 p-2 rounded-md hover:bg-surface-200 transition mb-3"
             active-class="active-link"
           >
-            <i class="pi pi-user"></i>
+            <UsersIcon class="w-5 h-5" />
             <span>Profile</span>
           </RouterLink>
 
@@ -43,7 +51,12 @@ import Button from "primevue/button";
 import Card from "primevue/card";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../../../stores/auth";
-import { ArrowLeftStartOnRectangleIcon } from "@heroicons/vue/24/outline";
+import {
+  ArrowLeftStartOnRectangleIcon,
+  PlayCircleIcon,
+  UserIcon,
+} from "@heroicons/vue/24/outline";
+import { UsersIcon } from "@heroicons/vue/24/solid";
 
 const router = useRouter();
 const authStore = useAuthStore();

@@ -43,7 +43,7 @@ export const useAuthStore = defineStore('auth', () => {
       await authService.createMember(payload)
       showToast('success', data.value.message)
     } catch (err: any) {
-      showToast('error', err.response.data.message)
+      // showToast('error', err.response.data.message)
       error.value = err.message || 'Failed to create role'
     } finally {
       loading.value = false
