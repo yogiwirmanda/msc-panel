@@ -21,13 +21,34 @@
         <h2 class="text-2xl font-bold">{{ item?.title }}</h2>
       </template>
       <template #content>
+        <div v-if="item.section_code === 'EX1' && detailPractice.id == 1">
+          <iframe src="https://drive.google.com/file/d/14kRHbw5QRZ7KcCI9C-VlUH_wwMxnRN1W/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
+        </div>
+        <div v-if="item.section_code === 'EX2' && detailPractice.id == 1">
+          <iframe src="https://drive.google.com/file/d/14kRHbw5QRZ7KcCI9C-VlUH_wwMxnRN1W/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
+        </div>
+        <div v-if="item.section_code === 'EX1' && detailPractice.id == 2">
+          <iframe src="https://drive.google.com/file/d/1PE5o3RHgy1lvFPDSheSOzAeth0oR3z5Y/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
+        </div>
+        <div v-if="item.section_code === 'EX1' && detailPractice.id == 3">
+          <iframe src="https://drive.google.com/file/d/10ys2FIAZTLmeBmmy-zjiyKbHqa3loJWv/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
+        </div>
+        <div v-if="item.section_code === 'EX1' && detailPractice.id == 4">
+          <iframe src="https://drive.google.com/file/d/1RZDqqI3I875hXPewgSEcA0OFZZ8mhBRD/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
+        </div>
+        <div v-if="item.section_code === 'EX1' && detailPractice.id == 5">
+          <iframe src="https://drive.google.com/file/d/173t9QCQnpg9Ms2MUAo2a3jAMGpMUTWMj/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
+        </div>
+        <div v-if="item.section_code === 'EX1' && detailPractice.id == 6">
+          <iframe src="https://drive.google.com/file/d/19BW8HuvDOr7OkqsIPLUCjt-xEz_DmN8i/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
+        </div>
         <div class="flex justify-center p-5">
-          <Image
+          <!-- <Image
             :src="item?.media_url"
             :alt="`image-${item.title}`"
             width="250"
             v-if="item.media_url != null"
-          />
+          /> -->
         </div>
         <div v-html="item.content_html"></div>
       </template>
