@@ -157,7 +157,7 @@ import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { usePracticeStore } from "../../../stores/practiceStore";
 import MarkdownRender from "../../../components/MarkdownRender.vue";
-import Image from "primevue/image";
+// import Image from "primevue/image";
 import Cookie from "js-cookie";
 import { useQuestStore } from "../../../stores/questStore";
 import LoadingPage from "../../../components/LoadingPage.vue";
