@@ -57,11 +57,7 @@
           :disabled="loading"
         >
           <template #icon>
-            <i v-if="!loading" class="pi pi-user text-base! leading-normal!" />
-            <i
-              v-else
-              class="pi pi-spin pi-spinner text-base! leading-normal!"
-            />
+            <UserCircleIcon class="w-5 h-5" />
           </template>
         </Button>
         <div class="text-center">
@@ -85,6 +81,7 @@ import { useAuthStore } from "../../stores/auth";
 import Toast from "primevue/toast";
 import type { LoginForm } from "../../types/auth";
 import { RouterLink } from "vue-router";
+import { UserCircleIcon } from "@heroicons/vue/24/outline";
 
 const form = ref<LoginForm>({
   username: "",

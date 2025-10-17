@@ -56,13 +56,14 @@
             <template #footer>
               <div class="flex justify-center mt-4">
                 <Button
-                  :label="getLabel(item.code)"
-                  :icon="getIcon(item.code)"
-                  :class="`px-4 py-2 rounded-lg ${item.status}`"
+                  :class="`px-4 py-2 rounded-lg flex items-center justify-center gap-2 ${item.status}`"
                   type="button"
                   @click="goToSession(item.code)"
                   :disabled="checkStatusCompleted(item.code)"
-                />
+                >
+                  <component :is="getIcon(item.code)" class="w-5 h-5" />
+                  <span>{{ getLabel(item.code) }}</span>
+                </Button>
               </div>
             </template>
           </Card>
@@ -82,6 +83,12 @@ import { onMounted, ref } from "vue";
 import MarkdownRender from "../../MarkdownRender.vue";
 import LoadingPage from "../../LoadingPage.vue";
 
+import {
+  CheckCircleIcon,
+  ArrowRightCircleIcon,
+  EllipsisHorizontalCircleIcon,
+} from "@heroicons/vue/24/solid";
+
 const router = useRouter();
 const practiceStore = usePracticeStore();
 const practiceStep = ref<any>();
@@ -96,7 +103,6 @@ const goToSession = (code: any) => {
     case "POST":
       router.push("/member/attempt-test/post-test");
       break;
-
     default:
       router.push("/member/session/" + code);
       break;
@@ -127,30 +133,21 @@ const getImageFromCodeSession = (code: string) => {
   switch (code.toLowerCase()) {
     case "sesi-1":
       return "sesi-1.jpg";
-      break;
     case "sesi-2":
       return "sesi-2.jpg";
-      break;
     case "sesi-3":
       return "sesi-3.png";
-      break;
     case "sesi-4":
       return "sesi-4.webp";
-      break;
     case "sesi-5":
       return "sesi-5.png";
-      break;
     case "sesi-6":
       return "sesi-6.png";
-      break;
     case "pre":
     case "post":
       return "test.png";
-      break;
-
     default:
       return "logo.webp";
-      break;
   }
 };
 
@@ -158,19 +155,11 @@ const checkStatusCompleted = (code: any) => {
   const item = practiceStep.value.find(
     (step: { code: any }) => step.code === code
   );
-  if (item) {
-    if (item.status === "not_started") {
-      if (item.code === needStarted.value) {
-        return false;
-      } else {
-        return true;
-      }
-    } else if (item.status === "in_progress" || item.status == "completed") {
-      return false;
-    } else {
-      return true;
-    }
+  if (!item) return true;
+  if (item.status === "not_started") {
+    return item.code !== needStarted.value;
   }
+  return false;
 };
 
 const getLabel = (code: any) => {
@@ -180,16 +169,12 @@ const getLabel = (code: any) => {
   switch (item?.status) {
     case "completed":
       return "Selesai";
-      break;
     case "in_progress":
       return "Proses";
-      break;
     case "not_started":
       return "Masuk ke " + item.code;
-      break;
-
     default:
-      break;
+      return "";
   }
 };
 
@@ -199,17 +184,13 @@ const getIcon = (code: any) => {
   );
   switch (item?.status) {
     case "completed":
-      return "pi pi-check";
-      break;
+      return CheckCircleIcon;
     case "in_progress":
-      return "pi pi-circle";
-      break;
+      return EllipsisHorizontalCircleIcon;
     case "not_started":
-      return "pi pi-arrow-right";
-      break;
-
+      return ArrowRightCircleIcon;
     default:
-      break;
+      return ArrowRightCircleIcon;
   }
 };
 
@@ -217,6 +198,7 @@ onMounted(() => {
   getStepPractice();
 });
 </script>
+
 <style>
 .image-training-section {
   height: 300px;

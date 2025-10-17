@@ -19,16 +19,20 @@
             :to="item.to"
             class="flex items-center text-black hover:text-primary transition"
           >
-            <i :class="item.icon + ' mr-2'" />
+            <component
+              :is="item.icon"
+              class="w-5 h-5 mr-2 text-black hover:text-primary"
+            />
             <span>{{ item.label }}</span>
           </RouterLink>
         </div>
 
         <button class="md:hidden text-black text-2xl ml-4" @click="toggleMenu">
-          <i class="pi pi-bars"></i>
+          <Bars3Icon class="w-6 h-6" />
         </button>
       </template>
     </Menubar>
+
     <transition name="fade">
       <div
         v-if="menuOpen"
@@ -41,7 +45,10 @@
           class="flex items-center text-black hover:text-primary transition"
           @click="menuOpen = false"
         >
-          <i :class="item.icon + ' mr-2'" />
+          <component
+            :is="item.icon"
+            class="w-5 h-5 mr-2 text-black hover:text-primary"
+          />
           <span>{{ item.label }}</span>
         </RouterLink>
       </div>
@@ -54,14 +61,14 @@ import Image from "primevue/image";
 import Menubar from "primevue/menubar";
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
+import { HomeIcon, UserIcon, Bars3Icon } from "@heroicons/vue/24/outline";
 
 const items = ref([
-  { label: "Home", icon: "pi pi-home", to: "/member/dashboard" },
-  { label: "Profile", icon: "pi pi-user", to: "/member/profile" },
+  { label: "Home", icon: HomeIcon, to: "/member/dashboard" },
+  { label: "Profile", icon: UserIcon, to: "/member/profile" },
 ]);
 
 const menuOpen = ref(false);
-
 const toggleMenu = () => {
   menuOpen.value = !menuOpen.value;
 };

@@ -219,7 +219,7 @@
             type="submit"
           >
             <template #icon>
-              <i class="pi pi-user text-base! leading-normal!" />
+              <UserCircleIcon class="w-5 h-5" />
             </template>
           </Button>
         </form>
@@ -243,6 +243,7 @@ import { ref } from "vue";
 import { useAuthStore } from "../../stores/auth";
 import type { RegisterForm } from "../../types/register";
 import { RouterLink, useRouter } from "vue-router";
+import { UserCircleIcon } from "@heroicons/vue/24/outline";
 
 const router = useRouter();
 

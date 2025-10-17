@@ -1,5 +1,8 @@
 <template>
   <LoadingPage :visible="loading" message="Memproses Data...." />
+  <!-- <div class="flex justify-center">
+  <iframe src="https://drive.google.com/file/d/14kRHbw5QRZ7KcCI9C-VlUH_wwMxnRN1W/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
+  </div> -->
   <div class="bg-surface-0 min-h-screen py-12 px-6 md:px-16 lg:px-32">
     <div class="text-center mb-12">
       <h1 class="text-3xl md:text-4xl font-bold text-purple mb-2">
@@ -59,12 +62,14 @@
 
           <div class="flex justify-end mt-4">
             <Button
-              label="Simpan Jurnal"
-              icon="pi pi-save"
               severity="success"
               type="submit"
               v-if="allowSaveJournal"
-            />
+              class="flex items-center justify-center gap-2"
+            >
+              <ArrowDownTrayIcon class="w-5 h-5" />
+              <span>Simpan Jurnal</span>
+            </Button>
           </div>
         </form>
       </template>
@@ -74,17 +79,19 @@
       <template #content>
         <div class="flex justify-between">
           <Button
-            label="Buka Forum Diskusi"
-            icon="pi pi-book"
-            class="p-button-info"
+            class="p-button-info flex items-center justify-center gap-2"
             @click="goToForum"
-          />
+          >
+            <BookmarkSquareIcon class="w-5 h-5" />
+            <span>Buka Forum Diskusi</span>
+          </Button>
           <Button
-            :label="currentNumber == 6 ? 'Sesi Post Test' : 'Sesi Selanjutnya'"
-            icon="pi pi-chevron-right"
-            class="p-button-primary"
+            class="p-button-primary flex items-center justify-center gap-2"
             @click="nextPractice"
-          />
+          >
+            <span>{{ currentNumber == 6 ? 'Sesi Post Test' : 'Sesi Selanjutnya' }}</span>
+            <ChevronRightIcon class="w-5 h-5" />
+          </Button>
         </div>
       </template>
     </Card>
@@ -97,7 +104,7 @@
       :closable="false"
       :showHeader="false"
     >
-      <div class="text-center space-y-4">
+      <div class="text-center space-y-4 pt-5">
         <div class="text-lg font-medium text-gray-800">
           {{ quotes }}
         </div>
@@ -109,11 +116,12 @@
 
         <div class="flex justify-center gap-3 mt-5">
           <Button
-            label="Akhiri Sesi"
-            icon="pi pi-check"
-            class="p-button-danger"
+            class="p-button-primary flex items-center justify-center gap-2"
             @click="endPractice"
-          />
+          >
+            <CheckCircleIcon class="w-5 h-5" />
+            <span>Akhiri Sesi</span>
+          </Button>
         </div>
       </div>
     </Dialog>
@@ -133,6 +141,12 @@ import Cookie from "js-cookie";
 import { useQuestStore } from "../../../stores/questStore";
 import LoadingPage from "../../../components/LoadingPage.vue";
 import Dialog from "primevue/dialog";
+import {
+  BookmarkSquareIcon,
+  ChevronRightIcon,
+  CheckCircleIcon,
+  ArrowDownTrayIcon,
+} from "@heroicons/vue/24/solid";
 
 const router = useRouter();
 const practiceStore = usePracticeStore();

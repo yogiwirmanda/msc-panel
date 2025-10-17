@@ -29,7 +29,10 @@
             class="w-full"
             severity="danger"
             @click="logout"
-          />
+          >
+            <ArrowLeftStartOnRectangleIcon class="w-5 h-5" />
+            <span class="text-white font-semibold">Logout</span>
+          </Button>
         </div>
       </div>
     </template>
@@ -40,6 +43,7 @@ import Button from "primevue/button";
 import Card from "primevue/card";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../../../stores/auth";
+import { ArrowLeftStartOnRectangleIcon } from "@heroicons/vue/24/outline";
 
 const router = useRouter();
 const authStore = useAuthStore();

@@ -19,7 +19,10 @@
           />
         </div>
         <div class="flex justify-end mt-3">
-          <Button label="Post" icon="pi pi-send" @click="addPost" />
+          <Button label="Post" text size="small" @click="addPost">
+            <span class="text-white font-semibold">Kirim</span>
+            <PaperAirplaneIcon class="w-5 h-5" />
+          </Button>
         </div>
       </template>
     </Card>
@@ -41,7 +44,10 @@
                 text
                 size="small"
                 @click="toggleReplyBox(post)"
-              />
+              >
+                <span class="text-white font-semibold">Balas</span>
+                <ArrowTurnUpRightIcon class="w-5 h-5" />
+              </Button>
 
               <div v-if="post.showReplyBox" class="mt-3">
                 <Textarea
@@ -95,6 +101,10 @@ import { useForumStore } from "../../../stores/forumStore";
 import Cookie from "js-cookie";
 import LoadingPage from "../../../components/LoadingPage.vue";
 import { useRouter } from "vue-router";
+import {
+  ArrowTurnUpRightIcon,
+  PaperAirplaneIcon,
+} from "@heroicons/vue/24/outline";
 
 interface Post {
   id: number;

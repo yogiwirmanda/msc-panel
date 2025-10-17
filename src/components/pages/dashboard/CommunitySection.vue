@@ -4,9 +4,9 @@
   >
     <div class="max-w-4xl mx-auto text-center flex flex-col items-center gap-6">
       <div
-        class="flex items-center justify-center w-20 h-20 rounded-full bg-white/10 backdrop-blur-md shadow-lg"
+        class="flex items-center justify-center w-20 h-20 p-5 rounded-full bg-white/10 backdrop-blur-md shadow-lg"
       >
-        <i class="pi pi-comments text-4xl text-white"></i>
+        <ChatBubbleLeftRightIcon />
       </div>
 
       <h2
@@ -39,6 +39,7 @@
 </template>
 
 <script lang="ts" setup>
+import { ChatBubbleLeftRightIcon } from "@heroicons/vue/24/outline";
 import Button from "primevue/button";
 </script>
 
