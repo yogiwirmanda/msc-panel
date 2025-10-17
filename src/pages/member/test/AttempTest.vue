@@ -69,15 +69,22 @@ const loadQuestTemplate = async () => {
 };
 
 const attemptQuest = async () => {
+  let getType = String(router.currentRoute.value.params.type);
   let payload = {
     user_id: getUser.id,
     questionnaire_id: questTemplate.value.id,
     status: "in_progress",
   };
   await questStore.doAttemptQuest(payload);
-  router.push(
-    `/member/pre-test/${questStore.attemptResponse.data.questAttemptCreate.id}`
-  );
+  if (getType == "pre-test") {
+    router.push(
+      `/member/pre-test/${questStore.attemptResponse.data.questAttemptCreate.id}`
+    );
+  } else {
+    router.push(
+      `/member/post-test/${questStore.attemptResponse.data.questAttemptCreate.id}`
+    );
+  }
 };
 
 onMounted(() => {

@@ -16,6 +16,32 @@
         </FormKit>
       </template>
     </Card>
+    <Dialog
+      v-model:visible="visible"
+      modal
+      :style="{ width: '25rem' }"
+      :draggable="false"
+    >
+      <div class="text-center space-y-4">
+        <div class="text-lg font-medium text-gray-800">
+          {{ quotes }}
+        </div>
+
+        <div class="mt-5">
+          Terimakasih sudah mengisi pre test, dengan mengakhiri sesi pre test
+          kamu bisa memulai program latihan
+        </div>
+
+        <div class="flex justify-center gap-3 mt-5">
+          <Button
+            label="Akhiri Pre Test"
+            icon="pi pi-check"
+            class="p-button-primary"
+            @click="endPreTest"
+          />
+        </div>
+      </div>
+    </Dialog>
   </div>
 </template>
 
@@ -29,6 +55,8 @@ import { useRouter } from "vue-router";
 import Cookie from "js-cookie";
 import LoadingPage from "../../../components/LoadingPage.vue";
 import { usePracticeStore } from "../../../stores/practiceStore";
+import Button from "primevue/button";
+import Dialog from "primevue/dialog";
 
 const questStore = useQuestStore();
 const getQuestion = ref<any[]>([]);
@@ -37,6 +65,8 @@ const detailQuest = ref<any>();
 const router = useRouter();
 const loading = ref(false);
 const practiceStore = usePracticeStore();
+const visible = ref(false);
+const quotes = ref("");
 
 const loadQuestion = async (): Promise<void> => {
   loading.value = true;
@@ -154,6 +184,8 @@ const handleSubmit = async (
   };
 
   await questStore.doSubmitQuest(payload);
+  visible.value = true;
+  quotes.value = questStore.submitResponse.quotes;
 
   let payloadStep = {
     user_id: getUser.id,
@@ -161,5 +193,10 @@ const handleSubmit = async (
     progress_status: "completed",
   };
   await practiceStore.stepPracticeUpdate("quest", payloadStep);
+};
+
+const endPreTest = async () => {
+  visible.value = false;
+  router.push("/member/dashboard");
 };
 </script>

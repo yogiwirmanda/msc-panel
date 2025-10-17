@@ -1,12 +1,47 @@
 <template>
+  <LoadingPage :visible="loading" message="Memproses Data Soal.." />
   <div class="p-5 max-w-[1366px] mx-auto">
     <Card>
       <template #content>
         <FormKit type="form" @submit="handleSubmit">
           <FormKitSchema :schema="schemaForm" />
+          <template #actions>
+            <button
+              type="submit"
+              class="mt-6 bg-purple text-white font-semibold py-3 px-6 rounded-xl shadow-md transition-all duration-200 w-full md:w-auto"
+            >
+              Kirim Jawaban
+            </button>
+          </template>
         </FormKit>
       </template>
     </Card>
+    <Dialog
+      v-model:visible="visible"
+      modal
+      :style="{ width: '25rem' }"
+      :draggable="false"
+    >
+      <div class="text-center space-y-4">
+        <div class="text-lg font-medium text-gray-800">
+          {{ quotes }}
+        </div>
+
+        <div class="mt-5">
+          Dengan mengakhiri sesi ini, kamu bisa masuk ke forum diskusi untuk
+          berbagi pengalaman dengan yang lainya
+        </div>
+
+        <div class="flex justify-center gap-3 mt-5">
+          <Button
+            label="Akhiri Sesi"
+            icon="pi pi-check"
+            class="p-button-danger"
+            @click="endPosTest"
+          />
+        </div>
+      </div>
+    </Dialog>
   </div>
 </template>
 
@@ -18,15 +53,26 @@ import { onMounted, ref } from "vue";
 import { useQuestStore } from "../../../stores/questStore";
 import { useRouter } from "vue-router";
 import Cookie from "js-cookie";
+import LoadingPage from "../../../components/LoadingPage.vue";
+import { usePracticeStore } from "../../../stores/practiceStore";
+import Dialog from "primevue/dialog";
+import Button from "primevue/button";
 
 const questStore = useQuestStore();
 const getQuestion = ref<any[]>([]);
 const schemaForm = ref<FormKitSchemaNode[]>([]);
+const detailQuest = ref<any>();
 const router = useRouter();
+const loading = ref(false);
+const practiceStore = usePracticeStore();
+const visible = ref(false);
+const quotes = ref("");
 
 const loadQuestion = async (): Promise<void> => {
-  await questStore.detailQuestion("pre_test", "id", 1);
+  loading.value = true;
+  await questStore.detailQuestion("post_test", "id", 2);
   const data = questStore.question?.data?.questions?.questions;
+  detailQuest.value = questStore.question?.data?.questions;
 
   if (Array.isArray(data)) {
     getQuestion.value = data;
@@ -70,7 +116,7 @@ const mapQuestion = (): void => {
                 children: `${index + 1}.`,
                 attrs: {
                   class:
-                    "text-lg font-semibold text-blue-600 min-w-[24px] text-center",
+                    "text-lg font-semibold text-black min-w-[24px] text-center",
                 },
               },
               {
@@ -97,7 +143,7 @@ const mapQuestion = (): void => {
               "flex flex-row flex-wrap items-center gap-x-6 gap-y-2",
             optionClass: "flex flex-row items-center space-x-2",
             inputClass:
-              "text-blue-600 border-gray-300 focus:ring-blue-500 focus:ring-2 !w-[20px] !h-[20px]",
+              "text-black border-gray-300 focus:ring-blue-500 focus:ring-2 !w-[20px] !h-[20px]",
             optionLabelClass:
               "text-gray-700 text-sm cursor-pointer select-none",
           },
@@ -105,6 +151,7 @@ const mapQuestion = (): void => {
       };
     }),
   ];
+  loading.value = false;
 };
 
 const handleSubmit = async (
@@ -137,5 +184,19 @@ const handleSubmit = async (
   };
 
   await questStore.doSubmitQuest(payload);
+  quotes.value = questStore.submitResponse.quotes;
+  visible.value = true;
+
+  let payloadStep = {
+    user_id: getUser.id,
+    template_id: detailQuest.value.id,
+    progress_status: "completed",
+  };
+  await practiceStore.stepPracticeUpdate("quest", payloadStep);
+};
+
+const endPosTest = async () => {
+  visible.value = false;
+  router.push("/member/dashboard");
 };
 </script>

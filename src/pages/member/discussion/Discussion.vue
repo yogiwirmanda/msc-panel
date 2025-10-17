@@ -94,6 +94,7 @@ import Button from "primevue/button";
 import { useForumStore } from "../../../stores/forumStore";
 import Cookie from "js-cookie";
 import LoadingPage from "../../../components/LoadingPage.vue";
+import { useRouter } from "vue-router";
 
 interface Post {
   id: number;
@@ -109,15 +110,23 @@ const newPost = ref("");
 const posts = ref<Post[]>([]);
 const forum = ref<any>(null);
 const loading = ref(false);
+const router = useRouter();
 
 const getUser = JSON.parse(String(Cookie.get("user")));
+const currentNumber = ref(0);
+const params = router.currentRoute.value.params.code;
+
+if (typeof params === "string" && params.startsWith("SESI-")) {
+  currentNumber.value = parseInt(params.replace("SESI-", ""));
+} else {
+  currentNumber.value = 0;
+}
 
 const loadForum = async () => {
   loading.value = true;
-  await forumStore.getAllForum(1, 20, 0);
+  await forumStore.getAllForum(currentNumber.value, 20, 0);
   if (forumStore.forumResponse) {
     forum.value = forumStore.forumResponse;
-    // Initialize reply-related props per post
     posts.value = forumStore.forumResponse.items.map((p: any) => ({
       ...p,
       showReplyBox: false,
@@ -130,13 +139,14 @@ const loadForum = async () => {
 onMounted(loadForum);
 
 const addPost = async () => {
+  loading.value = true;
   if (!newPost.value.trim()) return;
   const payload = {
     user_id: getUser.id,
     body: newPost.value,
   };
   loading.value = true;
-  await forumStore.comment(1, payload);
+  await forumStore.comment(currentNumber.value, payload);
   newPost.value = "";
   await loadForum();
   loading.value = false;
@@ -154,7 +164,7 @@ const addReply = async (postId: number, post: Post) => {
     body: post.replyText,
   };
   loading.value = true;
-  await forumStore.reply(1, payload);
+  await forumStore.reply(currentNumber.value, payload);
   post.replyText = "";
   post.showReplyBox = false;
   await loadForum();

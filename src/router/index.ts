@@ -44,10 +44,10 @@ const routes = [
       { path: 'dashboard', name: 'Dashboard', component: MemberDashboard },
       { path: 'profile', name: 'Profile', component: MemberProfile },
       { path: 'journal', name: 'Journal', component: MemberJournal },
-      { path: 'discussion', name: 'Forum Dikusi', component: MemberForum },
+      { path: 'forum/:code', name: 'Forum Dikusi', component: MemberForum },
       { path: 'session/:code', name: 'Sesi', component: MemberSession },
       { path: 'pre-test/:attempt', name: 'Pre Test', component: MemberPreTest },
-      { path: 'post-test', name: 'Post Test', component: MemberPostTest },
+      { path: 'post-test/:attempt', name: 'Post Test', component: MemberPostTest },
       { path: 'attempt-test/:type', name: 'Attempt Test', component: MemberAttemptTest },
     ]
   },

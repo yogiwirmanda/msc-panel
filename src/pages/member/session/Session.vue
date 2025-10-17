@@ -3,7 +3,7 @@
   <div class="bg-surface-0 min-h-screen py-12 px-6 md:px-16 lg:px-32">
     <div class="text-center mb-12">
       <h1 class="text-3xl md:text-4xl font-bold text-purple mb-2">
-        Materi Pembelajaran
+        Materi Pembelajaran <br> {{ detailPractice?.code }}</br>
       </h1>
       <p class="text-lg text-surface-600">
         <MarkdownRender :content="String(detailPractice?.short_summary)" />
@@ -51,6 +51,8 @@
                 v-model="journal.answers[question.id]"
                 rows="2"
                 class="w-full mt-2"
+                :readonly="!allowSaveJournal"
+                :required="true"
               />
             </div>
           </div>
@@ -61,11 +63,60 @@
               icon="pi pi-save"
               severity="success"
               type="submit"
+              v-if="allowSaveJournal"
             />
           </div>
         </form>
       </template>
     </Card>
+
+    <Card v-if="!allowSaveJournal" class="mt-5">
+      <template #content>
+        <div class="flex justify-between">
+          <Button
+            label="Buka Forum Diskusi"
+            icon="pi pi-book"
+            class="p-button-info"
+            @click="goToForum"
+          />
+          <Button
+            :label="currentNumber == 6 ? 'Sesi Post Test' : 'Sesi Selanjutnya'"
+            icon="pi pi-chevron-right"
+            class="p-button-primary"
+            @click="nextPractice"
+          />
+        </div>
+      </template>
+    </Card>
+
+    <Dialog
+      v-model:visible="visible"
+      modal
+      :style="{ width: '25rem' }"
+      :draggable="false"
+      :closable="false"
+      :showHeader="false"
+    >
+      <div class="text-center space-y-4">
+        <div class="text-lg font-medium text-gray-800">
+          {{ quotes }}
+        </div>
+
+        <div class="mt-5">
+          Dengan mengakhiri sesi ini, kamu bisa masuk ke forum diskusi untuk
+          berbagi pengalaman dengan yang lainya
+        </div>
+
+        <div class="flex justify-center gap-3 mt-5">
+          <Button
+            label="Akhiri Sesi"
+            icon="pi pi-check"
+            class="p-button-danger"
+            @click="endPractice"
+          />
+        </div>
+      </div>
+    </Dialog>
   </div>
 </template>
 
@@ -81,6 +132,7 @@ import Image from "primevue/image";
 import Cookie from "js-cookie";
 import { useQuestStore } from "../../../stores/questStore";
 import LoadingPage from "../../../components/LoadingPage.vue";
+import Dialog from "primevue/dialog";
 
 const router = useRouter();
 const practiceStore = usePracticeStore();
@@ -91,7 +143,19 @@ const detailJournal = ref<any>();
 const detailQuestion = ref<any>();
 const tmpSection = ref<any>();
 const loading = ref(false);
+const visible = ref(false);
+const allowSaveJournal = ref(true);
+const quotes = ref("");
+const currentNumber = ref(0);
+
 let getUser = JSON.parse(String(Cookie.get("user")));
+const params = router.currentRoute.value.params.code;
+
+if (typeof params === "string" && params.startsWith("SESI-")) {
+  currentNumber.value = parseInt(params.replace("SESI-", ""));
+} else {
+  currentNumber.value = 0;
+}
 
 const loadPractice = async (code: any) => {
   loading.value = true;
@@ -108,10 +172,30 @@ const loadPractice = async (code: any) => {
   }
 };
 
+const journal = ref<{
+  answers: Record<number, string>;
+}>({
+  answers: {},
+});
+
 const loadJournal = async (code: any) => {
   await practiceStore.detailPracticeJournal(code, getUser.id);
   detailJournal.value = practiceStore.detailJournal?.data;
   detailQuestion.value = practiceStore.detailJournal?.data.questions;
+
+  let countAnswer = 0;
+
+  journal.value.answers = {};
+  detailQuestion.value.forEach((item: any) => {
+    if (item.answer.answer_text != undefined) {
+      countAnswer = countAnswer + 1;
+    }
+    journal.value.answers[item.id] = item.answer?.answer_text || "";
+  });
+
+  if (countAnswer == detailQuestion.value.length) {
+    allowSaveJournal.value = false;
+  }
 };
 
 onMounted(() => {
@@ -119,41 +203,64 @@ onMounted(() => {
   loadJournal(router.currentRoute.value.params.code);
 });
 
-const journal = ref({
-  answers: [],
-});
-
 const saveJournal = async () => {
-  let payload: any = {};
-  let answer: any = [];
-  journal.value.answers.map((value, index) => {
-    let tmpAnswer: any = {};
-    tmpAnswer.questionId = index;
-    tmpAnswer.type = "text";
-    tmpAnswer.text = value;
-    answer.push(tmpAnswer);
-  });
-  payload.userId = getUser.id;
-  payload.attemptId = detailJournal.value.attempt.id;
-  payload.submit = true;
-  payload.answers = answer;
+  const answer: any[] = Object.entries(journal.value.answers).map(
+    ([id, text]) => ({
+      questionId: Number(id),
+      type: "text",
+      text,
+    })
+  );
+
+  const payload = {
+    userId: getUser.id,
+    attemptId: detailJournal.value.attempt.id,
+    submit: true,
+    answers: answer,
+  };
+
   await questStore.doSubmitQuest(payload);
 
-  let payloadStep = {
+  if (questStore.submitResponse.success) {
+    quotes.value = questStore.submitResponse.quotes;
+    visible.value = true;
+  }
+};
+
+const endPractice = async () => {
+  const params = router.currentRoute.value.params.code;
+  if (!params || typeof params !== "string") {
+    console.warn("Invalid session code:", params);
+    return;
+  }
+
+  const payloadStep = {
     user_id: getUser.id,
     template_id: detailPractice.value.id,
     progress_status: "completed",
   };
+
   await practiceStore.stepPracticeUpdate("practice", payloadStep);
 
-  router.push("/member/dashboard");
+  visible.value = false;
+
+  loadPractice(params);
+  loadJournal(params);
+};
+
+const nextPractice = async () => {
+  visible.value = false;
+  const nextNumber = currentNumber.value + 1;
+  const nextCode = `SESI-${nextNumber}`;
+
+  if (currentNumber.value == 6) {
+    router.push(`/member/attempt-test/post-test`);
+  } else {
+    router.push(`/member/session/${nextCode}`);
+  }
+};
+
+const goToForum = async () => {
+  router.push("/member/forum/" + params);
 };
 </script>
-
-<style scoped>
-.p-button.p-component {
-  background-color: #774181 !important;
-  color: #edebe9;
-  border-color: #774181;
-}
-</style>
