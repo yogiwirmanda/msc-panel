@@ -54,7 +54,6 @@ import { useAuthStore } from "../../../stores/auth";
 import {
   ArrowLeftStartOnRectangleIcon,
   PlayCircleIcon,
-  UserIcon,
 } from "@heroicons/vue/24/outline";
 import { UsersIcon } from "@heroicons/vue/24/solid";
 
