@@ -75,7 +75,31 @@ const journals = ref<Journal[]>([
             </DataTable>
           </template>
         </Card>
+
+        <div class="grid grid-cols-2 gap-5">
+          <Card class="card-journal" v-for="item in 2">
+            <template #content>
+              <div class="flex justify-between">
+                <div class="text-lg font-bold">title</div>
+                <div>20 Januari 2025</div>
+              </div>
+              <div class="mt-3">
+                Hari ini aku merasa cukup tenang. Meskipun ada beberapa hal yang
+                tidak berjalan sesuai rencana, aku mencoba untuk tetap bersyukur
+                atas hal-hal kecil yang berjalan baik. Aku belajar bahwa tidak
+                semua hal harus sempurna agar bisa membuatku bahagia.
+              </div>
+            </template>
+          </Card>
+        </div>
       </div>
     </div>
   </div>
 </template>
+<style>
+.card-journal {
+  margin-top: 20px;
+  background-color: #dbdbdb47 !important;
+  box-shadow: 8px 9px 6px 0px rgba(0, 0, 0, 0.1) !important;
+}
+</style>

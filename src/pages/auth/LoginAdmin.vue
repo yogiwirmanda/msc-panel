@@ -1,6 +1,8 @@
 <template>
   <Toast />
-  <div class="bg-surface-50 px-6 py-20 md:px-20 lg:px-80">
+  <div
+    class="bg-surface-50 px-6 py-20 md:px-20 lg:px-80 h-screen flex justify-center items-center"
+  >
     <div
       class="bg-surface-0 p-8 md:p-12 shadow-sm rounded-2xl w-full max-w-sm mx-auto flex flex-col gap-8"
     >
@@ -93,10 +95,10 @@ const loading = ref(false);
 const doLogin = async () => {
   loading.value = true;
   try {
-    await authStore.loginMember(form.value);
+    await authStore.loginAdmin(form.value);
     if (authStore.data.success) {
       setTimeout(() => {
-        router.push("/member/dashboard");
+        router.push("/admin/master/role");
       }, 1000);
     }
   } finally {

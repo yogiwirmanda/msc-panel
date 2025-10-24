@@ -21,25 +21,25 @@
         <h2 class="text-2xl font-bold">{{ item?.title }}</h2>
       </template>
       <template #content>
-        <div v-if="item.section_code === 'EX1' && detailPractice.id == 1">
+        <div v-if="item.section_code === 'EX1' && detailPractice.id == 1" class="flex justify-center py-5">
           <iframe src="https://drive.google.com/file/d/14kRHbw5QRZ7KcCI9C-VlUH_wwMxnRN1W/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
         </div>
         <div v-if="item.section_code === 'EX2' && detailPractice.id == 1">
           <iframe src="https://drive.google.com/file/d/14kRHbw5QRZ7KcCI9C-VlUH_wwMxnRN1W/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
         </div>
-        <div v-if="item.section_code === 'EX1' && detailPractice.id == 2">
+        <div v-if="item.section_code === 'EX1' && detailPractice.id == 2" class="flex justify-center py-5">
           <iframe src="https://drive.google.com/file/d/1PE5o3RHgy1lvFPDSheSOzAeth0oR3z5Y/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
         </div>
-        <div v-if="item.section_code === 'EX1' && detailPractice.id == 3">
+        <div v-if="item.section_code === 'EX1' && detailPractice.id == 3" class="flex justify-center py-5">
           <iframe src="https://drive.google.com/file/d/10ys2FIAZTLmeBmmy-zjiyKbHqa3loJWv/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
         </div>
-        <div v-if="item.section_code === 'EX1' && detailPractice.id == 4">
+        <div v-if="item.section_code === 'EX1' && detailPractice.id == 4" class="flex justify-center py-5">
           <iframe src="https://drive.google.com/file/d/1RZDqqI3I875hXPewgSEcA0OFZZ8mhBRD/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
         </div>
-        <div v-if="item.section_code === 'EX1' && detailPractice.id == 5">
+        <div v-if="item.section_code === 'EX1' && detailPractice.id == 5" class="flex justify-center py-5">
           <iframe src="https://drive.google.com/file/d/173t9QCQnpg9Ms2MUAo2a3jAMGpMUTWMj/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
         </div>
-        <div v-if="item.section_code === 'EX1' && detailPractice.id == 6">
+        <div v-if="item.section_code === 'EX1' && detailPractice.id == 6" class="flex justify-center py-5">
           <iframe src="https://drive.google.com/file/d/19BW8HuvDOr7OkqsIPLUCjt-xEz_DmN8i/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
         </div>
         <div class="flex justify-center p-5">
@@ -75,7 +75,7 @@
                 v-model="journal.answers[question.id]"
                 rows="2"
                 class="w-full mt-2"
-                :readonly="!allowSaveJournal"
+                :readonly="!hasAnswer"
                 :required="true"
               />
             </div>
@@ -85,7 +85,7 @@
             <Button
               severity="success"
               type="submit"
-              v-if="allowSaveJournal"
+              v-if="hasAnswer"
               class="flex items-center justify-center gap-2"
             >
               <ArrowDownTrayIcon class="w-5 h-5" />
@@ -96,7 +96,7 @@
       </template>
     </Card>
 
-    <Card v-if="!allowSaveJournal" class="mt-5">
+    <Card v-if="hasAnswer" class="mt-5">
       <template #content>
         <div class="flex justify-between">
           <Button
@@ -120,21 +120,24 @@
     <Dialog
       v-model:visible="visible"
       modal
-      :style="{ width: '25rem' }"
+      :style="{ width: '60vw', maxWidth: '900px' }"
       :draggable="false"
       :closable="false"
       :showHeader="false"
     >
       <div class="text-center space-y-4 pt-5">
-        <div class="text-lg font-medium text-gray-800">
-          {{ quotes }}
+        <div class="flex flex-col bg-white items-center justify-center text-center p-8 bg-gray-50 rounded-2xl shadow-sm">
+          <p class="text-3xl italic text-gray-700 max-w-2xl">
+            “{{quotes}}”
+          </p>
+          <span class="mt-4 text-gray-500 font-medium">— Helmi Cakalang</span>
         </div>
-
-        <div class="mt-5">
-          Dengan mengakhiri sesi ini, kamu bisa masuk ke forum diskusi untuk
-          berbagi pengalaman dengan yang lainya
+        <div class="flex justify-center items-center">
+          <div class="mt-5 text-center text-lg w-2/3 mb-5">
+            Dengan mengakhiri sesi ini, kamu bisa masuk ke forum diskusi untuk
+            berbagi pengalaman dengan yang lainya
+          </div>
         </div>
-
         <div class="flex justify-center gap-3 mt-5">
           <Button
             class="p-button-primary flex items-center justify-center gap-2"
@@ -179,8 +182,8 @@ const detailQuestion = ref<any>();
 const tmpSection = ref<any>();
 const loading = ref(false);
 const visible = ref(false);
-const allowSaveJournal = ref(true);
-const quotes = ref("");
+const hasAnswer = ref(false);
+const quotes = ref("Jangan tunggu semangat datang, mulailah dulu. Tindakan sering kali memunculkan motivasi");
 const currentNumber = ref(0);
 
 let getUser = JSON.parse(String(Cookie.get("user")));
@@ -220,17 +223,18 @@ const loadJournal = async (code: any) => {
 
   let countAnswer = 0;
 
-  journal.value.answers = {};
   detailQuestion.value.forEach((item: any) => {
     if (item.answer.answer_text != undefined) {
       countAnswer = countAnswer + 1;
     }
-    journal.value.answers[item.id] = item.answer?.answer_text || "";
   });
 
-  if (countAnswer == detailQuestion.value.length) {
-    allowSaveJournal.value = false;
+  console.log(countAnswer)
+
+  if (countAnswer > 0) {
+    hasAnswer.value = true;
   }
+
 };
 
 onMounted(() => {
@@ -239,27 +243,40 @@ onMounted(() => {
 });
 
 const saveJournal = async () => {
-  const answer: any[] = Object.entries(journal.value.answers).map(
-    ([id, text]) => ({
-      questionId: Number(id),
-      type: "text",
-      text,
-    })
-  );
+  loading.value = true;
 
-  const payload = {
-    userId: getUser.id,
-    attemptId: detailJournal.value.attempt.id,
-    submit: true,
-    answers: answer,
-  };
+  // const payloadAttempt = {
+  //   userId: getUser.id,
+  //   questionnaire_id: 3,
+  //   status: 'in_progress'
+  // }
+  // await questStore.doAttemptQuest(payloadAttempt);
 
-  await questStore.doSubmitQuest(payload);
+  // if (questStore.submitResponse){
+    const answer: any[] = Object.entries(journal.value.answers).map(
+      ([id, text]) => ({
+        questionId: Number(id),
+        type: "text",
+        text,
+      })
+    );
 
-  if (questStore.submitResponse.success) {
-    quotes.value = questStore.submitResponse.quotes;
-    visible.value = true;
-  }
+    const payload = {
+      userId: getUser.id,
+      attemptId: detailJournal.value.attempt.id,
+      submit: true,
+      answers: answer,
+    };
+
+    await questStore.doSubmitQuest(payload);
+
+    if (questStore.submitResponse.success) {
+      quotes.value = questStore.submitResponse.motivation.message;
+      visible.value = true;
+      loading.value = false;
+    }
+  // }
+
 };
 
 const endPractice = async () => {

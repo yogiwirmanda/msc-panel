@@ -17,6 +17,7 @@ import MemberPostTest from '../pages/member/test/PostTest.vue'
 import MemberAttemptTest from '../pages/member/test/AttempTest.vue'
 
 import AdminLayout from '../pages/layout/AdminLayout.vue'
+import DashboardMain from '../pages/admin/dashboard/Main.vue'
 
 import CreateRole from "../pages/admin/master/role/Create.vue"
 import ListRole from "../pages/admin/master/role/List.vue"
@@ -59,6 +60,7 @@ const routes = [
     component: AdminLayout,
     // meta: { requiresAuth: true },
     children: [
+      { path: 'dashboard', name: 'Dashboard General Admin', component: DashboardMain },
       { path: 'master/role', name: 'Role', component: ListRole },
       { path: 'master/role/create', name: 'Role Create', component: CreateRole },
       { path: 'master/user', name: 'User', component: ListUser },

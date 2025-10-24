@@ -11,6 +11,8 @@ export const useAuthStore = defineStore('auth', () => {
   const data = ref<any>(null)
   const { showToast } = useAppToast()
   const token = ref<string | null>(Cookies.get('token') || null)
+  const isLogin = ref(false)
+  const loginRole = ref('')
   const userLogin = ref<any>()
 
   const setToken = (value: string) => {
@@ -58,9 +60,31 @@ export const useAuthStore = defineStore('auth', () => {
       initialize()
       setToken(data.value.data.tokenData.token)
       showToast('success', data.value.message)
+      isLogin.value = true;
     } catch (err: any) {
       showToast('error', err.response.data.message)
       error.value = err.message || 'Failed to create role'
+      isLogin.value = false;
+      loginRole.value = 'member';
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const loginAdmin = async (payload: any) => {
+    loading.value = true
+    try {
+      const response = await authService.loginMember(payload)
+      data.value = response
+      initialize()
+      setToken(data.value.data.tokenData.token)
+      showToast('success', data.value.message)
+      isLogin.value = true;
+      loginRole.value = 'admin';
+    } catch (err: any) {
+      showToast('error', err.response.data.message)
+      error.value = err.message || 'Failed to create role'
+      isLogin.value = false;
     } finally {
       loading.value = false
     }
@@ -76,8 +100,11 @@ export const useAuthStore = defineStore('auth', () => {
     loading,
     error,
     data,
+    isLogin,
+    loginRole,
     userLogin,
     initialize,
+    loginAdmin,
     registerMember,
     loginMember,
     logoutMember,

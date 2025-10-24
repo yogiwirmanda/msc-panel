@@ -20,14 +20,14 @@
             <span>Profile</span>
           </RouterLink>
 
-          <!-- <RouterLink
+          <RouterLink
             to="/member/journal"
             class="flex items-center gap-2 p-2 rounded-md hover:bg-surface-200 transition mb-3"
             active-class="active-link"
           >
             <i class="pi pi-book"></i>
             <span>Journal</span>
-          </RouterLink> -->
+          </RouterLink>
         </nav>
 
         <div class="mt-auto">
