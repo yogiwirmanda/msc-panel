@@ -80,7 +80,7 @@ const journals = ref<Journal[]>([
           <Card class="card-journal" v-for="item in 2">
             <template #content>
               <div class="flex justify-between">
-                <div class="text-lg font-bold">title</div>
+                <div class="text-lg font-bold">title {{ item }}</div>
                 <div>20 Januari 2025</div>
               </div>
               <div class="mt-3">
