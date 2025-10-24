@@ -94,7 +94,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import Card from "primevue/card";
-import Avatar from "primevue/avatar";
 import Textarea from "primevue/textarea";
 import Button from "primevue/button";
 import { useForumStore } from "../../../stores/forumStore";
