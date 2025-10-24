@@ -10,7 +10,7 @@
           {{ forum?.thread?.description }}
         </div>
         <div class="flex items-start gap-3">
-          <Avatar icon="pi pi-user" size="large" class="bg-gray-300" />
+          <UserIcon class="w-7 h-7" />
           <Textarea
             v-model="newPost"
             rows="3"
@@ -31,7 +31,7 @@
       <Card>
         <template #content>
           <div class="flex gap-3">
-            <Avatar icon="pi pi-user" size="large" class="bg-indigo-400" />
+            <UserCircleIcon class="w-7 h-7" />
             <div class="flex-1">
               <div class="font-bold">{{ post.comment.user_nickname }}</div>
               <div class="text-black mb-2">
@@ -74,7 +74,7 @@
                   :key="reply.id"
                   class="flex gap-3"
                 >
-                  <Avatar icon="pi pi-user" class="bg-pink-400" />
+                  <UserCircleIcon class="w-7 h-7" />
                   <div>
                     <div class="font-semibold">{{ reply.user_nickname }}</div>
                     <div class="text-black">
@@ -104,6 +104,8 @@ import { useRouter } from "vue-router";
 import {
   ArrowTurnUpRightIcon,
   PaperAirplaneIcon,
+  UserCircleIcon,
+  UserIcon,
 } from "@heroicons/vue/24/outline";
 
 interface Post {
