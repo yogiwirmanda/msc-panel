@@ -25,7 +25,7 @@
             class="flex items-center gap-2 p-2 rounded-md hover:bg-surface-200 transition mb-3"
             active-class="active-link"
           >
-            <i class="pi pi-book"></i>
+            <BookOpenIcon class="w-5 h-5" />
             <span>Journal</span>
           </RouterLink>
         </nav>
@@ -53,6 +53,7 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "../../../stores/auth";
 import {
   ArrowLeftStartOnRectangleIcon,
+  BookOpenIcon,
   PlayCircleIcon,
 } from "@heroicons/vue/24/outline";
 import { UsersIcon } from "@heroicons/vue/24/solid";
