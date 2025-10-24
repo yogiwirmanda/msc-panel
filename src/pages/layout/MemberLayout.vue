@@ -21,7 +21,7 @@ onMounted(async () => {
       <Menu />
     </header>
 
-    <main class="container mx-auto max-w-[1500px]">
+    <main class="container mx-auto max-w-[1920px]">
       <RouterView />
     </main>
 

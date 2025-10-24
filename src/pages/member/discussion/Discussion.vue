@@ -33,7 +33,7 @@
           <div class="flex gap-3">
             <Avatar icon="pi pi-user" size="large" class="bg-indigo-400" />
             <div class="flex-1">
-              <div class="font-bold">{{ post.user }}</div>
+              <div class="font-bold">{{ post.comment.user_nickname }}</div>
               <div class="text-black mb-2">
                 {{ post.comment.body }}
               </div>
@@ -76,7 +76,7 @@
                 >
                   <Avatar icon="pi pi-user" class="bg-pink-400" />
                   <div>
-                    <div class="font-semibold">{{ reply.user }}</div>
+                    <div class="font-semibold">{{ reply.user_nickname }}</div>
                     <div class="text-black">
                       {{ reply.body }}
                     </div>
@@ -109,8 +109,8 @@ import {
 interface Post {
   id: number;
   user: string;
-  comment: { id: number; body: string };
-  replies: { id: number; user: string; body: string }[];
+  comment: { id: number; body: string; user_nickname: string };
+  replies: { id: number; user: string; body: string; user_nickname: string }[];
   showReplyBox?: boolean;
   replyText?: string;
 }

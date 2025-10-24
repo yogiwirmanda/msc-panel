@@ -21,28 +21,28 @@
         <h2 class="text-2xl font-bold">{{ item?.title }}</h2>
       </template>
       <template #content>
-        <div v-if="item.section_code === 'EX1' && detailPractice.id == 1" class="flex justify-center py-5">
-          <iframe src="https://drive.google.com/file/d/14kRHbw5QRZ7KcCI9C-VlUH_wwMxnRN1W/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
-        </div>
-        <div v-if="item.section_code === 'EX2' && detailPractice.id == 1">
-          <iframe src="https://drive.google.com/file/d/14kRHbw5QRZ7KcCI9C-VlUH_wwMxnRN1W/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
-        </div>
-        <div v-if="item.section_code === 'EX1' && detailPractice.id == 2" class="flex justify-center py-5">
-          <iframe src="https://drive.google.com/file/d/1PE5o3RHgy1lvFPDSheSOzAeth0oR3z5Y/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
-        </div>
-        <div v-if="item.section_code === 'EX1' && detailPractice.id == 3" class="flex justify-center py-5">
-          <iframe src="https://drive.google.com/file/d/10ys2FIAZTLmeBmmy-zjiyKbHqa3loJWv/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
-        </div>
-        <div v-if="item.section_code === 'EX1' && detailPractice.id == 4" class="flex justify-center py-5">
-          <iframe src="https://drive.google.com/file/d/1RZDqqI3I875hXPewgSEcA0OFZZ8mhBRD/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
-        </div>
-        <div v-if="item.section_code === 'EX1' && detailPractice.id == 5" class="flex justify-center py-5">
-          <iframe src="https://drive.google.com/file/d/173t9QCQnpg9Ms2MUAo2a3jAMGpMUTWMj/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
-        </div>
-        <div v-if="item.section_code === 'EX1' && detailPractice.id == 6" class="flex justify-center py-5">
-          <iframe src="https://drive.google.com/file/d/19BW8HuvDOr7OkqsIPLUCjt-xEz_DmN8i/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
-        </div>
         <div class="flex justify-center p-5">
+          <div v-if="item.section_code === 'EX1' && detailPractice.id == 1" class="flex justify-center py-5">
+            <iframe src="https://drive.google.com/file/d/14kRHbw5QRZ7KcCI9C-VlUH_wwMxnRN1W/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
+          </div>
+          <div v-if="item.section_code === 'EX2' && detailPractice.id == 1">
+            <iframe src="https://drive.google.com/file/d/14kRHbw5QRZ7KcCI9C-VlUH_wwMxnRN1W/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
+          </div>
+          <div v-if="item.section_code === 'EX1' && detailPractice.id == 2" class="flex justify-center py-5">
+            <iframe src="https://drive.google.com/file/d/1PE5o3RHgy1lvFPDSheSOzAeth0oR3z5Y/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
+          </div>
+          <div v-if="item.section_code === 'EX1' && detailPractice.id == 3" class="flex justify-center py-5">
+            <iframe src="https://drive.google.com/file/d/10ys2FIAZTLmeBmmy-zjiyKbHqa3loJWv/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
+          </div>
+          <div v-if="item.section_code === 'EX1' && detailPractice.id == 4" class="flex justify-center py-5">
+            <iframe src="https://drive.google.com/file/d/1RZDqqI3I875hXPewgSEcA0OFZZ8mhBRD/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
+          </div>
+          <div v-if="item.section_code === 'EX1' && detailPractice.id == 5" class="flex justify-center py-5">
+            <iframe src="https://drive.google.com/file/d/173t9QCQnpg9Ms2MUAo2a3jAMGpMUTWMj/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
+          </div>
+          <div v-if="item.section_code === 'EX1' && detailPractice.id == 6" class="flex justify-center py-5">
+            <iframe src="https://drive.google.com/file/d/19BW8HuvDOr7OkqsIPLUCjt-xEz_DmN8i/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
+          </div>
           <!-- <Image
             :src="item?.media_url"
             :alt="`image-${item.title}`"
@@ -130,10 +130,9 @@
           <p class="text-3xl italic text-gray-700 max-w-2xl">
             “{{quotes}}”
           </p>
-          <span class="mt-4 text-gray-500 font-medium">— Helmi Cakalang</span>
         </div>
         <div class="flex justify-center items-center">
-          <div class="mt-5 text-center text-lg w-2/3 mb-5">
+          <div class="mt-5 text-center text-md w-2/3 mb-5">
             Dengan mengakhiri sesi ini, kamu bisa masuk ke forum diskusi untuk
             berbagi pengalaman dengan yang lainya
           </div>

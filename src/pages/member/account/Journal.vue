@@ -1,42 +1,36 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Card from "primevue/card";
+import Dialog from "primevue/dialog";
+import Button from "primevue/button";
 import MenuProfile from "../../../components/pages/account/MenuProfile.vue";
 import HeaderProfile from "../../../components/pages/account/HeaderProfile.vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
+import { useJournalStore } from "../../../stores/journalStore";
+import Cookie from "js-cookie";
 
-interface Journal {
-  sesi: string;
-  before: string;
-  after_body_scan: string;
-  after_self_break: string;
-  new_learn: string;
-}
+const journalStore = useJournalStore();
+const listJournal = ref<any[]>([]);
+const visible = ref(false);
+const selectedJournals = ref<any[]>([]);
 
-const journals = ref<Journal[]>([
-  {
-    sesi: "1",
-    before: "Gundah",
-    after_body_scan: "Mengetahui titik lemah tubuh",
-    after_self_break: "merasa lebih baik",
-    new_learn: "Mengatur emosi",
-  },
-  {
-    sesi: "2",
-    before: "Gundah",
-    after_body_scan: "Mengetahui titik lemah tubuh",
-    after_self_break: "merasa lebih baik",
-    new_learn: "Mengatur emosi",
-  },
-  {
-    sesi: "3",
-    before: "Gundah",
-    after_body_scan: "Mengetahui titik lemah tubuh",
-    after_self_break: "merasa lebih baik",
-    new_learn: "Mengatur emosi",
-  },
-]);
+const getUser = JSON.parse(String(Cookie.get("user")));
+const loadJournal = async () => {
+  await journalStore.getAllJournal(getUser.id);
+  if (journalStore.journals) {
+    listJournal.value = journalStore.journals.data;
+  }
+};
+
+const openModal = (data: any) => {
+  selectedJournals.value = data.journals || [];
+  visible.value = true;
+};
+
+onMounted(() => {
+  loadJournal();
+});
 </script>
 
 <template>
@@ -44,58 +38,86 @@ const journals = ref<Journal[]>([
     <div class="mb-5">
       <HeaderProfile />
     </div>
+
     <div class="grid grid-cols-12 gap-5 px-10">
       <div class="col-span-3">
         <MenuProfile />
       </div>
+
       <div class="col-span-9">
         <Card>
           <template #title>Journal List</template>
+
           <template #content>
             <DataTable
-              :value="journals"
+              :value="listJournal"
               paginator
               :rows="5"
               tableStyle="min-width: 40rem"
             >
-              <Column field="sesi" header="Sesi Latihan"></Column>
-              <Column field="before" header="Sebelum Latihan"></Column>
-              <Column
-                field="after_body_scan"
-                header="Setelah Body Scan"
-              ></Column>
-              <Column
-                field="after_self_break"
-                header="Setelah Self break"
-              ></Column>
-              <Column
-                field="new_learn"
-                header="Hal Baru Yang Dipelajari"
-              ></Column>
+              <Column field="journal_submitted_at" header="Tanggal">
+                <template #body="{ data }">
+                  {{
+                    new Date(data.journal_submitted_at).toLocaleDateString(
+                      "id-ID"
+                    )
+                  }}
+                </template>
+              </Column>
+
+              <Column header="Sesi">
+                <template #body="{ data }">
+                  {{ data.journals?.[0]?.title || "-" }}
+                </template>
+              </Column>
+
+              <Column header="Action">
+                <template #body="{ data }">
+                  <Button
+                    label="View Details"
+                    icon="pi pi-eye"
+                    class="p-button-text p-button-sm"
+                    @click="openModal(data)"
+                  />
+                </template>
+              </Column>
             </DataTable>
           </template>
         </Card>
-
-        <div class="grid grid-cols-2 gap-5">
-          <Card class="card-journal" v-for="item in 2">
-            <template #content>
-              <div class="flex justify-between">
-                <div class="text-lg font-bold">title {{ item }}</div>
-                <div>20 Januari 2025</div>
-              </div>
-              <div class="mt-3">
-                Hari ini aku merasa cukup tenang. Meskipun ada beberapa hal yang
-                tidak berjalan sesuai rencana, aku mencoba untuk tetap bersyukur
-                atas hal-hal kecil yang berjalan baik. Aku belajar bahwa tidak
-                semua hal harus sempurna agar bisa membuatku bahagia.
-              </div>
-            </template>
-          </Card>
-        </div>
+        <Dialog
+          v-model:visible="visible"
+          modal
+          header="My Journals"
+          :style="{ width: '50vw' }"
+        >
+          <div
+            v-if="selectedJournals.length"
+            class="grid grid-cols-2 gap-5 journals-list"
+          >
+            <Card
+              v-for="(journal, index) in selectedJournals"
+              :key="index"
+              class="card-journal"
+            >
+              <template #content>
+                <div class="mt-2 whitespace-pre-line italic">
+                  Pertanyaan : {{ journal.prompt }}
+                </div>
+                <div class="mt-5 whitespace-pre-line font-semibold">
+                  {{ journal.answer_text }}
+                </div>
+              </template>
+            </Card>
+          </div>
+          <div v-else class="text-center py-5 text-gray-500">
+            No journals available
+          </div>
+        </Dialog>
       </div>
     </div>
   </div>
 </template>
+
 <style>
 .card-journal {
   margin-top: 20px;
