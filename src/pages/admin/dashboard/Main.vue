@@ -6,7 +6,7 @@
           <div class="flex flex-col gap-2">
             <span
               class="text-surface-700 dark:text-surface-300 font-normal leading-tight"
-              >Users</span
+              >Total Member</span
             >
             <div
               class="text-surface-900 dark:text-surface-0 font-semibold text-2xl! leading-tight!"
@@ -17,19 +17,8 @@
           <div
             class="flex items-center justify-center bg-linear-to-b from-cyan-400 dark:from-cyan-300 to-cyan-600 dark:to-cyan-500 rounded-lg w-10 h-10"
           >
-            <i
-              class="pi pi-users text-surface-0 dark:text-surface-900 text-xl! leading-none!"
-            />
+            <UsersIcon />
           </div>
-        </div>
-        <div class="mt-4">
-          <span
-            class="text-surface-600 dark:text-surface-300 font-medium leading-tight"
-            >24 new</span
-          >
-          <span class="text-surface-500 dark:text-surface-300 leading-tight">
-            since last visit</span
-          >
         </div>
       </div>
 
@@ -38,7 +27,7 @@
           <div class="flex flex-col gap-2">
             <span
               class="text-surface-700 dark:text-surface-300 font-normal leading-tight"
-              >Check-ins</span
+              >Total Journal</span
             >
             <div
               class="text-surface-900 dark:text-surface-0 font-semibold text-2xl! leading-tight!"
@@ -49,19 +38,8 @@
           <div
             class="flex items-center justify-center bg-linear-to-b from-orange-400 dark:from-orange-300 to-orange-600 dark:to-orange-500 rounded-lg w-10 h-10"
           >
-            <i
-              class="pi pi-map-marker text-surface-0 dark:text-surface-900 text-xl! leading-none!"
-            />
+            <BookOpenIcon />
           </div>
-        </div>
-        <div class="mt-4">
-          <span
-            class="text-surface-600 dark:text-surface-300 font-medium leading-tight"
-            >48 new</span
-          >
-          <span class="text-surface-500 dark:text-surface-300 leading-tight">
-            since last visit</span
-          >
         </div>
       </div>
 
@@ -70,7 +48,7 @@
           <div class="flex flex-col gap-2">
             <span
               class="text-surface-700 dark:text-surface-300 font-normal leading-tight"
-              >Files Synced</span
+              >Total Post</span
             >
             <div
               class="text-surface-900 dark:text-surface-0 font-semibold text-2xl! leading-tight!"
@@ -81,15 +59,8 @@
           <div
             class="flex items-center justify-center bg-linear-to-b from-slate-400 dark:from-slate-300 to-slate-600 dark:to-slate-500 rounded-lg w-10 h-10"
           >
-            <i
-              class="pi pi-file text-surface-0 dark:text-surface-900 text-xl! leading-none!"
-            />
+            <ChatBubbleBottomCenterTextIcon />
           </div>
-        </div>
-        <div class="mt-4">
-          <span class="text-surface-500 dark:text-surface-300 leading-tight"
-            >32,56 / 250 GB</span
-          >
         </div>
       </div>
 
@@ -98,7 +69,7 @@
           <div class="flex flex-col gap-2">
             <span
               class="text-surface-700 dark:text-surface-300 font-normal leading-tight"
-              >Users Online</span
+              >Total Comment</span
             >
             <div
               class="text-surface-900 dark:text-surface-0 font-semibold text-2xl! leading-tight!"
@@ -109,22 +80,18 @@
           <div
             class="flex items-center justify-center bg-linear-to-b from-violet-400 dark:from-violet-300 to-violet-600 dark:to-violet-500 rounded-lg w-10 h-10"
           >
-            <i
-              class="pi pi-users text-surface-0 dark:text-surface-900 text-xl! leading-none!"
-            />
+            <ChatBubbleLeftRightIcon />
           </div>
-        </div>
-        <div class="mt-4">
-          <span
-            class="text-surface-600 dark:text-surface-300 font-medium leading-tight"
-            >72 new</span
-          >
-          <span class="text-surface-500 dark:text-surface-300 leading-tight">
-            user this week</span
-          >
         </div>
       </div>
     </div>
   </div>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import {
+  BookOpenIcon,
+  ChatBubbleBottomCenterTextIcon,
+  ChatBubbleLeftRightIcon,
+  UsersIcon,
+} from "@heroicons/vue/24/outline";
+</script>
