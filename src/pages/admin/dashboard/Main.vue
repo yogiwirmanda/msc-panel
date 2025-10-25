@@ -11,7 +11,7 @@
             <div
               class="text-surface-900 dark:text-surface-0 font-semibold text-2xl! leading-tight!"
             >
-              152
+              {{ dashboardData.summary.total_member }}
             </div>
           </div>
           <div
@@ -32,7 +32,7 @@
             <div
               class="text-surface-900 dark:text-surface-0 font-semibold text-2xl! leading-tight!"
             >
-              532
+              {{ dashboardData.summary.total_journal }}
             </div>
           </div>
           <div
@@ -48,12 +48,12 @@
           <div class="flex flex-col gap-2">
             <span
               class="text-surface-700 dark:text-surface-300 font-normal leading-tight"
-              >Total Post</span
+              >Total Threads</span
             >
             <div
               class="text-surface-900 dark:text-surface-0 font-semibold text-2xl! leading-tight!"
             >
-              28.441
+              {{ dashboardData.summary.total_threads }}
             </div>
           </div>
           <div
@@ -74,7 +74,7 @@
             <div
               class="text-surface-900 dark:text-surface-0 font-semibold text-2xl! leading-tight!"
             >
-              25.660
+              {{ dashboardData.summary.total_comments }}
             </div>
           </div>
           <div
@@ -94,4 +94,18 @@ import {
   ChatBubbleLeftRightIcon,
   UsersIcon,
 } from "@heroicons/vue/24/outline";
+import { useDashboardStore } from "../../../stores/dashboardStore";
+import { onMounted, ref } from "vue";
+
+const dashboardStore = useDashboardStore();
+const dashboardData = ref<any>({});
+
+const loadDashboard = async () => {
+  await dashboardStore.getDashboard(1);
+  dashboardData.value = dashboardStore.dashboards.data;
+};
+
+onMounted(() => {
+  loadDashboard();
+});
 </script>
