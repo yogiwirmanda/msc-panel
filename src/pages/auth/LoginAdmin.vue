@@ -83,7 +83,6 @@ import { ref } from "vue";
 import { useAuthStore } from "../../stores/auth";
 import Toast from "primevue/toast";
 import type { LoginForm } from "../../types/auth";
-import { RouterLink } from "vue-router";
 import { UserCircleIcon } from "@heroicons/vue/24/outline";
 
 const form = ref<LoginForm>({

@@ -3,9 +3,8 @@ import { ref } from "vue";
 import Card from "primevue/card";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
-import type { ProfileForm } from "../../../../types/profile";
 
-const form = ref<ProfileForm>({
+const form = ref<any>({
   name: "Wiwe Artemis",
   email: "wiwekingz@yopmail.com",
   phone_number: "6281217018168",
