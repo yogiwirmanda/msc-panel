@@ -1,7 +1,7 @@
 export type RegisterForm = {
   name: string;
   nickname: string;
-  username: string;
+  username?: string;
   phone_number: string;
   email: string;
   password: string;
@@ -11,5 +11,5 @@ export type RegisterForm = {
   gender: string;
   profession: { name: string; code: string } | null;
   last_education: { name: string; code: string } | null;
-  consent: string;
+  consent: boolean;
 };

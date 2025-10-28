@@ -32,7 +32,11 @@
               v-model="form.username"
               placeholder="Username"
               class="w-full px-3 py-2 shadow-sm rounded-lg"
+              :class="{ 'border-red-500': errors.username }"
             />
+            <small v-if="errors.username" class="text-red-500">{{
+              errors.username
+            }}</small>
           </div>
           <div class="flex flex-col gap-2 w-full">
             <label
@@ -40,15 +44,18 @@
               class="text-surface-900 font-medium leading-normal"
               >Password</label
             >
-
             <Password
-              id="password1"
+              id="password"
               v-model="form.password"
               placeholder="Password"
               :toggleMask="true"
               :feedback="false"
               input-class="w-full!"
+              :class="{ 'border-red-500': errors.password }"
             />
+            <small v-if="errors.password" class="text-red-500">{{
+              errors.password
+            }}</small>
           </div>
         </div>
         <Button
@@ -59,11 +66,7 @@
           :disabled="loading"
         >
           <template #icon>
-            <i v-if="!loading" class="pi pi-user text-base! leading-normal!" />
-            <i
-              v-else
-              class="pi pi-spin pi-spinner text-base! leading-normal!"
-            />
+            <UserCircleIcon class="w-5 h-5" />
           </template>
         </Button>
       </form>
@@ -77,14 +80,18 @@ import InputText from "primevue/inputtext";
 import Password from "primevue/password";
 
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 import { useAuthStore } from "../../stores/auth";
 import Toast from "primevue/toast";
 import type { LoginForm } from "../../types/auth";
-
-const router = useRouter();
+import { RouterLink } from "vue-router";
+import { UserCircleIcon } from "@heroicons/vue/24/outline";
 
 const form = ref<LoginForm>({
+  username: "",
+  password: "",
+});
+
+const errors = ref({
   username: "",
   password: "",
 });
@@ -92,13 +99,34 @@ const form = ref<LoginForm>({
 const authStore = useAuthStore();
 const loading = ref(false);
 
+const validateForm = () => {
+  let valid = true;
+  errors.value = { username: "", password: "" };
+
+  if (!form.value.username.trim()) {
+    errors.value.username = "Username wajib diisi";
+    valid = false;
+  }
+
+  if (!form.value.password.trim()) {
+    errors.value.password = "Password wajib diisi";
+    valid = false;
+  } else if (form.value.password.length < 9) {
+    errors.value.password = "Password minimal 9 karakter";
+    valid = false;
+  }
+
+  return valid;
+};
+
 const doLogin = async () => {
+  if (!validateForm()) return;
   loading.value = true;
   try {
     await authStore.loginAdmin(form.value);
     if (authStore.data.success) {
       setTimeout(() => {
-        router.push("/admin/master/role");
+        window.location.href = "/admin/dashboard";
       }, 1000);
     }
   } finally {

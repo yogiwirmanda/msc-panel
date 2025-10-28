@@ -1,5 +1,7 @@
 export type ProfileForm = {
   name: string;
   email: string;
-  phone_number: string;
+  telepon: string;
+  id_role: any;
+  password: string;
 }

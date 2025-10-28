@@ -36,29 +36,25 @@
             style="width: 15%"
           />
           <Column field="email" header="E-mail" style="width: 10%" />
-          <Column field="address" header="Address" style="width: 25%" />
-          <Column field="birthdate" header="Birthdate" style="width: 40%" />
-          <Column field="gender" header="Gender" style="width: 25%" />
-          <Column field="profession" header="Profession" style="width: 25%" />
-          <Column
-            field="last_education"
-            header="Education"
-            style="width: 25%"
-          />
 
-          <!-- <Column header="Actions" style="width: 20%; text-align: center">
+          <Column header="Actions" style="width: 20%; text-align: center">
             <template #body="slotProps">
               <div class="flex justify-center gap-2">
                 <Button
-                  icon="pi pi-trash"
-                  severity="danger"
-                  label="Hapus"
+                  severity="default"
+                  label="Pre-Test"
                   rounded
-                  @click="deleteRow(slotProps.data)"
+                  @click="ReportPre(slotProps.data)"
+                />
+                <Button
+                  severity="info"
+                  label="Post-Test"
+                  rounded
+                  @click="ReportPost(slotProps.data)"
                 />
               </div>
             </template>
-          </Column> -->
+          </Column>
         </DataTable>
 
         <transition name="fade">
@@ -81,14 +77,11 @@
 import { onMounted } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
+import Button from "primevue/button";
 import ProgressSpinner from "primevue/progressspinner";
-// import { useToast } from "primevue/usetoast";
-// import { useConfirm } from "primevue/useconfirm";
 import Card from "primevue/card";
 import { useUserStore } from "../../../stores/userStore";
-
-// const toast = useToast();
-// const confirm = useConfirm();
+import router from "../../../router";
 
 const userStore = useUserStore();
 
@@ -102,36 +95,17 @@ const onPage = (event: any) => {
   userStore.fetchMembers(newPage);
 };
 
+const ReportPre = (userId: any) => {
+  router.push("/admin/report/test/pre/" + userId.id);
+};
+
+const ReportPost = (userId: any) => {
+  router.push("/admin/report/test/pre/" + userId.id);
+};
+
 onMounted(() => {
   fetchData();
 });
-
-// const deleteRow = (row: { id: number; nickname: string }) => {
-//   confirm.require({
-//     message: `Are you sure you want to delete ${row.nickname}?`,
-//     header: "Confirm",
-//     icon: "pi pi-exclamation-triangle",
-//     accept: async () => {
-//       try {
-//         await userStore.deleteMember(Number(row.id));
-//         await userStore.fetchMembers(userStore.page);
-//         toast.add({
-//           severity: "success",
-//           summary: "Deleted",
-//           detail: `${row.nickname} removed`,
-//           life: 2000,
-//         });
-//       } catch (error) {
-//         toast.add({
-//           severity: "error",
-//           summary: "Error",
-//           detail: "Failed to delete role",
-//           life: 2000,
-//         });
-//       }
-//     },
-//   });
-// };
 </script>
 
 <style scoped>

@@ -42,6 +42,13 @@ export const userService = {
     return data
   },
 
+  async getMembers(page = 1, limit = 10, is_pagination = true): Promise<PaginatedResponse<UserItem>> {
+    const { data } = await api.get<PaginatedResponse<UserItem>>('/members', {
+      params: { is_pagination, page, limit },
+    })
+    return data
+  },
+
   async getUserById(id: number): Promise<UserItem> {
     const { data } = await api.get<UserItem>(`/user/detail?id=${id}`)
     return data
@@ -59,6 +66,13 @@ export const userService = {
 
   async deleteUser(user: Partial<UserItem>): Promise<UserItem> {
     const { data } = await api.delete<UserItem>('/user/delete', {
+      data: user,
+    })
+    return data
+  },
+
+  async deleteMember(user: Partial<UserItem>): Promise<UserItem> {
+    const { data } = await api.delete<UserItem>('/member/delete', {
       data: user,
     })
     return data

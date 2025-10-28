@@ -24,6 +24,7 @@ export const useAuthStore = defineStore('auth', () => {
     token.value = null
     Cookies.remove('token')
     Cookies.remove('user')
+    Cookies.remove('role')
   }
 
   const initialize = async () => {
@@ -42,11 +43,14 @@ export const useAuthStore = defineStore('auth', () => {
   const registerMember = async (payload: any) => {
     loading.value = true
     try {
-      await authService.createMember(payload)
-      showToast('success', data.value.message)
+      const { data } = await authService.createMember(payload)
+      showToast('success', data.message || 'Registration successful')
+      return true
     } catch (err: any) {
-      // showToast('error', err.response.data.message)
-      error.value = err.message || 'Failed to create role'
+      console.error('Register Error:', err)
+      showToast('error', err.response?.data?.message || 'Registration failed')
+      error.value = err.message || 'Failed to register'
+      return false
     } finally {
       loading.value = false
     }
@@ -61,6 +65,7 @@ export const useAuthStore = defineStore('auth', () => {
       setToken(data.value.data.tokenData.token)
       showToast('success', data.value.message)
       isLogin.value = true;
+      Cookies.set('role', 'member')
     } catch (err: any) {
       showToast('error', err.response.data.message)
       error.value = err.message || 'Failed to create role'
@@ -81,6 +86,7 @@ export const useAuthStore = defineStore('auth', () => {
       showToast('success', data.value.message)
       isLogin.value = true;
       loginRole.value = 'admin';
+      Cookies.set('role', 'admin')
     } catch (err: any) {
       showToast('error', err.response.data.message)
       error.value = err.message || 'Failed to create role'

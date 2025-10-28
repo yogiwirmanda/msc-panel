@@ -19,28 +19,25 @@
     <Dialog
       v-model:visible="visible"
       modal
-      :style="{ width: '25rem' }"
+      :style="{ width: '60vw', maxWidth: '900px' }"
       :draggable="false"
       :closable="false"
       :showHeader="false"
     >
-      <div class="text-center space-y-4">
-        <div class="text-lg font-medium text-gray-800">
-          {{ quotes }}
+      <div class="text-center space-y-4 pt-5">
+        <div
+          class="flex flex-col bg-white items-center justify-center text-center p-8 bg-gray-50 rounded-2xl shadow-sm"
+        >
+          <p class="text-3xl italic text-gray-700 max-w-2xl">“{{ quotes }}”</p>
         </div>
-
-        <div class="mt-5">
-          Dengan mengakhiri sesi ini, kamu bisa masuk ke forum diskusi untuk
-          berbagi pengalaman dengan yang lainya
-        </div>
-
         <div class="flex justify-center gap-3 mt-5">
           <Button
-            label="Akhiri Sesi"
-            icon="pi pi-check"
-            class="p-button-danger"
+            class="p-button-primary flex items-center justify-center gap-2"
             @click="endPosTest"
-          />
+          >
+            <CheckCircleIcon class="w-5 h-5" />
+            <span>Akhiri Post Test</span>
+          </Button>
         </div>
       </div>
     </Dialog>
@@ -59,6 +56,7 @@ import LoadingPage from "../../../components/LoadingPage.vue";
 import { usePracticeStore } from "../../../stores/practiceStore";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
+import { CheckCircleIcon } from "@heroicons/vue/24/outline";
 
 const questStore = useQuestStore();
 const getQuestion = ref<any[]>([]);
@@ -92,7 +90,7 @@ const mapQuestion = (): void => {
   schemaForm.value = [
     {
       $el: "h1",
-      children: "Pre Test",
+      children: "Post Test",
       attrs: { class: "text-2xl font-bold mb-4" },
     },
     ...getQuestion.value.map((q, index) => {
@@ -186,7 +184,7 @@ const handleSubmit = async (
   };
 
   await questStore.doSubmitQuest(payload);
-  quotes.value = questStore.submitResponse.quotes;
+  quotes.value = questStore.submitResponse.motivation.message;
   visible.value = true;
 
   let payloadStep = {

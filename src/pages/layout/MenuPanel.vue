@@ -1,5 +1,6 @@
 <template>
-  <div class="card flex justify-center">
+  <Image src="/images/logo.webp" />
+  <div class="card flex justify-center mt-5">
     <PanelMenu :model="items" class="w-full md:w-80">
       <template #item="{ item }">
         <router-link
@@ -38,13 +39,28 @@
 </template>
 
 <script setup lang="ts">
+import Image from "primevue/image";
 import PanelMenu from "primevue/panelmenu";
 import { ref } from "vue";
+import { useAuthStore } from "../../stores/auth";
+import router from "../../router";
+
+const authStore = useAuthStore();
+
+const logoutAdmin = async () => {
+  await authStore.logoutMember();
+  router.push("/admin/login");
+};
 
 const items = ref([
   {
-    label: "Master",
-    icon: "pi pi-notebook",
+    label: "Dashboard",
+    icon: "pi pi-home",
+    route: "/admin/dashboard",
+  },
+  {
+    label: "Data",
+    icon: "pi pi-book",
     items: [
       {
         label: "Role",
@@ -56,23 +72,22 @@ const items = ref([
         icon: "pi pi-user",
         route: "/admin/master/user",
       },
-    ],
-  },
-  {
-    label: "Data",
-    icon: "pi pi-notebook",
-    items: [
       {
         label: "Member",
         icon: "pi pi-users",
         route: "/admin/data/member",
       },
-      {
-        label: "Testimoni",
-        icon: "pi pi-star",
-        route: "/admin/data/testimoni",
-      },
     ],
+  },
+  {
+    label: "Report",
+    icon: "pi pi-notes",
+    route: "/admin/report",
+  },
+  {
+    label: "Logout",
+    icon: "pi pi-logout",
+    command: logoutAdmin,
   },
 ]);
 </script>

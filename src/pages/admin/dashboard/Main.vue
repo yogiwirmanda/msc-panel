@@ -11,7 +11,7 @@
             <div
               class="text-surface-900 dark:text-surface-0 font-semibold text-2xl! leading-tight!"
             >
-              {{ dashboardData.summary.total_member }}
+              {{ dashboardData?.summary?.total_member }}
             </div>
           </div>
           <div
@@ -32,7 +32,7 @@
             <div
               class="text-surface-900 dark:text-surface-0 font-semibold text-2xl! leading-tight!"
             >
-              {{ dashboardData.summary.total_journal }}
+              {{ dashboardData?.summary?.total_journal }}
             </div>
           </div>
           <div
@@ -53,7 +53,7 @@
             <div
               class="text-surface-900 dark:text-surface-0 font-semibold text-2xl! leading-tight!"
             >
-              {{ dashboardData.summary.total_threads }}
+              {{ dashboardData?.summary?.total_threads }}
             </div>
           </div>
           <div
@@ -74,7 +74,7 @@
             <div
               class="text-surface-900 dark:text-surface-0 font-semibold text-2xl! leading-tight!"
             >
-              {{ dashboardData.summary.total_comments }}
+              {{ dashboardData?.summary?.total_comments }}
             </div>
           </div>
           <div

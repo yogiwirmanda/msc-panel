@@ -25,6 +25,12 @@ import ListRole from "../pages/admin/master/role/List.vue"
 import CreateUser from "../pages/admin/master/user/Create.vue"
 import ListUser from "../pages/admin/master/user/List.vue"
 
+import CreateMember from "../pages/admin/member/Create.vue"
+import ListMember from "../pages/admin/member/List.vue"
+
+import ListReport from "../pages/admin/report/Lists.vue"
+import TestReport from "../pages/admin/report/Test.vue"
+
 import CreateTest from "../pages/admin/master/test/Create.vue"
 import ListTest from "../pages/admin/master/test/List.vue"
 import QuestionTest from "../pages/admin/master/test/Question.vue"
@@ -70,6 +76,10 @@ const routes = [
       { path: 'master/test/question', name: 'Question Test', component: QuestionTest },
       { path: 'master/practice', name: 'Practice', component: ListPractice },
       { path: 'master/practice/create', name: 'Practice Create', component: CreatePractice },
+      { path: 'data/member', name: 'Member', component: ListMember },
+      { path: 'data/member/create', name: 'Member Create', component: CreateMember },
+      { path: 'report', name: 'Member Report', component: ListReport },
+      { path: 'report/test/:type/:id', name: 'Member Report Detail', component: TestReport },
     ]
   }
 ]

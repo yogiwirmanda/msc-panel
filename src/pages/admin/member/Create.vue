@@ -3,19 +3,16 @@ import { ref } from "vue";
 import Card from "primevue/card";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
-import { useRoleStore } from "../../../stores/roleStore";
+import type { ProfileForm } from "../../../../types/profile";
 
-interface RoleForm {
-  role: string;
-}
-
-const roleStore = useRoleStore();
-const form = ref<RoleForm>({
-  role: "",
+const form = ref<ProfileForm>({
+  name: "Wiwe Artemis",
+  email: "wiwekingz@yopmail.com",
+  phone_number: "6281217018168",
 });
 
-const saveRole = async () => {
-  await roleStore.addRole(form.value);
+const saveUser = () => {
+  console.log("Profile saved:", form.value);
 };
 </script>
 
@@ -24,20 +21,41 @@ const saveRole = async () => {
     <div class="grid grid-cols-12 gap-5 px-10">
       <div class="col-span-9">
         <Card>
-          <template #title>Form Role</template>
+          <template #title>User Form</template>
           <template #content>
-            <form class="space-y-4" @submit.prevent="saveRole">
+            <form class="space-y-4" @submit.prevent="saveUser">
               <div>
-                <label for="name" class="block mb-2 font-medium"
-                  >Role Name</label
-                >
+                <label for="name" class="block mb-2 font-medium">Name</label>
                 <InputText
                   id="name"
-                  v-model="form.role"
+                  v-model="form.name"
                   class="w-full"
                   required
                 />
               </div>
+
+              <div>
+                <label for="email" class="block mb-2 font-medium">Email</label>
+                <InputText
+                  id="email"
+                  type="email"
+                  v-model="form.email"
+                  class="w-full"
+                  required
+                />
+              </div>
+
+              <div>
+                <label for="phone" class="block mb-2 font-medium"
+                  >Phone Number</label
+                >
+                <InputText
+                  id="phone"
+                  v-model="form.phone_number"
+                  class="w-full"
+                />
+              </div>
+
               <Button label="Save" icon="pi pi-check" type="submit" />
             </form>
           </template>

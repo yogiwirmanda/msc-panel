@@ -75,7 +75,6 @@
                 v-model="journal.answers[question.id]"
                 rows="2"
                 class="w-full mt-2"
-                :readonly="!hasAnswer"
                 :required="true"
               />
             </div>
@@ -85,7 +84,6 @@
             <Button
               severity="success"
               type="submit"
-              v-if="hasAnswer"
               class="flex items-center justify-center gap-2"
             >
               <ArrowDownTrayIcon class="w-5 h-5" />
@@ -227,8 +225,6 @@ const loadJournal = async (code: any) => {
       countAnswer = countAnswer + 1;
     }
   });
-
-  console.log(countAnswer)
 
   if (countAnswer > 0) {
     hasAnswer.value = true;

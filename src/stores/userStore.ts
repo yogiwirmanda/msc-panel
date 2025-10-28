@@ -4,6 +4,7 @@ import { userService, type UserItem } from '../services/userService'
 
 export const useUserStore = defineStore('user', () => {
   const users = ref<UserItem[]>([])
+  const members = ref<UserItem[]>([])
   const loading = ref(false)
   const error = ref<string | null>(null)
   const total = ref(0)
@@ -29,6 +30,23 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  const fetchMembers = async (newPage = 1) => {
+    loading.value = true
+    error.value = null
+
+    try {
+      const response = await userService.getMembers(newPage, pageSize.value)
+      members.value = response.data.items
+      total.value = response.data.total
+      page.value = response.data.page
+      totalPages.value = response.data.totalPages
+    } catch (err: any) {
+      error.value = err.message || 'Failed to fetch users'
+    } finally {
+      loading.value = false
+    }
+  }
+
   const getUserDetail = async (id: number) => {
     loading.value = true
     error.value = null
@@ -38,7 +56,7 @@ export const useUserStore = defineStore('user', () => {
       detailUser.value = data
       return data
     } catch (err: any) {
-      error.value = err.message || 'Failed to fetch role detail'
+      error.value = err.message || 'Failed to fetch role user'
     } finally {
       loading.value = false
     }
@@ -50,7 +68,7 @@ export const useUserStore = defineStore('user', () => {
       await userService.createUser(role)
       await fetchUsers(page.value)
     } catch (err: any) {
-      error.value = err.message || 'Failed to create role'
+      error.value = err.message || 'Failed to create uyser'
     } finally {
       loading.value = false
     }
@@ -62,7 +80,7 @@ export const useUserStore = defineStore('user', () => {
       await userService.updateUser(userId, payload)
       await fetchUsers(page.value)
     } catch (err: any) {
-      error.value = err.message || 'Failed to update role'
+      error.value = err.message || 'Failed to update user'
     } finally {
       loading.value = false
     }
@@ -74,7 +92,19 @@ export const useUserStore = defineStore('user', () => {
       await userService.deleteUser({ id })
       await fetchUsers(page.value)
     } catch (err: any) {
-      error.value = err.message || 'Failed to delete role'
+      error.value = err.message || 'Failed to delete user'
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const deleteMember = async (id: number) => {
+    loading.value = true
+    try {
+      await userService.deleteMember({ id })
+      await fetchUsers(page.value)
+    } catch (err: any) {
+      error.value = err.message || 'Failed to delete member'
     } finally {
       loading.value = false
     }
@@ -82,6 +112,7 @@ export const useUserStore = defineStore('user', () => {
 
   return {
     users,
+    members,
     total,
     page,
     pageSize,
@@ -90,9 +121,11 @@ export const useUserStore = defineStore('user', () => {
     error,
     detailUser,
     fetchUsers,
+    fetchMembers,
     getUserDetail,
     addUser,
     updateUser,
     deleteUser,
+    deleteMember
   }
 })
