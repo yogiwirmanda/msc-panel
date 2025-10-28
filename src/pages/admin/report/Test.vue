@@ -1,5 +1,5 @@
 <template>
-  <Card>
+  <Card v-if="data != null">
     <template #content>
       <div class="flex justify-center">
         <Image src="/images/logo.webp" />
@@ -73,6 +73,18 @@
       </div>
     </template>
   </Card>
+  <Card v-else>
+    <template #content>
+      <div class="flex justify-center">
+        <Image src="/images/logo.webp" />
+      </div>
+      <Fieldset legend="Data Report" class="mt-5">
+        <div class="flex justify-center items-center h-[200px]">
+          <div class="text-2xl">Belum Ada Data</div>
+        </div>
+      </Fieldset>
+    </template>
+  </Card>
 </template>
 <script setup lang="ts">
 import Card from "primevue/card";
@@ -91,14 +103,17 @@ const data = ref<any>();
 const reportTables = ref<any[]>([]);
 
 const loadReport = async () => {
-  await reportStore.test(
+  const success = await reportStore.test(
     String(router.currentRoute.value.params.type),
     Number(router.currentRoute.value.params.id)
   );
-  data.value = reportStore.reportData.data;
-  reportTables.value = data.value.reportTables;
-  console.log("data.value:", data.value);
-  console.log("data.value.reportTables:", data.value?.reportTables);
+
+  if (success) {
+    data.value = reportStore.reportData.data;
+    reportTables.value = data.value.reportTables;
+  } else {
+    data.value = null;
+  }
 };
 
 onMounted(() => {
