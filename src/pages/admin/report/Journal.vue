@@ -35,10 +35,6 @@ onMounted(() => {
 
 <template>
   <div class="container pb-10">
-    <div class="mb-5">
-      <HeaderProfile />
-    </div>
-
     <div class="grid grid-cols-12 gap-5 px-10">
       <div class="col-span-12">
         <Card v-if="listJournal.length > 0">
