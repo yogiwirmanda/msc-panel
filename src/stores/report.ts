@@ -4,6 +4,7 @@ import { reportService } from '../services/report'
 
 export const useReportStore = defineStore('report', () => {
   const reportData = ref<any>()
+  const members = ref<any>()
   const loading = ref(false)
   const error = ref<string | null>(null)
 
@@ -35,11 +36,27 @@ export const useReportStore = defineStore('report', () => {
     }
   }
 
+  const memberReport = async (page: number, limit:number) => {
+    loading.value = true
+    try {
+      const response = await reportService.getMembers(page, limit)
+      members.value = response.data
+      return true
+    } catch (err: any) {
+      error.value = err.message || 'Failed to get detail ques template'
+      return false
+    } finally {
+      loading.value = false
+    }
+  }
+
   return {
     reportData,
+    members,
     loading,
     error,
     test,
-    excelExport
+    excelExport,
+    memberReport
   }
 })

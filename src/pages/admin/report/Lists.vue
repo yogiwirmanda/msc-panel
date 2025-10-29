@@ -12,19 +12,24 @@
     <template #content>
       <div class="mt-5 relative">
         <DataTable
-          :value="userStore.members"
+          :value="reportStore?.members?.items"
           :lazy="true"
           paginator
-          :rows="userStore.pageSize"
-          :totalRecords="userStore.total"
-          :first="(userStore.page - 1) * userStore.pageSize"
+          :rows="reportStore.members?.pageSize"
+          :totalRecords="reportStore.members?.total"
+          :first="
+            (reportStore?.members?.page - 1) * reportStore?.members?.pageSize
+          "
           @page="onPage"
           tableStyle="min-width: 50rem"
         >
           <Column header="No" style="width: 5%; text-align: center">
             <template #body="slotProps">
               {{
-                (userStore.page - 1) * userStore.pageSize + slotProps.index + 1
+                (reportStore?.members?.page - 1) *
+                  reportStore?.members?.pageSize +
+                slotProps.index +
+                1
               }}
             </template>
           </Column>
@@ -47,12 +52,14 @@
                   @click="ReportJournal(slotProps.data)"
                 />
                 <Button
+                  v-if="slotProps.data.preTestStatus == 'completed'"
                   severity="default"
                   label="Pre-Test"
                   rounded
                   @click="ReportPre(slotProps.data)"
                 />
                 <Button
+                  v-if="slotProps.data.postTestStatus == 'completed'"
                   severity="info"
                   label="Post-Test"
                   rounded
@@ -88,12 +95,14 @@ import ProgressSpinner from "primevue/progressspinner";
 import Card from "primevue/card";
 import { useUserStore } from "../../../stores/userStore";
 import router from "../../../router";
+import { useReportStore } from "../../../stores/report";
 
 const userStore = useUserStore();
+const reportStore = useReportStore();
 
-const fetchData = async () => {
-  await userStore.fetchMembers(1);
-  console.log(userStore.members);
+const fetchMembers = async (page: number = 1) => {
+  await reportStore.memberReport(page, 10);
+  console.log(reportStore.members);
 };
 
 const onPage = (event: any) => {
@@ -114,7 +123,7 @@ const ReportJournal = (userId: any) => {
 };
 
 onMounted(() => {
-  fetchData();
+  fetchMembers();
 });
 </script>
 
