@@ -41,7 +41,7 @@ onMounted(() => {
 
     <div class="grid grid-cols-12 gap-5 px-10">
       <div class="col-span-12">
-        <Card>
+        <Card v-if="listJournal.length > 0">
           <template #title>Journal List</template>
 
           <template #content>
@@ -80,6 +80,13 @@ onMounted(() => {
                 </template>
               </Column>
             </DataTable>
+          </template>
+        </Card>
+        <Card v-else>
+          <template #content>
+            <div class="flex justify-center items-center">
+              <div class="text-lg">Belum Ada Data</div>
+            </div>
           </template>
         </Card>
         <Dialog
