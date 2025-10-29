@@ -120,8 +120,8 @@
       modal
       :style="{ width: '60vw', maxWidth: '900px' }"
       :draggable="false"
-      :closable="false"
       :showHeader="false"
+      :closable="false"
     >
       <div class="text-center space-y-4 pt-5">
         <div class="flex flex-col bg-white items-center justify-center text-center p-8 bg-gray-50 rounded-2xl shadow-sm">
@@ -129,19 +129,31 @@
             “{{quotes}}”
           </p>
         </div>
-        <div class="flex justify-center items-center">
-          <div class="mt-5 text-center text-md w-2/3 mb-5">
-            Dengan mengakhiri sesi ini, kamu bisa masuk ke forum diskusi untuk
-            berbagi pengalaman dengan yang lainya
+        <div v-if="!hasAnswer">
+          <div class="flex justify-center items-center">
+            <div class="mt-5 text-center text-md w-2/3 mb-5">
+              Dengan mengakhiri sesi ini, kamu bisa masuk ke forum diskusi untuk
+              berbagi pengalaman dengan yang lainya
+            </div>
+          </div>
+          <div class="flex justify-center gap-3 mt-5">
+            <Button
+              class="p-button-primary flex items-center justify-center gap-2"
+              @click="endPractice"
+            >
+              <CheckCircleIcon class="w-5 h-5" />
+              <span>Akhiri Sesi</span>
+            </Button>
           </div>
         </div>
-        <div class="flex justify-center gap-3 mt-5">
+        <div v-else>
           <Button
+            severity="danger"
             class="p-button-primary flex items-center justify-center gap-2"
             @click="endPractice"
           >
-            <CheckCircleIcon class="w-5 h-5" />
-            <span>Akhiri Sesi</span>
+            <XCircleIcon class="w-5 h-5" />
+            <span>Tutup</span>
           </Button>
         </div>
       </div>
@@ -168,6 +180,7 @@ import {
   CheckCircleIcon,
   ArrowDownTrayIcon,
 } from "@heroicons/vue/24/solid";
+import { XCircleIcon } from "@heroicons/vue/24/outline";
 
 const router = useRouter();
 const practiceStore = usePracticeStore();

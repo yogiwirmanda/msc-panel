@@ -30,6 +30,7 @@ import ListMember from "../pages/admin/member/List.vue"
 
 import ListReport from "../pages/admin/report/Lists.vue"
 import TestReport from "../pages/admin/report/Test.vue"
+import JournalReport from "../pages/admin/report/Journal.vue"
 
 import CreateTest from "../pages/admin/master/test/Create.vue"
 import ListTest from "../pages/admin/master/test/List.vue"
@@ -80,6 +81,7 @@ const routes = [
       { path: 'data/member/create', name: 'Member Create', component: CreateMember },
       { path: 'report', name: 'Member Report', component: ListReport },
       { path: 'report/test/:type/:id', name: 'Member Report Detail', component: TestReport },
+      { path: 'report/journal/:id', name: 'Member Report Journal', component: JournalReport },
     ]
   }
 ]

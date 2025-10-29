@@ -41,6 +41,12 @@
             <template #body="slotProps">
               <div class="flex justify-center gap-2">
                 <Button
+                  severity="contrast"
+                  label="Journal"
+                  rounded
+                  @click="ReportJournal(slotProps.data)"
+                />
+                <Button
                   severity="default"
                   label="Pre-Test"
                   rounded
@@ -101,6 +107,10 @@ const ReportPre = (userId: any) => {
 
 const ReportPost = (userId: any) => {
   router.push("/admin/report/test/pre/" + userId.id);
+};
+
+const ReportJournal = (userId: any) => {
+  router.push("/admin/report/journal/" + userId.id);
 };
 
 onMounted(() => {
