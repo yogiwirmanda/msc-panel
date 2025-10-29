@@ -53,19 +53,23 @@
             <template #body="slotProps">
               <div class="flex justify-center gap-2">
                 <Button
-                  icon="pi pi-pencil"
                   severity="info"
                   label="Edit"
                   rounded
                   @click="editRow(slotProps.data)"
-                />
+                >
+                  <PencilIcon class="w-5 h-5" />
+                  <span>Edit</span>
+                </Button>
                 <Button
-                  icon="pi pi-trash"
                   severity="danger"
                   label="Hapus"
                   rounded
                   @click="deleteRow(slotProps.data)"
-                />
+                >
+                  <TrashIcon class="w-5 h-5" />
+                  <span>Hapus</span>
+                </Button>
               </div>
             </template>
           </Column>
@@ -97,6 +101,7 @@ import { useToast } from "primevue/usetoast";
 import { useConfirm } from "primevue/useconfirm";
 import Card from "primevue/card";
 import { useUserStore } from "../../../../stores/userStore";
+import { PencilIcon, TrashIcon } from "@heroicons/vue/24/outline";
 
 const toast = useToast();
 const confirm = useConfirm();

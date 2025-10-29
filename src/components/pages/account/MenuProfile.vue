@@ -33,7 +33,6 @@
         <div class="mt-auto">
           <Button
             label="Logout"
-            icon="pi pi-sign-out"
             class="w-full"
             severity="danger"
             @click="logout"

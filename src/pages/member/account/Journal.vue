@@ -9,6 +9,7 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { useJournalStore } from "../../../stores/journalStore";
 import Cookie from "js-cookie";
+import { EyeIcon } from "@heroicons/vue/24/outline";
 
 const journalStore = useJournalStore();
 const listJournal = ref<any[]>([]);
@@ -74,11 +75,12 @@ onMounted(() => {
               <Column header="Action">
                 <template #body="{ data }">
                   <Button
-                    label="View Details"
-                    icon="pi pi-eye"
                     class="p-button-text p-button-sm"
                     @click="openModal(data)"
-                  />
+                  >
+                    <EyeIcon class="w-5 h-5" />
+                    <span>View Details</span>
+                  </Button>
                 </template>
               </Column>
             </DataTable>

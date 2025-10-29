@@ -15,7 +15,7 @@
             :href="href"
             @click="navigate"
           >
-            <span :class="item.icon" />
+            <component :is="item.icon" class="w-5 h-5 text-gray-600" />
             <span class="ml-2">{{ item.label }}</span>
           </a>
         </router-link>
@@ -25,12 +25,13 @@
           class="flex items-center cursor-pointer text-surface-700 px-4 py-2"
           :href="item.url"
           :target="item.target"
+          @click="item.command && item.command({ originalEvent: $event, item })"
         >
-          <span :class="item.icon" />
+          <component :is="item.icon" class="w-5 h-5 text-gray-600" />
           <span class="ml-2">{{ item.label }}</span>
-          <span
+          <ChevronDownIcon
             v-if="item.items"
-            class="pi pi-angle-down text-primary ml-auto"
+            class="w-4 h-4 text-primary ml-auto"
           />
         </a>
       </template>
@@ -45,6 +46,17 @@ import { ref } from "vue";
 import { useAuthStore } from "../../stores/auth";
 import router from "../../router";
 
+import {
+  HomeIcon,
+  BookOpenIcon,
+  UsersIcon,
+  UserIcon,
+  PencilIcon,
+  ChartBarIcon,
+  ChevronDownIcon,
+  ArrowLeftCircleIcon,
+} from "@heroicons/vue/24/outline";
+
 const authStore = useAuthStore();
 
 const logoutAdmin = async () => {
@@ -52,41 +64,41 @@ const logoutAdmin = async () => {
   router.push("/admin/login");
 };
 
-const items = ref([
+const items = ref<any>([
   {
     label: "Dashboard",
-    icon: "pi pi-home",
+    icon: HomeIcon,
     route: "/admin/dashboard",
   },
   {
     label: "Data",
-    icon: "pi pi-book",
+    icon: BookOpenIcon,
     items: [
       {
         label: "Role",
-        icon: "pi pi-pencil",
+        icon: PencilIcon,
         route: "/admin/master/role",
       },
       {
         label: "User",
-        icon: "pi pi-user",
+        icon: UserIcon,
         route: "/admin/master/user",
       },
       {
         label: "Member",
-        icon: "pi pi-users",
+        icon: UsersIcon,
         route: "/admin/data/member",
       },
     ],
   },
   {
     label: "Report",
-    icon: "pi pi-notes",
+    icon: ChartBarIcon,
     route: "/admin/report",
   },
   {
     label: "Logout",
-    icon: "pi pi-logout",
+    icon: ArrowLeftCircleIcon,
     command: logoutAdmin,
   },
 ]);
