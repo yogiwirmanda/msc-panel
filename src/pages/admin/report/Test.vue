@@ -51,9 +51,17 @@
           <div class="mt-5">
             <Button
               as="a"
+              class="mx-2"
               severity="danger"
               label="Kembali"
               href="/admin/report"
+            />
+            <Button
+              class="mx-2"
+              type="button"
+              severity="info"
+              label="Download Excel"
+              @click="downloadReportExcel"
             />
           </div>
         </div>
@@ -96,6 +104,7 @@ import Fieldset from "primevue/fieldset";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
+import Cookie from "js-cookie";
 
 const router = useRouter();
 const reportStore = useReportStore();
@@ -113,6 +122,46 @@ const loadReport = async () => {
     reportTables.value = data.value.reportTables;
   } else {
     data.value = null;
+  }
+};
+
+const downloadReportExcel = async () => {
+  try {
+    const token = Cookie.get("token");
+    const response = await fetch(
+      import.meta.env.VITE_API_BASE_URL +
+        `api/v1/report/test/exportExcel?user_id=${Number(
+          router.currentRoute.value.params.id
+        )}&test_type=${String(router.currentRoute.value.params.type)}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to download file");
+    }
+
+    const blob = await response.blob();
+
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+
+    const contentDisposition = response.headers.get("Content-Disposition");
+    const fileNameMatch = contentDisposition?.match(/filename="?([^"]+)"?/);
+    a.download = fileNameMatch?.[1] ?? "report.xlsx";
+
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+  } catch (err) {
+    console.error("Download failed:", err);
   }
 };
 

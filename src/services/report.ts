@@ -6,4 +6,8 @@ export const reportService = {
     const { data } = await api.get<ReportTest>(`/report/test?user_id=${userId}&test_type=${type}`)
     return data
   },
+  async excel(type: string, userId:number): Promise<ReportTest> {
+    const { data } = await api.get<ReportTest>(`/report/test/exportExcel?user_id=${userId}&test_type=${type}`)
+    return data
+  },
 }
