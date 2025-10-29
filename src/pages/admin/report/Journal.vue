@@ -3,7 +3,6 @@ import { onMounted, ref } from "vue";
 import Card from "primevue/card";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
-import HeaderProfile from "../../../components/pages/account/HeaderProfile.vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import { useJournalStore } from "../../../stores/journalStore";
