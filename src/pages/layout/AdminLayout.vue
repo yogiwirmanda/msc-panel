@@ -19,6 +19,14 @@
 <script setup lang="ts">
 import Toast from "primevue/toast";
 import MenuPanel from "./MenuPanel.vue";
+import Cookie from "js-cookie";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+if (Cookie.get("role") != "admin") {
+  router.push("/admin/login");
+}
 </script>
 
 <style scoped>

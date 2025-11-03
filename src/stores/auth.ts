@@ -47,7 +47,6 @@ export const useAuthStore = defineStore('auth', () => {
       showToast('success', data.message || 'Registration successful')
       return true
     } catch (err: any) {
-      console.error('Register Error:', err)
       showToast('error', err.response?.data?.message || 'Registration failed')
       error.value = err.message || 'Failed to register'
       return false
@@ -81,12 +80,17 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const response = await authService.loginMember(payload)
       data.value = response
-      initialize()
-      setToken(data.value.data.tokenData.token)
-      showToast('success', data.value.message)
-      isLogin.value = true;
-      loginRole.value = 'admin';
-      Cookies.set('role', 'admin')
+      if (data.value.data.users.role_id == 2){
+        initialize()
+        setToken(data.value.data.tokenData.token)
+        showToast('success', data.value.message)
+        isLogin.value = true;
+        loginRole.value = 'admin';
+        Cookies.set('role', 'admin')
+      } else {
+        showToast('error', 'Akun anda bukan administrator')
+        return false
+      }
     } catch (err: any) {
       showToast('error', err.response.data.message)
       error.value = err.message || 'Failed to create role'

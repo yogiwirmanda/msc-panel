@@ -76,6 +76,7 @@
                 rows="2"
                 class="w-full mt-2"
                 :required="true"
+                :placeholder="questionPlaceholder[currentNumber][index]"
               />
             </div>
           </div>
@@ -204,6 +205,45 @@ if (typeof params === "string" && params.startsWith("SESI-")) {
 } else {
   currentNumber.value = 0;
 }
+
+let questionPlaceholder = [
+  [
+    'Sedih, kecewa, cemas',
+    'Badan menjadi lebih rileks, leher tidak lagi kaku dan merasa lebih tenang',
+    'Perasaan menjadi lebih tenang',
+    'Saat badan merasa tegang, leher kaku, ada perasaaan cemas dapat mempraktikan self-compassion break'
+  ],
+  [
+    'Sedih, cemas',
+    'Badan menjadi lebih rileks, leher tidak terasa kaku dan perasaan menjadi lebih tenang',
+    'Badan menjadi semakin rileks dan perasaan menjadi lebih tenang',
+    'Saat sedang tegang dan banyak pikiran, dapat mempraktikan sesi ini'
+  ],
+  [
+    'Marah, cemas, khawatir',
+    'Menjadi lebih tenang',
+    'Menjadi lebih tenang, rileks, cemas berkurang',
+    'Lebih mencintai diri sendiri'
+  ],
+  [
+    'Sedang marah, sedih, kecewa',
+    'Menjadi lebih rileks, leher tidak terasa kaku, perasaan menjadi lebih tenang',
+    'Berpikir terlebih dahulu sebelum merespon orang lain, berusaha untuk menarik nafas terlebih dahulu,jika ingin marah ke orang lain',
+    'Berusaha untuk tidak langsung merespon, tanpa berpikir terlebih dahulu'
+  ],
+  [
+    'Capek, sedih dan kecewa',
+    'Merasa lebih rileks, perasaan menjadi lebih tenang',
+    'Badan semakin rileks dan perasaan semakin tenang',
+    'Belajar mencintai diri sendiri'
+  ],
+  [
+    'Ingin lebih mencintai diri sendiri, lebih menikmati setiap aktivitas yang dilakukan',
+    'Mencintai diri sendiri, mindfullness dalam setiap aktivitas',
+    'Membuat jadwal khusus untuk melakukan jurnaling harian tentang apa yang di rasakan',
+    'Lebih mencintai diri sendiri'
+  ]
+]
 
 const loadPractice = async (code: any) => {
   loading.value = true;

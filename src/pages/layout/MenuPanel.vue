@@ -48,10 +48,7 @@ import router from "../../router";
 
 import {
   HomeIcon,
-  BookOpenIcon,
   UsersIcon,
-  UserIcon,
-  PencilIcon,
   ChartBarIcon,
   ChevronDownIcon,
   ArrowLeftCircleIcon,
@@ -71,25 +68,9 @@ const items = ref<any>([
     route: "/admin/dashboard",
   },
   {
-    label: "Data",
-    icon: BookOpenIcon,
-    items: [
-      {
-        label: "Role",
-        icon: PencilIcon,
-        route: "/admin/master/role",
-      },
-      {
-        label: "User",
-        icon: UserIcon,
-        route: "/admin/master/user",
-      },
-      {
-        label: "Member",
-        icon: UsersIcon,
-        route: "/admin/data/member",
-      },
-    ],
+    label: "Member",
+    icon: UsersIcon,
+    route: "/admin/data/member",
   },
   {
     label: "Report",
