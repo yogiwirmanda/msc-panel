@@ -11,5 +11,5 @@ export type RegisterForm = {
   gender: string;
   profession: { name: string; code: string } | null;
   last_education: { name: string; code: string } | null;
-  consent: boolean;
+  consent: any;
 };

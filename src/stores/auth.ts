@@ -14,6 +14,7 @@ export const useAuthStore = defineStore('auth', () => {
   const isLogin = ref(false)
   const loginRole = ref('')
   const userLogin = ref<any>()
+  const listAgreements = ref<any>()
 
   const setToken = (value: string) => {
     token.value = value
@@ -104,6 +105,19 @@ export const useAuthStore = defineStore('auth', () => {
     clearToken()
   }
 
+  const agreements = async () => {
+    loading.value = true
+    try {
+      const response = await authService.getAgreements()
+      listAgreements.value = await response.data
+      Cookies.set('user', JSON.stringify(userLogin.value));
+    } catch (err: any) {
+      showToast('error', err.response.data.message)
+    } finally {
+      loading.value = false
+    }
+  }
+
 
   return {
     members,
@@ -113,7 +127,9 @@ export const useAuthStore = defineStore('auth', () => {
     isLogin,
     loginRole,
     userLogin,
+    listAgreements,
     initialize,
+    agreements,
     loginAdmin,
     registerMember,
     loginMember,

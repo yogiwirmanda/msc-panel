@@ -44,4 +44,9 @@ export const authService = {
     const { data } = await api.get<RegisterForm>('/auth/initialize')
     return data
   },
+
+  async getAgreements(): Promise<any> {
+    const { data } = await api.get<any>('/agreements')
+    return data
+  },
 }

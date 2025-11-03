@@ -55,7 +55,7 @@
           <InputText
             id="phone"
             v-model="form.phone_number"
-            placeholder="081217018168"
+            placeholder="Nomor Telepon"
             class="w-full"
           />
           <small v-if="errors.phone_number" class="text-red-500">{{
@@ -180,29 +180,42 @@
             errors.last_education
           }}</small>
         </div>
-        <Card>
-          <template #content>
-            <div class="text-base leading-relaxed mb-4 agreement-text">
-              Saya dengan ini menyatakan bahwa saya telah membaca dan memahami
-              informasi mengenai pelatihan mindful self-compassion. <br /><br />
-              Saya mengerti bahwa partisipasi saya bersifat sukarela dan saya
-              memiliki hak untuk menarik diri dari pelatihan ini kapan saja
-              tanpa konsekuensi negatif. Saya juga memahami bahwa data yang saya
-              berikan akan dijaga kerahasiaannya. <br /><br />
-              Dengan mencentang kotak di bawah ini, saya menyetujui syarat dan
-              ketentuan di atas.
-            </div>
-            <div class="flex items-center gap-2">
-              <Checkbox v-model="form.consent" :binary="true" inputId="agree" />
-              <label for="agree" class="text-sm"
-                >Saya menyetujui syarat dan ketentuan di atas</label
+        <div v-if="listAgreements?.length" class="flex flex-col gap-6">
+          <Card
+            v-for="agreement in listAgreements"
+            :key="agreement.id"
+            class="shadow-sm"
+          >
+            <template #title>
+              <div class="font-semibold text-lg">{{ agreement.title }}</div>
+            </template>
+
+            <template #content>
+              <div
+                class="agreement-text text-base leading-relaxed prose prose-sm max-w-none"
+                v-html="agreement.content_html"
+              ></div>
+
+              <div class="flex items-center gap-2 mt-4">
+                <Checkbox
+                  v-model="form.consent[agreement.slug]"
+                  :binary="true"
+                  :inputId="agreement.slug"
+                />
+                <label :for="agreement.slug" class="text-sm">
+                  Saya telah membaca dan menyetujui pernyataan di atas
+                </label>
+              </div>
+
+              <small
+                v-if="errors[`consent.${agreement.slug}`]"
+                class="text-red-500"
               >
-            </div>
-            <small v-if="errors.consent" class="text-red-500">{{
-              errors.consent
-            }}</small>
-          </template>
-        </Card>
+                {{ errors[`consent.${agreement.slug}`] }}
+              </small>
+            </template>
+          </Card>
+        </div>
         <Button
           label="Register"
           icon="pi pi-user"
@@ -231,7 +244,7 @@ import RadioButtonGroup from "primevue/radiobuttongroup";
 import Select from "primevue/select";
 import Toast from "primevue/toast";
 
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter, RouterLink } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import { UserCircleIcon } from "@heroicons/vue/24/outline";
@@ -242,13 +255,28 @@ import type { RegisterForm } from "../../types/register";
 const router = useRouter();
 const toast = useToast();
 const authStore = useAuthStore();
+const listAgreements = ref<any>();
+
+const loadAgreement = async () => {
+  await authStore.agreements();
+  listAgreements.value = authStore.listAgreements;
+
+  const consentFields: Record<string, yup.BooleanSchema> = {};
+  listAgreements.value.forEach((agreement: any) => {
+    consentFields[agreement.slug] = yup
+      .boolean()
+      .oneOf([true], `Anda harus menyetujui "${agreement.title}"`);
+  });
+
+  schema.value = schema.value.shape({
+    consent: yup.object().shape(consentFields),
+  });
+};
 
 const listProfession = ref([
-  { name: "Pegawai Negeri Sipil", code: "PNS" },
-  { name: "Pegawai Swasta", code: "PS" },
-  { name: "Petani", code: "PTN" },
-  { name: "Guru", code: "GR" },
-  { name: "Dosen", code: "DSN" },
+  { name: "Pelajar", code: "PS" },
+  { name: "Mahasiswa", code: "PNS" },
+  { name: "Pekerja", code: "PTN" },
 ]);
 
 const listEducation = ref([
@@ -276,56 +304,60 @@ const form = ref<RegisterForm>({
   gender: "",
   profession: null,
   last_education: null,
-  consent: false,
+  consent: {},
 });
 
 const errors = ref<Record<string, string>>({});
 
-const schema = yup.object({
-  name: yup.string().required("Nama Lengkap wajib diisi"),
-  nickname: yup.string().required("Nama Alias wajib diisi"),
-  phone_number: yup
-    .string()
-    .matches(/^[0-9]+$/, "Nomor telepon harus angka")
-    .min(10, "Nomor telepon minimal 10 digit")
-    .required("Nomor Telepon wajib diisi"),
-  email: yup
-    .string()
-    .email("Format email tidak valid")
-    .required("Email wajib diisi"),
-  password: yup
-    .string()
-    .min(9, "Kata sandi minimal 9 karakter")
-    .required("Kata sandi wajib diisi"),
-  password_confirmation: yup
-    .string()
-    .oneOf([yup.ref("password")], "Konfirmasi kata sandi tidak cocok")
-    .required("Konfirmasi kata sandi wajib diisi"),
-  address: yup.string().required("Alamat wajib diisi"),
-  birthdate: yup.date().required("Tanggal lahir wajib diisi"),
-  gender: yup.string().required("Pilih jenis kelamin"),
-  profession: yup.object().required("Pilih profesi"),
-  last_education: yup.object().required("Pilih pendidikan terakhir"),
-  consent: yup
-    .boolean()
-    .oneOf([true], "Anda harus menyetujui syarat dan ketentuan"),
-});
+const schema = ref(
+  yup.object({
+    name: yup.string().required("Nama Lengkap wajib diisi"),
+    nickname: yup.string().required("Nama Alias wajib diisi"),
+    phone_number: yup
+      .string()
+      .matches(/^[0-9]+$/, "Nomor telepon harus angka")
+      .min(10, "Nomor telepon minimal 10 digit")
+      .required("Nomor Telepon wajib diisi"),
+    email: yup
+      .string()
+      .email("Format email tidak valid")
+      .required("Email wajib diisi"),
+    password: yup
+      .string()
+      .min(9, "Kata sandi minimal 9 karakter")
+      .required("Kata sandi wajib diisi"),
+    password_confirmation: yup
+      .string()
+      .oneOf([yup.ref("password")], "Konfirmasi kata sandi tidak cocok")
+      .required("Konfirmasi kata sandi wajib diisi"),
+    address: yup.string().required("Alamat wajib diisi"),
+    birthdate: yup.date().required("Tanggal lahir wajib diisi"),
+    gender: yup.string().required("Pilih jenis kelamin"),
+    profession: yup.object().required("Pilih profesi"),
+    last_education: yup.object().required("Pilih pendidikan terakhir"),
+    consent: yup.object(),
+  })
+);
 
 const saveRegister = async () => {
   errors.value = {};
 
   try {
-    await schema.validate(form.value, { abortEarly: false });
+    await schema.value.validate(form.value, { abortEarly: false });
 
     const birthdate = form.value.birthdate;
     const formatted = new Date(birthdate).toISOString().split("T")[0];
+
     const payload = {
       ...form.value,
       birthdate: formatted,
       username: form.value.nickname,
       last_education: form.value.last_education?.name,
       profession: form.value.profession?.name,
-      consent: { msc_consent: { value: !!form.value.consent } },
+      consent: Object.keys(form.value.consent).reduce((acc, key) => {
+        acc[key] = { value: !!form.value.consent[key] };
+        return acc;
+      }, {} as Record<string, { value: boolean }>),
     };
 
     const success = await authStore.registerMember(payload);
@@ -335,12 +367,9 @@ const saveRegister = async () => {
         summary: "Registrasi Berhasil",
         life: 3000,
       });
-      setTimeout(() => {
-        router.push("/login");
-      }, 1000);
+      setTimeout(() => router.push("/login"), 1000);
     }
   } catch (err: any) {
-    console.log(err);
     if (err.inner) {
       err.inner.forEach((e: any) => {
         errors.value[e.path] = e.message;
@@ -355,6 +384,10 @@ const saveRegister = async () => {
     }
   }
 };
+
+onMounted(() => {
+  loadAgreement();
+});
 </script>
 
 <style scoped>
