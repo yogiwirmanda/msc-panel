@@ -265,10 +265,35 @@ const loadAgreement = async () => {
   listAgreements.value.forEach((agreement: any) => {
     consentFields[agreement.slug] = yup
       .boolean()
-      .oneOf([true], `Anda harus menyetujui "${agreement.title}"`);
+      .oneOf([true], `Anda harus menyetujui "${agreement.title}"`)
+      .required(`Anda harus menyetujui "${agreement.title}"`);
   });
 
-  schema.value = schema.value.shape({
+  schema.value = yup.object({
+    name: yup.string().required("Nama Lengkap wajib diisi"),
+    nickname: yup.string().required("Nama Alias wajib diisi"),
+    phone_number: yup
+      .string()
+      .matches(/^[0-9]+$/, "Nomor telepon harus angka")
+      .min(10, "Nomor telepon minimal 10 digit")
+      .required("Nomor Telepon wajib diisi"),
+    email: yup
+      .string()
+      .email("Format email tidak valid")
+      .required("Email wajib diisi"),
+    password: yup
+      .string()
+      .min(9, "Kata sandi minimal 9 karakter")
+      .required("Kata sandi wajib diisi"),
+    password_confirmation: yup
+      .string()
+      .oneOf([yup.ref("password")], "Konfirmasi kata sandi tidak cocok")
+      .required("Konfirmasi kata sandi wajib diisi"),
+    address: yup.string().required("Alamat wajib diisi"),
+    birthdate: yup.date().required("Tanggal lahir wajib diisi"),
+    gender: yup.string().required("Pilih jenis kelamin"),
+    profession: yup.object().required("Pilih profesi"),
+    last_education: yup.object().required("Pilih pendidikan terakhir"),
     consent: yup.object().shape(consentFields),
   });
 };
