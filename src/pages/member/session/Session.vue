@@ -206,7 +206,7 @@ if (typeof params === "string" && params.startsWith("SESI-")) {
   currentNumber.value = 0;
 }
 
-let questionPlaceholder = [
+const questionPlaceholder : any = [
   [
     'Sedih, kecewa, cemas',
     'Badan menjadi lebih rileks, leher tidak lagi kaku dan merasa lebih tenang',
