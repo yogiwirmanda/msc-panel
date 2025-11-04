@@ -21,6 +21,7 @@
         <h2 class="text-2xl font-bold">{{ item?.title }}</h2>
       </template>
       <template #content>
+      <Message class="mt-5" severity="secondary" v-if="item.section_code === 'EX1' || item.section_code === 'EX2'">Disarankan menggunakan earphone/headset untuk kualitas audio optimal dan konsentrasi yang lebih baik.</Message>
         <div class="flex justify-center py-5 container">
           <div v-if="item.section_code === 'EX1' && detailPractice.id == 1" class="flex justify-center py-5 box-video">
             <iframe src="https://drive.google.com/file/d/14kRHbw5QRZ7KcCI9C-VlUH_wwMxnRN1W/preview" width="100%" height="100%" allow="autoplay" :allowfullscreen="true"></iframe>
@@ -182,6 +183,7 @@ import {
   ArrowDownTrayIcon,
 } from "@heroicons/vue/24/solid";
 import { XCircleIcon } from "@heroicons/vue/24/outline";
+import Message from "primevue/message";
 
 const router = useRouter();
 const practiceStore = usePracticeStore();

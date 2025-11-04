@@ -36,6 +36,20 @@ export const useReportStore = defineStore('report', () => {
     }
   }
 
+  const excelExportAll = async () => {
+    loading.value = true
+    try {
+      const response = await reportService.excelAll()
+      reportData.value = response
+      return true
+    } catch (err: any) {
+      error.value = err.message || 'Failed to get detail ques template'
+      return false
+    } finally {
+      loading.value = false
+    }
+  }
+
   const memberReport = async (page: number, limit:number) => {
     loading.value = true
     try {
@@ -57,6 +71,7 @@ export const useReportStore = defineStore('report', () => {
     error,
     test,
     excelExport,
-    memberReport
+    memberReport,
+    excelExportAll
   }
 })
