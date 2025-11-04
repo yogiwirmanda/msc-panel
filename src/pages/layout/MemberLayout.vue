@@ -4,11 +4,18 @@ import { useAuthStore } from "../../stores/auth";
 import Toast from "primevue/toast";
 import { onMounted } from "vue";
 import Menu from "../../components/pages/Menu.vue";
+import { useRouter } from "vue-router";
 
 const auth = useAuthStore();
+const router = useRouter();
 
 onMounted(async () => {
   await auth.initialize();
+  console.log(auth.userLogin.role_id);
+  if (auth.userLogin.role_id != 3) {
+    await auth.logoutMember();
+    router.push("/login");
+  }
 });
 </script>
 
