@@ -22,7 +22,7 @@
       </template>
       <template #content>
         <div class="flex justify-center py-5 container">
-          <div v-if="item.section_code === 'EX1' && detailPractice.id == 1" class="flex justify-center py-5">
+          <div v-if="item.section_code === 'EX1' && detailPractice.id == 1" class="flex justify-center py-5 box-video">
             <iframe src="https://drive.google.com/file/d/14kRHbw5QRZ7KcCI9C-VlUH_wwMxnRN1W/preview" width="100%" height="100%" allow="autoplay" :allowfullscreen="true"></iframe>
           </div>
           <div v-if="item.section_code === 'EX2' && detailPractice.id == 1">
@@ -97,7 +97,7 @@
 
     <Card v-if="hasAnswer" class="mt-5">
       <template #content>
-        <div class="flex justify-between">
+        <div class="grid md:grid-cols-2 xs:grid-cols-1 gap-5">
           <Button
             class="p-button-info flex items-center justify-center gap-2"
             @click="goToForum"
@@ -119,14 +119,14 @@
     <Dialog
       v-model:visible="visible"
       modal
-      :style="{ width: '60vw', maxWidth: '900px' }"
+      :style="{ width: '70vw', maxWidth: '900px' }"
       :draggable="false"
       :showHeader="false"
       :closable="false"
     >
       <div class="text-center space-y-4 pt-5">
-        <div class="flex flex-col bg-white items-center justify-center text-center p-8 bg-gray-50 rounded-2xl shadow-sm">
-          <p class="text-3xl italic text-gray-700 max-w-2xl">
+        <div class="flex flex-col bg-white items-center justify-center text-center md:p-8 xs:p-3 bg-gray-50 rounded-2xl shadow-sm">
+          <p class="md:text-3xl xs:text-md italic text-gray-700 max-w-2xl">
             “{{quotes}}”
           </p>
         </div>
