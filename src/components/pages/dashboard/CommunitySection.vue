@@ -20,13 +20,13 @@
         yang peduli dengan pengembangan diri dan kolaborasi.
       </p>
 
-      <Button
+      <!-- <Button
         label="Bergabung Sekarang"
         severity="secondary"
         rounded
         size="large"
         class="bg-secondary hover:bg-secondary px-6 py-3 mt-4 shadow-lg btn-discussion"
-      />
+      /> -->
     </div>
 
     <div
@@ -40,7 +40,6 @@
 
 <script lang="ts" setup>
 import { ChatBubbleLeftRightIcon } from "@heroicons/vue/24/outline";
-import Button from "primevue/button";
 </script>
 
 <style scoped>
