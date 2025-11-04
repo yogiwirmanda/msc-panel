@@ -8,18 +8,24 @@ import Column from "primevue/column";
 import { useJournalStore } from "../../../stores/journalStore";
 import { useRouter } from "vue-router";
 import { EyeIcon } from "@heroicons/vue/24/outline";
+import LoadingPage from "../../../components/LoadingPage.vue";
 
 const journalStore = useJournalStore();
 const listJournal = ref<any[]>([]);
 const visible = ref(false);
 const selectedJournals = ref<any[]>([]);
 const router = useRouter();
+const loading = ref(false);
 
 const loadJournal = async () => {
+  loading.value = true;
   await journalStore.getAllJournal(Number(router.currentRoute.value.params.id));
   if (journalStore.journals) {
     listJournal.value = journalStore.journals.data;
   }
+  setTimeout(() => {
+    loading.value = false;
+  }, 1500);
 };
 
 const openModal = (data: any) => {
@@ -34,11 +40,22 @@ onMounted(() => {
 
 <template>
   <div class="container pb-10">
+    <LoadingPage :visible="loading" message="Memproses Data...." />
     <div class="grid grid-cols-12 gap-5 px-10">
       <div class="col-span-12">
         <Card v-if="listJournal.length > 0">
-          <template #title>Journal List</template>
-
+          <template #title>
+            <div class="flex justify-between">
+              <div>Journal List</div>
+              <Button
+                as="a"
+                class="mx-2"
+                severity="danger"
+                label="Kembali"
+                href="/admin/report"
+              />
+            </div>
+          </template>
           <template #content>
             <DataTable
               :value="listJournal"

@@ -1,4 +1,5 @@
 <template>
+  <LoadingPage :visible="loading" message="Memproses Data...." />
   <Card v-if="data != null">
     <template #content>
       <div class="flex justify-center">
@@ -105,13 +106,16 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
 import Cookie from "js-cookie";
+import LoadingPage from "../../../components/LoadingPage.vue";
 
 const router = useRouter();
 const reportStore = useReportStore();
 const data = ref<any>();
 const reportTables = ref<any[]>([]);
+const loading = ref(false);
 
 const loadReport = async () => {
+  loading.value = true;
   const success = await reportStore.test(
     String(router.currentRoute.value.params.type),
     Number(router.currentRoute.value.params.id)
@@ -120,6 +124,9 @@ const loadReport = async () => {
   if (success) {
     data.value = reportStore.reportData.data;
     reportTables.value = data.value.reportTables;
+    setTimeout(() => {
+      loading.value = false;
+    }, 1000);
   } else {
     data.value = null;
   }

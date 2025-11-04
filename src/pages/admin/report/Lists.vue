@@ -1,6 +1,7 @@
 <template>
   <Toast />
   <ConfirmDialog />
+  <LoadingPage :visible="loading" message="Memproses Data...." />
 
   <Card>
     <template #title>
@@ -47,6 +48,7 @@
               <div class="flex justify-center gap-2">
                 <Button
                   severity="contrast"
+                  size="small"
                   label="Journal"
                   rounded
                   @click="ReportJournal(slotProps.data)"
@@ -54,6 +56,7 @@
                 <Button
                   v-if="slotProps.data.preTestStatus == 'completed'"
                   severity="default"
+                  size="small"
                   label="Pre-Test"
                   rounded
                   @click="ReportPre(slotProps.data)"
@@ -61,6 +64,7 @@
                 <Button
                   v-if="slotProps.data.postTestStatus == 'completed'"
                   severity="info"
+                  size="small"
                   label="Post-Test"
                   rounded
                   @click="ReportPost(slotProps.data)"
@@ -87,7 +91,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
@@ -96,18 +100,23 @@ import Card from "primevue/card";
 import { useUserStore } from "../../../stores/userStore";
 import router from "../../../router";
 import { useReportStore } from "../../../stores/report";
+import LoadingPage from "../../../components/LoadingPage.vue";
 
 const userStore = useUserStore();
 const reportStore = useReportStore();
+const loading = ref(false);
 
 const fetchMembers = async (page: number = 1) => {
+  loading.value = true;
   await reportStore.memberReport(page, 10);
-  console.log(reportStore.members);
+  setTimeout(() => {
+    loading.value = false;
+  }, 1000);
 };
 
 const onPage = (event: any) => {
   const newPage = event.page + 1;
-  userStore.fetchMembers(newPage);
+  fetchMembers(newPage);
 };
 
 const ReportPre = (userId: any) => {
