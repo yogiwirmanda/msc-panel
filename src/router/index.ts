@@ -3,6 +3,8 @@ import { useAuthStore } from '../stores/auth'
 
 import AdminLogin from '../pages/auth/LoginAdmin.vue'
 import Login from '../pages/auth/Login.vue'
+import Forgot from '../pages/auth/Forgot.vue'
+import Reset from '../pages/auth/Reset.vue'
 import Register from '../pages/auth/Register.vue'
 
 import MemberLayout from '../pages/layout/MemberLayout.vue'
@@ -42,6 +44,8 @@ import ListPractice from "../pages/admin/master/practice/List.vue"
 const routes = [
   { path: '/', name: 'Home', component: Login, meta: { guest: true } },
   { path: '/login', name: 'Login', component: Login, meta: { guest: true } },
+  { path: '/forgot', name: 'Forgot', component: Forgot, meta: { guest: true } },
+  { path: '/reset', name: 'Reset', component: Reset, meta: { guest: true } },
   { path: '/admin/login', name: 'Admin Login', component: AdminLogin, meta: { guest: true } },
   { path: '/register', name: 'Register', component: Register, meta: { guest: true } },
 
