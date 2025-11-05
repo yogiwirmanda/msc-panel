@@ -77,7 +77,7 @@
                 rows="2"
                 class="w-full mt-2"
                 :required="true"
-                :placeholder="questionPlaceholder[currentNumber][index]"
+                :placeholder="questionPlaceholder[currentNumber - 1][index]"
               />
             </div>
           </div>
@@ -201,6 +201,7 @@ const currentNumber = ref(0);
 
 let getUser = JSON.parse(String(Cookie.get("user")));
 const params = router.currentRoute.value.params.code;
+
 
 if (typeof params === "string" && params.startsWith("SESI-")) {
   currentNumber.value = parseInt(params.replace("SESI-", ""));
@@ -326,6 +327,9 @@ const saveJournal = async () => {
       loading.value = false;
     }
   // }
+  if (currentNumber.value == 6) {
+    router.push(`/member/attempt-test/post-test`);
+  }
 
 };
 

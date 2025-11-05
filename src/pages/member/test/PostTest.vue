@@ -48,7 +48,7 @@
 import { FormKitSchema } from "@formkit/vue";
 import type { FormKitSchemaNode } from "@formkit/core";
 import Card from "primevue/card";
-import { onMounted, ref } from "vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 import { useQuestStore } from "../../../stores/questStore";
 import { useRouter } from "vue-router";
 import Cookie from "js-cookie";
@@ -199,4 +199,17 @@ const endPosTest = async () => {
   visible.value = false;
   router.push("/member/dashboard");
 };
+
+onMounted(() => {
+  const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+    event.preventDefault();
+    event.returnValue = "Are you sure you want to leave?";
+  };
+
+  window.addEventListener("beforeunload", handleBeforeUnload);
+
+  onBeforeUnmount(() => {
+    window.removeEventListener("beforeunload", handleBeforeUnload);
+  });
+});
 </script>
