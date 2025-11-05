@@ -27,6 +27,7 @@
           <InputText
             id="name"
             v-model="form.name"
+            @blur="validateField('name')"
             class="w-full"
             placeholder="Nama Lengkap"
           />
@@ -41,6 +42,7 @@
           <InputText
             id="nickname"
             v-model="form.nickname"
+            @blur="validateField('nickname')"
             class="w-full"
             placeholder="Nama Alias"
           />
@@ -55,6 +57,7 @@
           <InputText
             id="phone"
             v-model="form.phone_number"
+            @blur="validateField('phone_number')"
             placeholder="Nomor Telepon"
             class="w-full"
           />
@@ -67,6 +70,7 @@
           <InputText
             id="email"
             type="email"
+            @blur="validateField('email')"
             v-model="form.email"
             class="w-full"
             placeholder="E-mail"
@@ -83,6 +87,7 @@
             id="password"
             v-model="form.password"
             class="w-full"
+            @blur="validateField('password')"
             placeholder="Kata Sandi"
             :feedback="false"
             :toggle-mask="true"
@@ -99,6 +104,7 @@
           <Password
             id="password_confirmation"
             v-model="form.password_confirmation"
+            @blur="validateField('password_confirmation')"
             class="w-full"
             placeholder="Konfirmasi Kata Sandi"
             :feedback="false"
@@ -114,6 +120,7 @@
           <InputText
             id="address"
             v-model="form.address"
+            @blur="validateField('address')"
             class="w-full"
             placeholder="Alamat"
           />
@@ -128,6 +135,7 @@
           <DatePicker
             v-model="form.birthdate"
             placeholder="Tanggal Lahir"
+            @blur="validateField('birthdate')"
             fluid
           />
           <small v-if="errors.birthdate" class="text-red-500">{{
@@ -138,7 +146,11 @@
           <label for="gender" class="block mb-2 font-medium"
             >Jenis Kelamin</label
           >
-          <RadioButtonGroup v-model="form.gender" class="flex flex-wrap gap-4">
+          <RadioButtonGroup
+            v-model="form.gender"
+            class="flex flex-wrap gap-4"
+            @blur="validateField('gender')"
+          >
             <div class="flex items-center gap-2">
               <RadioButton inputId="male" value="male" />
               <label for="male">Laki - Laki</label>
@@ -244,7 +256,7 @@ import RadioButtonGroup from "primevue/radiobuttongroup";
 import Select from "primevue/select";
 import Toast from "primevue/toast";
 
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useRouter, RouterLink } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import { UserCircleIcon } from "@heroicons/vue/24/outline";
@@ -296,6 +308,15 @@ const loadAgreement = async () => {
     last_education: yup.object().required("Pilih pendidikan terakhir"),
     consent: yup.object().shape(consentFields),
   });
+};
+
+const validateField = async (field: string) => {
+  try {
+    await schema.value.validateAt(field, form.value);
+    delete errors.value[field];
+  } catch (err: any) {
+    errors.value[field] = err.message;
+  }
 };
 
 const listProfession = ref([
@@ -399,6 +420,10 @@ const saveRegister = async () => {
       err.inner.forEach((e: any) => {
         errors.value[e.path] = e.message;
       });
+      const firstError = err.inner[0];
+      if (firstError?.path) {
+        focusField(firstError.path);
+      }
     } else {
       toast.add({
         severity: "error",
@@ -407,6 +432,25 @@ const saveRegister = async () => {
         life: 4000,
       });
     }
+  }
+};
+
+const focusField = (fieldPath: string) => {
+  const fieldId = fieldPath.includes(".")
+    ? fieldPath.split(".").pop()
+    : fieldPath;
+
+  const el = document.getElementById(fieldId || fieldPath);
+  if (el) {
+    el.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+    setTimeout(() => {
+      (el as HTMLElement).focus({ preventScroll: true });
+      el.classList.add("focus-error");
+      setTimeout(() => el.classList.remove("focus-error"), 1200);
+    }, 400);
   }
 };
 
