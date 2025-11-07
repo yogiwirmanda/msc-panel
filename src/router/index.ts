@@ -44,8 +44,8 @@ import ListPractice from "../pages/admin/master/practice/List.vue"
 const routes = [
   { path: '/', name: 'Home', component: Login, meta: { guest: true } },
   { path: '/login', name: 'Login', component: Login, meta: { guest: true } },
-  { path: '/forgot', name: 'Forgot', component: Forgot, meta: { guest: true } },
-  { path: '/reset', name: 'Reset', component: Reset, meta: { guest: true } },
+  { path: '/password/request', name: 'Forgot', component: Forgot, meta: { guest: true } },
+  { path: '/password/recovery', name: 'Reset', component: Reset, meta: { guest: true } },
   { path: '/admin/login', name: 'Admin Login', component: AdminLogin, meta: { guest: true } },
   { path: '/register', name: 'Register', component: Register, meta: { guest: true } },
 

@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { authService, type RegisterForm } from '../services/authService'
 import { useAppToast } from '../composables/useAppToast'
 import Cookies from 'js-cookie'
+import { useRouter } from 'vue-router'
 
 export const useAuthStore = defineStore('auth', () => {
   const members = ref<RegisterForm[]>([])
@@ -15,6 +16,7 @@ export const useAuthStore = defineStore('auth', () => {
   const loginRole = ref('')
   const userLogin = ref<any>()
   const listAgreements = ref<any>()
+  const router = useRouter();
 
   const setToken = (value: string) => {
     token.value = value
@@ -35,6 +37,10 @@ export const useAuthStore = defineStore('auth', () => {
       userLogin.value = await response.data.user
       Cookies.set('user', JSON.stringify(userLogin.value));
     } catch (err: any) {
+      if (err.status == 401){
+        logoutMember();
+        router.push('/login')
+      }
       showToast('error', err.response.data.message)
     } finally {
       loading.value = false
