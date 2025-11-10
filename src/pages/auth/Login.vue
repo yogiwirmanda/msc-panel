@@ -114,17 +114,21 @@ const validateForm = () => {
   let valid = true;
   errors.value = { username: "", password: "" };
 
-  if (!form.value.username.trim()) {
-    errors.value.username = "Username wajib diisi";
-    valid = false;
+  if (form.value.username != undefined){
+    if (!form.value.username.trim()) {
+      errors.value.username = "Username wajib diisi";
+      valid = false;
+    }
   }
 
-  if (!form.value.password.trim()) {
-    errors.value.password = "Password wajib diisi";
-    valid = false;
-  } else if (form.value.password.length < 9) {
-    errors.value.password = "Password minimal 9 karakter";
-    valid = false;
+  if (form.value.password != undefined){
+    if (!form.value.password.trim()) {
+      errors.value.password = "Password wajib diisi";
+      valid = false;
+    } else if (form.value.password.length < 9) {
+      errors.value.password = "Password minimal 9 karakter";
+      valid = false;
+    }
   }
 
   return valid;

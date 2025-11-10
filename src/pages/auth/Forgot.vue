@@ -69,9 +69,6 @@ import Toast from "primevue/toast";
 import type { LoginForm } from "../../types/auth";
 import { RouterLink, useRouter } from "vue-router";
 import { UserCircleIcon } from "@heroicons/vue/24/outline";
-import { useToast } from "primevue/usetoast";
-
-const toast = useToast();
 const router = useRouter();
 
 const form = ref<LoginForm>({
@@ -89,11 +86,14 @@ const validateForm = () => {
   let valid = true;
   errors.value = { email: "" };
 
-  if (!form.value.email.trim()) {
-    errors.value.email = "Email wajib diisi";
-    valid = false;
+  if (form.value.email != undefined){
+    if (!form.value.email.trim()) {
+      errors.value.email = "Email wajib diisi";
+      valid = false;
+    }
+    return valid;
   }
-  return valid;
+
 };
 
 const doRequest = async () => {

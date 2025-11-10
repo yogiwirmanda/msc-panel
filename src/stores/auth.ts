@@ -66,6 +66,7 @@ export const useAuthStore = defineStore('auth', () => {
     loading.value = true
     try {
       const { data } = await authService.requestForget(payload)
+      data.value = data;
       return true
     } catch (err: any) {
       showToast('error', err.response?.data?.message || 'Registration failed')
@@ -80,6 +81,7 @@ export const useAuthStore = defineStore('auth', () => {
     loading.value = true
     try {
       const { data } = await authService.changePassword(code, payload)
+      data.value = data;
       return true
     } catch (err: any) {
       showToast('error', err.response?.data?.message || 'Registration failed')

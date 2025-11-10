@@ -88,8 +88,9 @@ import { useConfirm } from "primevue/useconfirm";
 import Card from "primevue/card";
 import { useRoleStore } from "../../../../stores/roleStore";
 import { PencilIcon, TrashIcon } from "@heroicons/vue/24/outline";
+import { useToast } from "primevue/usetoast";
 const confirm = useConfirm();
-
+const toast = useToast();
 const roleStore = useRoleStore();
 
 const fetchData = async () => {
