@@ -76,7 +76,7 @@
           >
         </div>
         <div class="text-center">
-          <RouterLink to="/forgot" class="mt-5 text-blue-500"
+          <RouterLink to="/password/request" class="mt-5 text-blue-500"
             >Lupa Password</RouterLink
           >
         </div>

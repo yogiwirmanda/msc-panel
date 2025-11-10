@@ -18,7 +18,7 @@
           </div>
         </div>
       </div>
-      <form class="space-y-4" @submit.prevent="doLogin">
+      <form class="space-y-4" @submit.prevent="doRequest">
         <div class="flex flex-col gap-6 w-full">
           <div class="flex flex-col gap-2 w-full">
             <label
@@ -67,8 +67,12 @@ import { ref } from "vue";
 import { useAuthStore } from "../../stores/auth";
 import Toast from "primevue/toast";
 import type { LoginForm } from "../../types/auth";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 import { UserCircleIcon } from "@heroicons/vue/24/outline";
+import { useToast } from "primevue/usetoast";
+
+const toast = useToast();
+const router = useRouter();
 
 const form = ref<LoginForm>({
   email: "",
@@ -92,15 +96,13 @@ const validateForm = () => {
   return valid;
 };
 
-const doLogin = async () => {
+const doRequest = async () => {
   if (!validateForm()) return;
   loading.value = true;
   try {
-    await authStore.loginMember(form.value);
-    if (authStore.data.success) {
-      setTimeout(() => {
-        window.location.href = "/member/dashboard";
-      }, 1000);
+    const response = await authStore.requestForget(form.value);
+    if (response) {
+      router.push("/password/request/success")
     }
   } finally {
     setTimeout(() => {

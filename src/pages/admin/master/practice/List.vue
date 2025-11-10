@@ -84,13 +84,10 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
 import ProgressSpinner from "primevue/progressspinner";
-import { useToast } from "primevue/usetoast";
 import { useConfirm } from "primevue/useconfirm";
 import Card from "primevue/card";
 import { useRoleStore } from "../../../../stores/roleStore";
 import { PencilIcon, TrashIcon } from "@heroicons/vue/24/outline";
-
-const toast = useToast();
 const confirm = useConfirm();
 
 const roleStore = useRoleStore();

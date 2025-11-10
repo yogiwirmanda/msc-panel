@@ -4,6 +4,7 @@ import { useAuthStore } from '../stores/auth'
 import AdminLogin from '../pages/auth/LoginAdmin.vue'
 import Login from '../pages/auth/Login.vue'
 import Forgot from '../pages/auth/Forgot.vue'
+import RequestSuccess from '../pages/auth/RequestSuccess.vue'
 import Reset from '../pages/auth/Reset.vue'
 import Register from '../pages/auth/Register.vue'
 
@@ -45,6 +46,7 @@ const routes = [
   { path: '/', name: 'Home', component: Login, meta: { guest: true } },
   { path: '/login', name: 'Login', component: Login, meta: { guest: true } },
   { path: '/password/request', name: 'Forgot', component: Forgot, meta: { guest: true } },
+  { path: '/password/request/success', name: 'RequestSuccess', component: RequestSuccess, meta: { guest: true } },
   { path: '/password/recovery', name: 'Reset', component: Reset, meta: { guest: true } },
   { path: '/admin/login', name: 'Admin Login', component: AdminLogin, meta: { guest: true } },
   { path: '/register', name: 'Register', component: Register, meta: { guest: true } },

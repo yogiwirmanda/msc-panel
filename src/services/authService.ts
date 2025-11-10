@@ -35,6 +35,16 @@ export const authService = {
     return data
   },
 
+  async requestForget(payload: Partial<RegisterForm>): Promise<RegisterForm> {
+    const { data } = await api.post<RegisterForm>('/auth/forget-password', payload)
+    return data
+  },
+
+  async changePassword(code: string, payload: Partial<RegisterForm>): Promise<RegisterForm> {
+    const { data } = await api.post<RegisterForm>(`/auth/change-password?resetCode=${code}`, payload)
+    return data
+  },
+
   async loginMember(payload: Partial<RegisterForm>): Promise<RegisterForm> {
     const { data } = await api.post<RegisterForm>('/auth/login', payload)
     return data

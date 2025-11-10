@@ -62,6 +62,34 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  const requestForget = async (payload: any) => {
+    loading.value = true
+    try {
+      const { data } = await authService.requestForget(payload)
+      return true
+    } catch (err: any) {
+      showToast('error', err.response?.data?.message || 'Registration failed')
+      error.value = err.message || 'Failed to register'
+      return false
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const changePassword = async (code: string, payload: any) => {
+    loading.value = true
+    try {
+      const { data } = await authService.changePassword(code, payload)
+      return true
+    } catch (err: any) {
+      showToast('error', err.response?.data?.message || 'Registration failed')
+      error.value = err.message || 'Failed to register'
+      return false
+    } finally {
+      loading.value = false
+    }
+  }
+
   const loginMember = async (payload: any) => {
     loading.value = true
     try {
@@ -140,6 +168,8 @@ export const useAuthStore = defineStore('auth', () => {
     registerMember,
     loginMember,
     logoutMember,
+    requestForget,
+    changePassword,
     token,
     setToken,
     clearToken

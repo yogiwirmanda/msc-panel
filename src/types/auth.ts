@@ -2,7 +2,7 @@ export type LoginForm = {
   username?: string;
   password?: string;
   email?: string;
-  password_confirmation?: string;
+  password_confirm?: string;
 }
 
 export type RegisterForm = {
