@@ -119,6 +119,7 @@ onMounted(() => {
 });
 
 const editRow = (item: any) => {
+  console.log(item);
   router.push("/admin/master/test/question");
 };
 
