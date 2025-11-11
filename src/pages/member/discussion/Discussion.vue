@@ -143,6 +143,8 @@ const loadForum = async () => {
       showReplyBox: false,
       replyText: "",
     }));
+
+    posts.value = posts.value.reverse();
   }
   loading.value = false;
 };

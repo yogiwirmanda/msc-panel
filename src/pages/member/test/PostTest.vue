@@ -134,7 +134,7 @@ const mapQuestion = (): void => {
             label: "",
             options,
             optionsLayout: "inline",
-            validation: q.required ? "required" : "",
+            // validation: q.required ? "required" : "",
             validationMessages: q.required
               ? { required: "Pilih satu jawaban." }
               : undefined,
@@ -154,25 +154,19 @@ const mapQuestion = (): void => {
   loading.value = false;
 };
 
-const handleSubmit = async (
-  data: Record<string, string | number>
-): Promise<void> => {
+const handleSubmit = async (data: Record<string, string | number>): Promise<void> => {
   const getUserStr = Cookie.get("user");
   if (!getUserStr) return;
 
   const getUser = JSON.parse(getUserStr);
   const attemptId = Number(router.currentRoute.value.params.attempt);
 
-  const formatted = Object.entries(data).map(([questionId, optionId]) => {
-    const question = getQuestion.value.find((q) => q.id === Number(questionId));
-
+  const formatted = getQuestion.value.map((q) => {
+    const answer = data[q.id];
     return {
-      questionId: Number(questionId),
-      type:
-        question?.question_type === "likert"
-          ? "single"
-          : question?.question_type || "single",
-      optionId: Number(optionId),
+      questionId: q.id,
+      type: q.question_type === "likert" ? "single" : q.question_type || "single",
+      optionId: answer ? Number(answer) : null,
     };
   });
 
@@ -187,7 +181,7 @@ const handleSubmit = async (
   quotes.value = questStore.submitResponse.motivation.message;
   visible.value = true;
 
-  let payloadStep = {
+  const payloadStep = {
     user_id: getUser.id,
     template_id: detailQuest.value.id,
     progress_status: "completed",

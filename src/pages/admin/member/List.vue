@@ -94,7 +94,6 @@ const userStore = useUserStore();
 
 const fetchData = async () => {
   await userStore.fetchMembers(1);
-  console.log(userStore.members);
 };
 
 const onPage = (event: any) => {

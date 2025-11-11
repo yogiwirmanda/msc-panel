@@ -45,7 +45,6 @@ const getStepPractice = async () => {
   if (practiceStore.stepPractice?.success) {
     practiceStep.value = practiceStore.stepPractice?.data.practice_steps ?? [];
   }
-  console.log(practiceStep.value);
   setTimeout(() => {
     loading.value = false;
   }, 1000);

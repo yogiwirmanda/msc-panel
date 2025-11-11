@@ -25,13 +25,11 @@ const role = ref();
 const loadDataRole = async () => {
   await roleStore.fetchRoles(1);
   roles.value = roleStore.roles;
-  console.log("Loaded roles:", roles.value);
 };
 
 const saveUser = async () => {
   form.value.id_role = role.value.id;
   await userStore.addUser(form.value);
-  console.log("Profile saved:", form.value);
 };
 
 onMounted(() => {

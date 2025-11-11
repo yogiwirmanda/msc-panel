@@ -11,7 +11,6 @@ const router = useRouter();
 
 onMounted(async () => {
   await auth.initialize();
-  console.log(auth.userLogin.role_id);
   if (auth.userLogin.role_id != 3) {
     await auth.logoutMember();
     router.push("/login");
