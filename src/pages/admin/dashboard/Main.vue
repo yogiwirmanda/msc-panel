@@ -102,7 +102,7 @@
         class="card-graph"
         v-if="dashboardData?.charts?.member_by_professions"
       >
-        <template #title>Usia</template>
+        <template #title>Profesi</template>
         <template #content>
           <PieChart
             :chart-data="dashboardData?.charts?.member_by_professions"
@@ -113,7 +113,7 @@
         class="card-graph"
         v-if="dashboardData?.charts?.member_by_educations"
       >
-        <template #title>Usia</template>
+        <template #title>Pendidikan</template>
         <template #content>
           <PieChart :chart-data="dashboardData?.charts?.member_by_educations" />
         </template>
