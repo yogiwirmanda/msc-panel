@@ -43,30 +43,33 @@
     </Dialog>
   </div>
   <Dialog
-      v-model:visible="visibleAlert"
-      modal
-      :style="{ width: '60vw', maxWidth: '900px' }"
-      :draggable="false"
-      :closable="false"
-      :showHeader="false"
-    >
-      <div class="text-center space-y-4 pt-5">
-        <div
-          class="flex flex-col bg-white items-center justify-center text-center p-8 bg-gray-50 rounded-2xl shadow-sm"
-        >
-          <p class="text-3xl italic text-gray-700 max-w-2xl">Jika kamu meninggalkan halaman Post Test ini, sebelum semua selesai maka pertanyaan yang tidak di jawab akan kami anggap 0</p>
-        </div>
-        <div class="flex justify-center gap-3 mt-5">
-          <Button
-            class="p-button-primary flex items-center justify-center gap-2"
-            @click="endPosTest"
-          >
-            <CheckCircleIcon class="w-5 h-5" />
-            <span>Akhiri Post Test</span>
-          </Button>
-        </div>
+    v-model:visible="visibleAlert"
+    modal
+    :style="{ width: '60vw', maxWidth: '900px' }"
+    :draggable="false"
+    :closable="false"
+    :showHeader="false"
+  >
+    <div class="text-center space-y-4 pt-5">
+      <div
+        class="flex flex-col bg-white items-center justify-center text-center p-8 bg-gray-50 rounded-2xl shadow-sm"
+      >
+        <p class="text-3xl italic text-gray-700 max-w-2xl">
+          Jika kamu meninggalkan halaman Post Test ini, sebelum semua selesai
+          maka pertanyaan yang tidak di jawab akan kami anggap 0
+        </p>
       </div>
-    </Dialog>
+      <div class="flex justify-center gap-3 mt-5">
+        <Button
+          class="p-button-primary flex items-center justify-center gap-2"
+          @click="endPosTest"
+        >
+          <CheckCircleIcon class="w-5 h-5" />
+          <span>Akhiri Post Test</span>
+        </Button>
+      </div>
+    </div>
+  </Dialog>
 </template>
 
 <script setup lang="ts">
@@ -180,7 +183,9 @@ const mapQuestion = (): void => {
   loading.value = false;
 };
 
-const handleSubmit = async (data: Record<string, string | number>): Promise<void> => {
+const handleSubmit = async (
+  data: Record<string, string | number>
+): Promise<void> => {
   const getUserStr = Cookie.get("user");
   if (!getUserStr) return;
 
@@ -191,7 +196,8 @@ const handleSubmit = async (data: Record<string, string | number>): Promise<void
     const answer = data[q.id];
     return {
       questionId: q.id,
-      type: q.question_type === "likert" ? "single" : q.question_type || "single",
+      type:
+        q.question_type === "likert" ? "single" : q.question_type || "single",
       optionId: answer ? Number(answer) : null,
     };
   });
@@ -235,6 +241,7 @@ onMounted(() => {
 onBeforeRouteLeave((to, from, next) => {
   console.log(to);
   console.log(from);
+  console.log(next);
   visibleAlert.value = true;
-})
+});
 </script>
