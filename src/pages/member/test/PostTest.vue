@@ -42,6 +42,31 @@
       </div>
     </Dialog>
   </div>
+  <Dialog
+      v-model:visible="visibleAlert"
+      modal
+      :style="{ width: '60vw', maxWidth: '900px' }"
+      :draggable="false"
+      :closable="false"
+      :showHeader="false"
+    >
+      <div class="text-center space-y-4 pt-5">
+        <div
+          class="flex flex-col bg-white items-center justify-center text-center p-8 bg-gray-50 rounded-2xl shadow-sm"
+        >
+          <p class="text-3xl italic text-gray-700 max-w-2xl">Jika kamu meninggalkan halaman Post Test ini, sebelum semua selesai maka pertanyaan yang tidak di jawab akan kami anggap 0</p>
+        </div>
+        <div class="flex justify-center gap-3 mt-5">
+          <Button
+            class="p-button-primary flex items-center justify-center gap-2"
+            @click="endPosTest"
+          >
+            <CheckCircleIcon class="w-5 h-5" />
+            <span>Akhiri Post Test</span>
+          </Button>
+        </div>
+      </div>
+    </Dialog>
 </template>
 
 <script setup lang="ts">
@@ -50,7 +75,7 @@ import type { FormKitSchemaNode } from "@formkit/core";
 import Card from "primevue/card";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import { useQuestStore } from "../../../stores/questStore";
-import { useRouter } from "vue-router";
+import { onBeforeRouteLeave, useRouter } from "vue-router";
 import Cookie from "js-cookie";
 import LoadingPage from "../../../components/LoadingPage.vue";
 import { usePracticeStore } from "../../../stores/practiceStore";
@@ -66,6 +91,7 @@ const router = useRouter();
 const loading = ref(false);
 const practiceStore = usePracticeStore();
 const visible = ref(false);
+const visibleAlert = ref(false);
 const quotes = ref("");
 
 const loadQuestion = async (): Promise<void> => {
@@ -197,7 +223,6 @@ const endPosTest = async () => {
 onMounted(() => {
   const handleBeforeUnload = (event: BeforeUnloadEvent) => {
     event.preventDefault();
-    event.returnValue = "Are you sure you want to leave?";
   };
 
   window.addEventListener("beforeunload", handleBeforeUnload);
@@ -206,4 +231,10 @@ onMounted(() => {
     window.removeEventListener("beforeunload", handleBeforeUnload);
   });
 });
+
+onBeforeRouteLeave((to, from, next) => {
+  console.log(to);
+  console.log(from);
+  visibleAlert.value = true;
+})
 </script>

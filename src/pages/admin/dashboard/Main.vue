@@ -86,16 +86,36 @@
       </div>
     </div>
     <div class="grid grid-cols-2 gap-5 mt-10 items-center">
-      <Card class="card-graph">
-        <template #title>Usia</template>
-        <template #content>
-          <BarChart />
-        </template>
-      </Card>
-      <Card class="card-graph">
+      <Card class="card-graph" v-if="dashboardData?.charts?.member_by_genders">
         <template #title>Jenis Kelamin</template>
         <template #content>
-          <PieChart />
+          <PieChart :chart-data="dashboardData?.charts?.member_by_genders" />
+        </template>
+      </Card>
+      <Card class="card-graph" v-if="dashboardData?.charts?.member_by_ages">
+        <template #title>Usia</template>
+        <template #content>
+          <PieChart :chart-data="dashboardData?.charts?.member_by_ages" />
+        </template>
+      </Card>
+      <Card
+        class="card-graph"
+        v-if="dashboardData?.charts?.member_by_professions"
+      >
+        <template #title>Usia</template>
+        <template #content>
+          <PieChart
+            :chart-data="dashboardData?.charts?.member_by_professions"
+          />
+        </template>
+      </Card>
+      <Card
+        class="card-graph"
+        v-if="dashboardData?.charts?.member_by_educations"
+      >
+        <template #title>Usia</template>
+        <template #content>
+          <PieChart :chart-data="dashboardData?.charts?.member_by_educations" />
         </template>
       </Card>
     </div>
@@ -110,7 +130,6 @@ import {
 } from "@heroicons/vue/24/outline";
 import { useDashboardStore } from "../../../stores/dashboardStore";
 import { onMounted, ref } from "vue";
-import BarChart from "./BarChart.vue";
 import PieChart from "./PieChart.vue";
 import Card from "primevue/card";
 
