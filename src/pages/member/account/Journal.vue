@@ -68,7 +68,7 @@ onMounted(() => {
 
               <Column header="Sesi">
                 <template #body="{ data }">
-                  {{ data.journals?.[0]?.title || "-" }}
+                  {{ data.journals?.[0]?.items?.[0].title || "-" }}
                 </template>
               </Column>
 
@@ -92,25 +92,40 @@ onMounted(() => {
           header="My Journals"
           :style="{ width: '50vw' }"
         >
-          <div
+          <Card
             v-if="selectedJournals.length"
-            class="grid grid-cols-2 gap-5 journals-list"
+            v-for="valueGroup in selectedJournals"
+            class="mb-5"
           >
-            <Card
-              v-for="(journal, index) in selectedJournals"
-              :key="index"
-              class="card-journal"
-            >
-              <template #content>
-                <div class="mt-2 whitespace-pre-line italic">
-                  Pertanyaan : {{ journal.prompt }}
+            <template #content>
+              <div class="w-full mb-5">
+                <div class="mt-5">
+                  Tanggal :
+                  {{
+                    new Date(valueGroup.items[0].created_at).toLocaleDateString(
+                      "id-ID"
+                    )
+                  }}
                 </div>
-                <div class="mt-5 whitespace-pre-line font-semibold">
-                  {{ journal.answer_text }}
+                <div class="grid grid-cols-2 gap-5 journals-list">
+                  <Card
+                    v-for="(journal, index) in valueGroup.items"
+                    :key="index"
+                    class="card-journal"
+                  >
+                    <template #content>
+                      <div class="mt-2 whitespace-pre-line italic">
+                        Pertanyaan : {{ journal.prompt }}
+                      </div>
+                      <div class="mt-5 whitespace-pre-line font-semibold">
+                        {{ journal.answer_text }}
+                      </div>
+                    </template>
+                  </Card>
                 </div>
-              </template>
-            </Card>
-          </div>
+              </div>
+            </template>
+          </Card>
           <div v-else class="text-center py-5 text-gray-500">
             No journals available
           </div>
