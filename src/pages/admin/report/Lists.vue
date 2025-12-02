@@ -132,7 +132,7 @@ const ReportPre = (userId: any) => {
 };
 
 const ReportPost = (userId: any) => {
-  router.push("/admin/report/test/pre/" + userId.id);
+  router.push("/admin/report/test/post/" + userId.id);
 };
 
 const ReportJournal = (userId: any) => {

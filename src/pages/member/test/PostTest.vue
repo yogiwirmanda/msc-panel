@@ -96,6 +96,7 @@ const practiceStore = usePracticeStore();
 const visible = ref(false);
 const visibleAlert = ref(false);
 const quotes = ref("");
+const leave = ref(false);
 
 const loadQuestion = async (): Promise<void> => {
   loading.value = true;
@@ -223,6 +224,7 @@ const handleSubmit = async (
 
 const endPosTest = async () => {
   visible.value = false;
+  leave.value = true;
   router.push("/member/dashboard");
 };
 
@@ -239,9 +241,11 @@ onMounted(() => {
 });
 
 onBeforeRouteLeave((to, from, next) => {
+  visibleAlert.value = true;
   console.log(to);
   console.log(from);
-  console.log(next);
-  visibleAlert.value = true;
+  if (leave.value == true) {
+    next();
+  }
 });
 </script>
