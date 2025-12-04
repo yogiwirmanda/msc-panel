@@ -24,7 +24,7 @@
             <iframe src="https://www.youtube.com/embed/2NQoU2wkzWQ?si=4WbLWEH8qJzsjDi5" width="100%" height="100%" allow="autoplay" :allowfullscreen="true"></iframe>
           </div>
           <div v-if="item.section_code === 'EX2' && detailPractice.id == 1">
-            <iframe src="https://drive.google.com/file/d/14kRHbw5QRZ7KcCI9C-VlUH_wwMxnRN1W/preview" width="100%" height="100%" allow="autoplay" :allowfullscreen="true"></iframe>
+            <iframe src="https://www.youtube.com/embed/aPTPite6RFc?si=1Zp7UnnlCLQd3zee" width="100%" height="100%" allow="autoplay" :allowfullscreen="true"></iframe>
           </div>
           <div v-if="item.section_code === 'EX1' && detailPractice.id == 2" class="flex justify-center py-5">
             <iframe src="https://drive.google.com/file/d/1PE5o3RHgy1lvFPDSheSOzAeth0oR3z5Y/preview" width="100%" height="100%" allow="autoplay" :allowfullscreen="true"></iframe>
