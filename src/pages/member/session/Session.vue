@@ -1,8 +1,5 @@
 <template>
   <LoadingPage :visible="loading" message="Memproses Data...." />
-  <!-- <div class="flex justify-center">
-  <iframe src="https://drive.google.com/file/d/14kRHbw5QRZ7KcCI9C-VlUH_wwMxnRN1W/preview" width="640" height="480" allow="autoplay" :allowfullscreen="true"></iframe>
-  </div> -->
   <div class="bg-surface-0 min-h-screen py-12 px-6 md:px-16 lg:px-32">
     <div class="text-center mb-12">
       <h1 class="text-3xl md:text-4xl font-bold text-purple mb-2">
@@ -23,8 +20,8 @@
       <template #content>
       <Message class="mt-5" severity="secondary" v-if="item.section_code === 'EX1' || item.section_code === 'EX2'">Disarankan menggunakan earphone/headset untuk kualitas audio optimal dan konsentrasi yang lebih baik.</Message>
         <div class="flex justify-center py-5 container">
-          <div v-if="item.section_code === 'EX1' && detailPractice.id == 1" class="flex justify-center py-5 box-video">
-            <iframe src="https://drive.google.com/file/d/14kRHbw5QRZ7KcCI9C-VlUH_wwMxnRN1W/preview" width="100%" height="100%" allow="autoplay" :allowfullscreen="true"></iframe>
+          <div v-if="item.section_code === 'EX1' && detailPractice.id == 1" class="flex justify-center py-2 box-video">
+            <iframe src="https://www.youtube.com/embed/2NQoU2wkzWQ?si=4WbLWEH8qJzsjDi5" width="100%" height="100%" allow="autoplay" :allowfullscreen="true"></iframe>
           </div>
           <div v-if="item.section_code === 'EX2' && detailPractice.id == 1">
             <iframe src="https://drive.google.com/file/d/14kRHbw5QRZ7KcCI9C-VlUH_wwMxnRN1W/preview" width="100%" height="100%" allow="autoplay" :allowfullscreen="true"></iframe>
