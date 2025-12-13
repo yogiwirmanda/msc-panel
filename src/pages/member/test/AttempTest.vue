@@ -102,14 +102,16 @@ const attemptQuest = async () => {
       status: "in_progress",
     };
     await questStore.doAttemptQuest(payload);
-    if (getType == "pre-test") {
-      router.push(
-        `/member/pre-test/${questStore.attemptResponse.data.questAttemptCreate.id}`
-      );
-    } else {
-      router.push(
-        `/member/post-test/${questStore.attemptResponse.data.questAttemptCreate.id}`
-      );
+    if (questStore.attemptResponse.success) {
+      if (getType == "pre-test") {
+        router.push(
+          `/member/pre-test/${questStore.attemptResponse.data.questAttemptCreate.id}`
+        );
+      } else {
+        router.push(
+          `/member/post-test/${questStore.attemptResponse.data.questAttemptCreate.id}`
+        );
+      }
     }
   }
 };
