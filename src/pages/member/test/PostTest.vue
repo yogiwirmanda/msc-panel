@@ -164,7 +164,7 @@ const mapQuestion = (): void => {
             label: "",
             options,
             optionsLayout: "inline",
-            // validation: q.required ? "required" : "",
+            validation: q.required ? "required" : "",
             validationMessages: q.required
               ? { required: "Pilih satu jawaban." }
               : undefined,
