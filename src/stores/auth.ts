@@ -86,7 +86,7 @@ export const useAuthStore = defineStore("auth", () => {
     } catch (err: any) {
       showToast(
         "error",
-        err.response?.data?.message || "Reset password failed"
+        err.response?.data?.message || "Reset password failed",
       );
       error.value = err.message || "Failed to reset password";
       return false;
@@ -120,7 +120,10 @@ export const useAuthStore = defineStore("auth", () => {
     try {
       const response = await authService.loginMember(payload);
       data.value = response;
-      if (data.value.data.users.role_id == 2) {
+      if (
+        data.value.data.users.role_id == 2 ||
+        data.value.data.users.role_id == 1
+      ) {
         setToken(data.value.data.tokenData.token);
         await initialize();
         showToast("success", data.value.message);
