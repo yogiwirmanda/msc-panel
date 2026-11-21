@@ -100,8 +100,8 @@ export const useAuthStore = defineStore("auth", () => {
     try {
       const response = await authService.loginMember(payload);
       data.value = response;
-      initialize();
       setToken(data.value.data.tokenData.token);
+      await initialize();
       showToast("success", data.value.message);
       isLogin.value = true;
       Cookies.set("role", "member");
@@ -121,8 +121,8 @@ export const useAuthStore = defineStore("auth", () => {
       const response = await authService.loginMember(payload);
       data.value = response;
       if (data.value.data.users.role_id == 2) {
-        initialize();
         setToken(data.value.data.tokenData.token);
+        await initialize();
         showToast("success", data.value.message);
         isLogin.value = true;
         loginRole.value = "admin";
